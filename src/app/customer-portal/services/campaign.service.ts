@@ -2,6 +2,7 @@
   import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
   import { Observable } from 'rxjs';
 import { Campaign } from '../models/Campaign.model';
+import { environment } from '../../../environments/environment';
  
 
   @Injectable({
@@ -9,7 +10,7 @@ import { Campaign } from '../models/Campaign.model';
   })
   export class CampaignService {
 
-    private baseUrl = 'http://localhost:8080/api/campaigns';  // ✅ same as backend
+    private baseUrl = `${environment.apiUrl}/api/campaigns`;
 
     constructor(private http: HttpClient) {}
       header = new HttpHeaders().set('content-type','application/json');

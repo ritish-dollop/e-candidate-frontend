@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Note } from '../models/Note.model';
+import { environment } from '../../../environments/environment';
 
 interface NoteRequestDto {
   leadId: number;
@@ -14,7 +15,7 @@ interface NoteRequestDto {
 })
 export class NoteService {
 
-  private baseUrl = 'http://localhost:8080/api/notes';
+  private baseUrl = `${environment.apiUrl}/api/notes`;
 
   constructor(private http: HttpClient) { }
 

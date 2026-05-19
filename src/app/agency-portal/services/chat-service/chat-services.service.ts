@@ -5,6 +5,7 @@ import { Client, IMessage } from '@stomp/stompjs';
 import { ChatMessageResponse, ChatRoomResponse } from '../../components/chat/chat-list/chat-list.component';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ChatUserResponseDto } from '../../interfaces/user-request';
+import { environment } from '../../../../environments/environment';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import { ChatUserResponseDto } from '../../interfaces/user-request';
 })
 export class ChatServicesService {
 
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = `${environment.apiUrl}/api`;
 
   private header = new HttpHeaders().set('content-type', 'application/json');
 
@@ -138,7 +139,7 @@ addMembersToGroup(chatRoomId: number, userIds: number[]):Observable<ChatRoomResp
 
 getCurrentUser(): Observable<ChatUserResponseDto> {
   // console.log(this.getToken());
-  return this.http.get<ChatUserResponseDto>(`http://localhost:8080/api/chat/user/me`);
+  return this.http.get<ChatUserResponseDto>(`${environment.apiUrl}/api/chat/user/me`);
 }
 
 }

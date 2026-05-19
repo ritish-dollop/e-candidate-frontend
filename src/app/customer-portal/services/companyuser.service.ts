@@ -2,18 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CustomerUserResponse } from '../models/CustomerUser.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyuserService {
 
-  private baseUrl = 'http://localhost:8080/api/customer-users';
+  private baseUrl = `${environment.apiUrl}/api/customer-users`;
 
   constructor(private http: HttpClient) { }
   getAllUsers(page: number, size: number) {
     return this.http.get<any>(
-      `http://localhost:8080/api/customer-users?page=${page}&size=${size}`
+      `${environment.apiUrl}/api/customer-users?page=${page}&size=${size}`
     );
   }
 
@@ -59,7 +60,7 @@ export class CompanyuserService {
     const token = localStorage.getItem('jwtToken');
 
     return this.http.get<number>(
-      'http://localhost:8080/api/customer/me/agency-id',
+      `${environment.apiUrl}/api/customer/me/agency-id`,
       {
         headers: {
           Authorization: 'Bearer ' + token

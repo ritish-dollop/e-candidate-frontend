@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Agency, AgencyRequestDto, AgencyResponseDto } from '../../interfaces/agency';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgencyService {
 
-  private baseUrl = 'http://localhost:8080/api/agency';
+  private baseUrl = `${environment.apiUrl}/api/agency`;
 
   constructor(private http: HttpClient) {}
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class LeadService {
     this.updateLeadCallSource.next();
   }
 
-  private baseUrl = 'http://localhost:8080/api/leads'; // ✅ Your backend URL
+  private baseUrl = `${environment.apiUrl}/api/leads`;
 
   constructor(private http: HttpClient) { }
   header = new HttpHeaders().set('content-type', 'application/json')

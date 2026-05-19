@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:8080/api/auth';
+  private baseUrl = `${environment.apiUrl}/api/auth`;
 
   constructor(private http: HttpClient) {}
 
@@ -171,7 +172,7 @@ export class AuthService {
     const headers = new HttpHeaders({
       Authorization: "Bearer " + token
     });
-    return this.http.get<any>("http://localhost:8080/api/user/me", { headers });
+    return this.http.get<any>(`${environment.apiUrl}/api/user/me`, { headers });
   }
 
 

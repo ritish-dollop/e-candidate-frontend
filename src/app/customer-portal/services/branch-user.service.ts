@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BranchUser } from '../models/BranchUser.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BranchUserService {
-  private baseUrl = 'http://localhost:8080/api/branch-users';
+  private baseUrl = `${environment.apiUrl}/api/branch-users`;
 
   constructor(private http: HttpClient) {}
 
@@ -65,7 +66,7 @@ export class BranchUserService {
     });
   }
   getBranchDetails(branchId: number) {
-    return this.http.get(`http://localhost:8080/api/branches/${branchId}`);
+    return this.http.get(`${environment.apiUrl}/api/branches/${branchId}`);
   }
   resetPassword(userId: number, newPassword: string) {
     return this.http.put(`${this.baseUrl}/${userId}/reset-password`,{ password: newPassword },

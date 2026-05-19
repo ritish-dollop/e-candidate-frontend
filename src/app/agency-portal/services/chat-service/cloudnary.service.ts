@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,7 @@ uploadToBackend(file: File): Observable<string> {
   const formData = new FormData();
   formData.append('file', file);
 
-  return this.http.post('http://localhost:8080/api/upload', formData, {
+  return this.http.post(`${environment.apiUrl}/api/upload`, formData, {
     responseType: 'text'
   }) as Observable<string>;
 }

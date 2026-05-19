@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MailDTO, MailResponseDTO, UserMailDTO } from '../../interfaces/email';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 
 export class MailService {
-  private baseUrl = 'http://localhost:8080/api/mails'; // adapt if needed
+  private baseUrl = `${environment.apiUrl}/api/mails`;
 
   constructor(private http: HttpClient) {}
 

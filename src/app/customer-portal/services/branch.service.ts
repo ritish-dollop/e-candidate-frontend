@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Branch } from '../models/Branch.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BranchService {
 
-  private baseUrl = 'http://localhost:8080/api/branches';
+  private baseUrl = `${environment.apiUrl}/api/branches`;
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +39,7 @@ export class BranchService {
 
   getAgencyIdOfLoggedInBranchUser(): Observable<number> {
   return this.http.get<number>(
-    'http://localhost:8080/api/branches/me/agency-id'
+    `${environment.apiUrl}/api/branches/me/agency-id`
   );
 }
 
