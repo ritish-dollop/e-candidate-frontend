@@ -1,0 +1,126 @@
+/* SIDEBAR */
+.dashboard_logo {
+    background-color: var(--WhiteBackground-color);
+    display: flex;
+    justify-content: center;
+}
+
+.Sidebar {
+    padding: 16px;
+    height: 100vh;
+    width: 243px;
+    background-color: var(--WhiteBackground-color);
+    transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar_scroll {
+    overflow: scroll;
+    height: calc(100vh - 62px);
+    padding-bottom: 20px;
+}
+
+.sidebar_scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard_logo img {
+    height: 27px;
+    scale: 1.5;
+}
+
+.sidebar_navbar ul {
+    margin-top: 24px;
+    padding-left: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sidebar_navbar li {
+    padding: 8px 16px;
+}
+
+.sidebar_navbar img {
+    height: 30px;
+    width: 30px;
+}
+
+.sidebar_navbar a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--TextLight-color);
+    font-size: clamp(14px, 1vw, 16px);
+}
+
+li svg {
+    fill: var(--TextLight-color);
+}
+
+li.active {
+    background: var(--PrimaryBackground-color);
+    border-radius: 4px;
+}
+
+.Settings {
+    fill: transparent !important;
+}
+
+.Sidebar.open {
+    transform: translateX(0);
+}
+
+.toggle-sidebar-btn {
+    display: none;
+    margin: 10px;
+}
+
+li.active {
+    span {
+        color: #fff;
+    }
+
+    svg {
+        fill: var(--Textwhite-color);
+    }
+
+    .Agency_icon {
+        stroke: var(--Textwhite-color);
+    }
+
+    .Settings {
+        fill: var(--Textwhite-color) !important;
+
+    }
+
+}
+
+
+
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translate(-250px);
+        position: absolute;
+        z-index: 1000;
+        width: 250px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .sidebar.open {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+
+
+    .toggle-sidebar-btn {
+        display: inline-block;
+        position: absolute;
+        margin: 0;
+        border: 0;
+        background-color: transparent;
+        font-size: 20px;
+        top: 22px;
+        left: 24px;
+    }
+}

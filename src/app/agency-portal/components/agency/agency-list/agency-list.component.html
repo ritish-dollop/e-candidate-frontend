@@ -1,0 +1,326 @@
+<!-- Agency list -->
+<div class="Card">
+  <div class="p-3 d-flex justify-content-between align-items-center">
+    <h3 class="mb-0 large-text Medium primary">Agencies</h3>
+    <div
+      *ngIf="currentUser?.role == 'AGENCY_SUPER_ADMIN'"
+      data-bs-toggle="modal"
+      href="#addAgency"
+      role="button"
+      class="primary_btn small-text Medium py-2 px-3"
+      (click)="resetForm()"
+    >
+      + Add Agency
+    </div>
+  </div>
+
+  <div class="h-100 overflow_scroll scrollbar_hide p-0">
+    <div class="table-responsive table_data">
+      <table class="table mb-0">
+        <thead>
+          <tr class="Primarylight_background">
+            <th>Logo</th>
+            <th>Agency Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Note</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let agency of paginatedAgencies">
+            <tr *ngIf="agency.id">
+              <td>
+                <img
+                  [src]="agency.logo || 'assets/images/svg-img/E.svg'"
+                  class="table_logo"
+                />
+              </td>
+              <td
+                class="cursor_pointer"
+               [routerLink]="['/agency/agency/details', agency.id]"
+              >
+                {{ agency.agencyName }}
+              </td>
+              <td>{{ agency.email }}</td>
+              <td>{{ agency.phone }}</td>
+              <td>{{ agency.address }}</td>
+              <td>{{ agency.notes || "—" }}</td>
+              <td>
+                <ng-container
+                  *ngIf="
+                    currentUser?.role === 'AGENCY_SUPER_ADMIN';
+                    else statusOnly
+                  "
+                >
+                  <label class="switch mx-0 ms-auto">
+                    <input
+                      type="checkbox"
+                      [checked]="agency.status === 'ACTIVE'"
+                      (change)="onToggleStatus(agency)"
+                    />
+                    <span class="slider round cursor_pointer"></span>
+                  </label>
+                </ng-container>
+
+                <ng-template #statusOnly>
+                  <label>{{ agency.status }}</label>
+                </ng-template>
+              </td>
+              <td>
+                <div class="document_card d-flex gap-3">
+                  <div
+                    *ngIf="
+                      currentUser?.role === 'AGENCY_SUPER_ADMIN' ||
+                      currentUser?.role == 'AGENCY_ADMIN'
+                    "
+                    ;
+                    class="CVRequest_bg document_pdf_icon d-flex justify-content-center align-items-center"
+                    data-bs-toggle="modal"
+                    href="#addAgency"
+                    role="button"
+                    (click)="onEditAgency(agency)"
+                  >
+                    <img src="assets/images/svg-img/edit.svg" height="18" />
+                  </div>
+                  <div
+                    *ngIf="currentUser?.role === 'AGENCY_SUPER_ADMIN'"
+                    ;
+                    class="Rejection_bg Rejection document_pdf_icon d-flex justify-content-center align-items-center"
+                    (click)="onDeleteAgency(agency.id)"
+                  >
+                    <img src="assets/images/svg-img/delete.svg" height="18" />
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example" class="table-pagination">
+      <a
+        (click)="goToPage(currentPage - 1)"
+        class="secondary arrow small-text Medium d-flex gap-1"
+      >
+        <img src="assets/images/svg-img/pagination-arrow-left.svg" /> Previous
+      </a>
+      <ul class="pagination mb-0 gap-2">
+        <li
+          *ngFor="let page of [1, 2, 3, 4, 5]"
+          [ngClass]="{ active: currentPage === page }"
+        >
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+      </ul>
+      <a
+        (click)="goToPage(currentPage + 1)"
+        class="secondary arrow small-text Medium d-flex gap-1"
+      >
+        Next <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+      </a>
+    </nav>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal fade" id="addAgency" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <form #agencyFormRef="ngForm" (ngSubmit)="onSubmitAgency(agencyFormRef)">
+        <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+          <div class="d-flex">
+            <h4 class="primary hr_line pb-1 p-1 Sub-Heading Semibold mb-0">
+              {{ isEditMode ? "Edit Agency" : "Add Agency" }}
+            </h4>
+          </div>
+
+          <div class="d-flex flex-column gap-3 add_task">
+            <!-- Agency Name -->
+            <div class="d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">
+                  Agency Name <span class="text-danger">*</span>
+                </h3>
+                <div class="input_field_modal w-75">
+                  <input
+                    type="text"
+                    [(ngModel)]="agencyForm.agencyName"
+                    name="agencyName"
+                    #agencyName="ngModel"
+                    required
+                    minlength="2"
+                    class="search_input_field small-text p-2"
+                    placeholder="Agency Name"
+                  />
+                </div>
+              </div>
+              <small
+                *ngIf="agencyName.invalid && agencyName.touched"
+                class="text-danger ms-auto"
+              >
+                {{ agencyName.errors?.['required'] ? 'Agency name is required' : '' }}
+                {{ agencyName.errors?.['minlength'] ? 'Minimum 2 characters required' : '' }}
+              </small>
+            </div>
+
+            <!-- Email -->
+            <div class="d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Email <span class="text-danger">*</span></h3>
+                <div class="input_field_modal w-75">
+                  <input
+                    type="email"
+                    [(ngModel)]="agencyForm.email"
+                    name="email"
+                    #email="ngModel"
+                    required
+                    email
+                    class="search_input_field small-text p-2"
+                    placeholder="agency@example.com"
+                  />
+                </div>
+              </div>
+              <small
+                *ngIf="email.invalid && email.touched"
+                class="text-danger ms-auto"
+              >
+                {{ email.errors?.['required'] ? 'Email is required' : '' }}
+                {{ email.errors?.['email'] ? 'Enter a valid email address' : '' }}
+              </small>
+            </div>
+
+            <!-- Phone -->
+            <div class="d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">
+                  Contact No. <span class="text-danger">*</span>
+                </h3>
+                <div class="input_field_modal w-75">
+                  <input
+                    type="text"
+                    [(ngModel)]="agencyForm.phone"
+                    name="phone"
+                    #phone="ngModel"
+                    required
+                    pattern="^[6-9][0-9]{9}$"
+                    maxlength="10"
+                    class="search_input_field small-text p-2"
+                    placeholder="Enter 10-digit number"
+                  />
+                </div>
+              </div>
+
+              <!-- ✅ Validation messages -->
+              <small
+                *ngIf="phone.invalid && phone.touched"
+                class="text-danger mt-1 ms-auto"
+              >
+                <ng-container *ngIf="phone.errors?.['required']">
+                  Phone number is required
+                </ng-container>
+                <ng-container *ngIf="phone.errors?.['pattern']">
+                  Must be 10 digits and start with 6–9
+                </ng-container>
+              </small>
+            </div>
+
+            <!-- Address -->
+            <div class="d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Address <span class="text-danger">*</span></h3>
+                <div class="input_field_modal w-75">
+                  <input
+                    type="text"
+                    [(ngModel)]="agencyForm.address"
+                    name="address"
+                    #address="ngModel"
+                    required
+                    class="search_input_field small-text p-2"
+                    placeholder="Full address"
+                  />
+                </div>
+              </div>
+              <small
+                *ngIf="address.invalid && address.touched"
+                class="text-danger ms-auto"
+              >
+                {{ address.errors?.['required'] ? 'Address is required' : '' }}
+              </small>
+            </div>
+
+            <!-- Note -->
+            <div class="d-flex justify-content-between align-items-center">
+              <h3 class="mb-0">Note (Optional)</h3>
+              <div class="input_field_modal w-75">
+                <input
+                  type="text"
+                  [(ngModel)]="agencyForm.notes"
+                  name="notes"
+                  maxlength="200"
+                  class="search_input_field small-text p-2"
+                  placeholder="Notes (max 200 chars)"
+                />
+              </div>
+            </div>
+
+            <!-- Logo -->
+            <div class="d-flex modal_heading">
+              <h3 class="mb-0">Logo (Image Only)</h3>
+              <div class="position-relative" style="margin-left: -6px">
+                <div class="logo_select">
+                  <img
+                    [src]="
+                      logoUrl ||
+                      agencyForm.logo ||
+                      'assets/images/svg-img/E.svg'
+                    "
+                    height="72"
+                    width="72"
+                    alt="Logo"
+                  />
+                </div>
+                <div class="file_select_box">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    class="input_feilds bg_light file_select"
+                    (change)="onFileSelected($event)"
+                  />
+                  <img
+                    src="assets/images/svg-img/editwhite.svg"
+                    class="file_select_icon"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-4 justify-content-end">
+            <button
+              class="secondary_outline_btn medium-text Medium w-25 px-0"
+              data-bs-dismiss="modal"
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              class="primary_btn medium-text Medium w-25 px-0"
+              type="submit"
+              [disabled]="!agencyFormRef.valid"
+              data-bs-dismiss="modal"
+            >
+              {{ isEditMode ? "Update" : "Add" }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

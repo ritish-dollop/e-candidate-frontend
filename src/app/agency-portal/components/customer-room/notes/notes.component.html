@@ -1,0 +1,51 @@
+<div class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+  <div class=" p-3 note_discription d-flex flex-column gap-4">
+    <div class="d-flex flex-column gap-2">
+      <div class="zero_card_background note_details d-flex flex-column gap-2 p-2" *ngFor="let n of notes">
+
+        <div class="d-flex align-items-center gap-2">
+          <span class="circle blue-filter" style="height: 8px;width: 8px;"></span>
+
+          <div class="user_name">
+            <h4 class="Caption Medium mb-0">{{ n.createdByName | customerRole }}</h4>
+          </div>
+
+          <h3 class="x-small-text Medium mb-0">
+            {{ n.createdAt | date:'dd.MM.yyyy' }}
+          </h3>
+
+        </div>
+
+        <h4 class="small-text Medium mb-0">{{ n.content }}</h4>
+      </div>
+
+    </div>
+  </div>
+ <nav class="table-pagination">
+  <!-- Previous -->
+  <a class="arrow"
+     (click)="goToPage(page - 1)"
+     [class.disabled]="page === 0">
+    <img src="assets/images/svg-img/pagination-arrow-left.svg" />
+    Previous
+  </a>
+
+  <!-- Page numbers -->
+  <ul class="pagination">
+    <li *ngFor="let p of [].constructor(totalPages); let i = index">
+      <a class="page-link"
+         (click)="goToPage(i)"
+         [class.active]="i === page">
+        {{ i + 1 }}
+      </a>
+    </li>
+  </ul>
+
+  <!-- Next -->
+  <a class="arrow"
+     (click)="goToPage(page + 1)"
+     [class.disabled]="page === totalPages - 1">
+    Next
+    <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+  </a>
+</nav>

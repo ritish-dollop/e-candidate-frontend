@@ -1,0 +1,153 @@
+<div class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+    <!-- Add New Task button (top-right) -->
+    <div class="d-flex justify-content-end">
+        <button type="button" class="action_light_btn small-text Medium py-1 px-3" data-bs-toggle="modal"
+            data-bs-target="#add" *ngIf="isBranchAdmin()">
+            Add New Task
+        </button>
+    </div>
+    <!-- Add Task/Event Modal -->
+    <div class="modal fade" id="add" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog large_modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+                    <!-- Tabs -->
+                    <div class="single_tab">
+                        <ul class="nav d-flex gap-4" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active p-1 Sub-Heading" id="pills-AddTask-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pills-AddTask" type="button" role="tab"
+                                    aria-selected="true">
+                                    Add Task
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="pills-tabContent">
+                        <!-- Add Task -->
+                        <div class="tab-pane fade show active" id="pills-AddTask" role="tabpanel">
+                            <div class="d-flex flex-column gap-4">
+                                <div class="d-flex flex-column gap-3 add_task">
+                                    <!-- Title -->
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="mb-0">Title</h3>
+                                        <input type="text" placeholder="Field Name"
+                                            class="search_input_field small-text p-2" [(ngModel)]="newTask.title" />
+                                    </div>
+
+                                    <!-- Assignee -->
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="mb-0">Assignee</h3>
+                                        <select class="search_input_field" [(ngModel)]="newTask.assignedToId">
+                                            <option *ngFor="let users of user" [value]="users.id">
+                                                {{ users.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="d-flex justify-content-between">
+                                        <h3 class="mb-0">Description</h3>
+                                        <textarea placeholder="Description" class="search_input_field small-text p-2"
+                                            [(ngModel)]="newTask.description"></textarea>
+                                    </div>
+                                    <!-- checkbox -->
+                                    <div class="d-flex modal_heading">
+                                        <h3 class="mb-0">All day</h3>
+                                        <div class="d-flex gap-2 position-relative">
+                                            <label class="modal_checkbox">
+                                                <input type="checkbox" [(ngModel)]="newTask.allDay" />
+
+                                                <span class="checkmarks"></span>
+                                            </label>
+                                            <!-- <h1 class="Caption Medium mb-0">
+                                                25-12-2024 <span>(Friday) </span>
+                                            </h1> -->
+                                        </div>
+                                    </div>
+                                    <!-- start date time -->
+                                    <div class="d-flex gap-4">
+                                        <div class="d-flex justify-content-between w-50">
+                                            <h3 class="mb-0 w-50">Start date</h3>
+                                            <input type="date" placeholder="Field Name"
+                                                class="search_input_field small-text p-2 w-75"
+                                                [(ngModel)]="newTask.startDate" />
+                                        </div>
+                                        <div class="d-flex justify-content-between w-50">
+                                            <h3 class="mb-0 w-50">Start time</h3>
+                                            <input type="time" placeholder="Field Name"
+                                                class="search_input_field small-text p-2 w-75"
+                                                [(ngModel)]="newTask.startTime" />
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-4">
+                                        <div class="d-flex justify-content-between w-50">
+                                            <h3 class="mb-0 w-50">End date</h3>
+                                            <input type="date" placeholder="Field Name"
+                                                class="search_input_field small-text p-2 w-75"
+                                                [(ngModel)]="newTask.endDate" />
+                                        </div>
+                                        <div class="d-flex justify-content-between w-50">
+                                            <h3 class="mb-0 w-50">End time</h3>
+                                            <input type="time" placeholder="Field Name"
+                                                class="search_input_field small-text p-2 w-75"
+                                                [(ngModel)]="newTask.endTime" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="d-flex gap-4 justify-content-end">
+                                    <button class="secondary_outline_btn medium-text Medium w-25 px-0"
+                                        data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                    <button class="primary_btn medium-text Medium w-25 px-0" (click)="saveTask()"
+                                        data-bs-dismiss="modal">
+                                        Done
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- task details  -->
+    <div *ngFor="let task of tasks" class="d-flex justify-content-between task_cards p-2">
+        <div class="task_card d-flex flex-column gap-2">
+            <h2 class="mb-0 small-text Medium">
+                {{ task.assignedToName }}
+            </h2>
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="mb-0 small-text Medium">
+                    Title - {{ task.title }}
+                </h3>
+                <h5 *ngIf="task.status" class="smaller-text Semibold mb-0 CVRequest_bg p-1 CVRequest">
+                    {{ task.status }}
+                </h5>
+            </div>
+            <h4 class="mb-0 medium-text Medium">{{ task.description }}</h4>
+            <div class="d-flex">
+                <h5 class="Caption Medium secondary_card_background p-1 mb-0">
+                    {{ task.startDate | date:'dd-MM-yyyy' }}
+                    <span>({{ task.startDate | date:'EEEE' }}) </span>
+                </h5>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <img src="assets/images/svg-img/dropdown_icon.svg" height="22" width="22" class="dropdown-toggle"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false" />
+            <ul class="dropdown-menu dropdown_details" *ngIf="isBranchAdmin()">
+                <li><button class="dropdown-item" *ngIf="task.id" (click)="ddeleteTask(task)" >
+                        Remove
+                    </button></li>
+                <!-- <li><a class="dropdown-item" (click)="markTaskCompleted(task)">Task Completed</a></li> -->
+            </ul>
+        </div>
+    </div> 
+</div>
+

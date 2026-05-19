@@ -1,0 +1,250 @@
+<div class="page-container" *ngIf="!showAddPage">
+
+  <div class="content" data-number="2">
+
+    <!--  TOP BAR — GRID VIEW -->
+    <div class="top-bar">
+
+      <h2 class="card_heading Sub-Heading Medium heading_border_bottom mb-0">Customer</h2>
+
+      <div class="filter-container"  *ngIf="isAgencySuperAdmin()">
+        <div class="selected-agency" (click)="toggleDropdown()">
+          {{ selectedAgency === 0 ? 'Filter By Agency' : getSelectedAgencyName() }}
+          <span class="arrow">▼</span>
+        </div>
+
+        <div class="dropdown" *ngIf="dropdownOpen">
+          <div class="dropdown-item" (click)="selectAgency(0)">All</div>
+          <div class="dropdown-item" *ngFor="let a of agencies" (click)="selectAgency(a.id)">
+            {{ a.name }}
+          </div>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <img src="assets/images/svg-img/search.svg" class="gray">
+        <input type="text" class="search-box" placeholder="Search" [(ngModel)]="search" (input)="applyFilter()" />
+      </div>
+
+      <button
+  *ngIf="isAgencyAdmin()"
+  class="primary_btn medium-text Medium px-3"
+  (click)="openAdd()">
+  + Add Customer
+</button>
+
+
+      <div class="selectSection lead_tab">
+        <button type="button" data-number="1" class="active"
+        (click)="currentView = 1; page = 0; loadCustomers()">
+          <img src="assets/images/svg-img/table-view.svg">
+        </button>
+        <button type="button" data-number="2"
+        (click)="currentView = 2; page = 0; loadCustomers()">
+          <img src="assets/images/svg-img/list-view.svg">
+        </button>
+      </div>
+
+    </div>
+    <br>
+
+    <!-- GRID CARDS -->
+    <div class="Campaigns_grid_cards">
+
+      <a
+  *ngFor="let c of filtered"
+  class="white_card_background Campaigns_cards p-3 h-100 d-flex flex-column gap-3"
+  (click)="c.status === 'ACTIVE' && openCustomerCampaigns(c)"
+  [style.cursor]="c.status === 'ACTIVE' ? 'pointer' : 'default'"
+>
+
+
+
+<div class="d-flex justify-content-between active_status">
+
+  <h2 class="medium-text Medium mb-0 d-flex align-items-center gap-2">
+    <img [src]="c.companyLogo || 'assets/images/svg-img/E.svg'" class="logo">
+    {{ c.companyName }}
+  </h2>
+
+  <!-- RIGHT SIDE (STATUS + MENU) -->
+  <div class="d-flex align-items-center gap-2">
+
+    <!-- 🔥 STATUS (SAME AS CAMPAIGN) -->
+    <h4 class="campaign-status"
+  [ngClass]="c.status === 'ACTIVE' ? 'campaign-status-active' : 'campaign-status-deactive'">
+  {{ c.status }}
+    </h4>
+
+    <!-- ACTION MENU -->
+    <div class="dropdown" (click)="$event.stopPropagation()">
+      <button class="btn btn-sm p-0"
+              type="button"
+              data-bs-toggle="dropdown">
+        ⋮
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item"
+             (click)="changeCustomerStatus(c)">
+            {{ c.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+
+        <div class="d-flex align-items-center gap-3">
+          <div class="Campaigns_btn_status Rejection_bg">
+            <h4 class="Caption Regular mb-0">{{ pendingCampaignCountMap[c.id] || 0 }} Overdue</h4>
+          </div>
+
+          <div class="Campaigns_btn_status Hired_bg">
+            <h5 class="Caption Regular mb-0">{{ newLeadCountMap[c.id] || 0 }} New lead</h5>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column gap-2">
+
+          <div class="Campaigns d-flex justify-content-between">
+            <h3 class="Caption Medium mb-0">Total number of active campaigns</h3>
+            <h4 class="Caption Medium mb-0"> {{ campaignCountMap[c.id] || 0 }}</h4>
+          </div>
+
+          <div class="Campaigns d-flex justify-content-between">
+            <h3 class="Caption Medium mb-0">Total number of leads.</h3>
+            <h4 class="Caption Medium mb-0"> {{ leadCountMap[c.id] || 0 }}</h4>
+          </div>
+
+          <div class="Campaigns d-flex justify-content-between">
+            <h3 class="Caption Medium mb-0">Last updated date-time</h3>
+            <h4 class="Caption Medium mb-0">{{ lastUpdatedMap[c.id]
+              ? (lastUpdatedMap[c.id] | date:'dd/MM/yyyy - hh:mm a')
+              : '-' }}</h4>
+          </div>
+        </div>
+
+      </a>
+    </div>
+    <nav aria-label="Page navigation example" class="table-pagination" *ngIf="totalPages > 1">
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="prevPage()" [class.disabled]="page === 0"><img
+          src="assets/images/svg-img/pagination-arrow-left.svg"> Previous</a>
+      <ul class="pagination mb-0 gap-2">
+        <li *ngFor="let p of [].constructor(totalPages); let i = index">
+          <a class="page-link" [class.active]="i === page" (click)="goToPage(i)">
+            {{ i + 1 }}
+          </a>
+        </li>
+      </ul>
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="nextPage()"
+        [class.disabled]="page === totalPages - 1"> Next <img
+          src="assets/images/svg-img/pagination-arrow-right.svg"></a>
+    </nav>
+  </div>
+
+  <div class="content white_card_background" data-number="1" style="display:none;">
+
+    <!--  TOP BAR — TABLE VIEW -->
+    <div class="top-bar">
+
+      <h2 class="card_heading Sub-Heading Medium heading_border_bottom mb-0">Customer</h2>
+
+      <div class="filter-container">
+        <div class="selected-agency" (click)="toggleDropdown()">
+          {{ selectedAgency === 0 ? 'Filter By Agency' : getSelectedAgencyName() }}
+          <span class="arrow">▼</span>
+        </div>
+
+        <div class="dropdown" *ngIf="dropdownOpen">
+          <div class="dropdown-item" (click)="selectAgency(0)">All</div>
+          <div class="dropdown-item" *ngFor="let a of agencies" (click)="selectAgency(a.id)">
+            {{ a.name }}
+          </div>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <img src="assets/images/svg-img/search.svg" class="gray">
+        <input type="text" class="search-box" placeholder="Search" [(ngModel)]="search" (input)="applyFilter()" />
+      </div>
+
+      <button class="add-btn" (click)="openAdd()">+ Add Customer</button>
+
+      <div class="selectSection lead_tab">
+        <button type="button" data-number="1"
+        (click)="currentView = 1; page = 0; loadCustomers()">
+          <img src="assets/images/svg-img/table-view.svg">
+        </button>
+        <button type="button" data-number="2" class="active"
+        (click)="currentView = 2; page = 0; loadCustomers()">
+          <img src="assets/images/svg-img/list-view.svg">
+        </button>
+      </div>
+
+    </div>
+    <br>
+
+    <!--  TABLE CONTENT SAME -->
+    <div class="table-responsive table_data">
+      <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+        <thead>
+          <tr class="table_heading">
+            <th scope="col" style="width: 15%;">Company logo</th>
+            <th scope="col" style="width: 15%;">Name</th>
+            <th scope="col" style="width: 15%;">Leads</th>
+            <th scope="col" style="width: 15%;">Campaigns</th>
+            <th scope="col" style="width: 15%;">Overdue</th>
+            <th scope="col" style="width: 15%;">New leads</th>
+            <th scope="col" style="width: 15%;">Last lead generated</th>
+          </tr>
+        </thead>
+
+        <tbody class="bg_light">
+          <tr *ngFor="let c of filtered"
+          (click)="openCustomerCampaigns(c)">
+            <td><img [src]="c.companyLogo || 'assets/images/svg-img/E.svg'" width="40"></td>
+            <td>{{ c.companyName }}</td>
+
+    <!-- TOTAL LEADS -->
+    <td>{{ leadCountMap[c.id] || 0 }}</td>
+
+    <!-- ACTIVE CAMPAIGNS -->
+    <td>{{ campaignCountMap[c.id] || 0 }}</td>
+
+    <!-- OVERDUE -->
+    <td>{{ pendingCampaignCountMap[c.id] || 0 }}</td>
+
+    <!-- NEW LEADS -->
+    <td>{{ newLeadCountMap[c.id] || 0 }}</td>
+
+    <!-- LAST LEAD GENERATED -->
+    <td>
+      {{ lastUpdatedMap[c.id]
+        ? (lastUpdatedMap[c.id] | date:'dd/MM/yyyy')
+        : '-' }}
+    </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="Page navigation example" class="table-pagination" *ngIf="totalPages > 1">
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="prevPage()" [class.disabled]="page === 0"><img
+          src="assets/images/svg-img/pagination-arrow-left.svg"> Previous</a>
+      <ul class="pagination mb-0 gap-2">
+        <li *ngFor="let p of [].constructor(totalPages); let i = index">
+          <a class="page-link" [class.active]="i === page" (click)="goToPage(i)">
+            {{ i + 1 }}
+          </a>
+        </li>
+      </ul>
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="nextPage()"
+        [class.disabled]="page === totalPages - 1"> Next <img
+          src="assets/images/svg-img/pagination-arrow-right.svg"></a>
+    </nav>
+  </div>
+</div>

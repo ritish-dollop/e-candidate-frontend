@@ -1,0 +1,5 @@
+.receivedEmails_card {
+    padding: 16px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--Border-color);
+}

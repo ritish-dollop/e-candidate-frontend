@@ -1,0 +1,296 @@
+<div class="p-4 single_page d-flex flex-column gap-4" *ngIf="agency">
+  <!-- Agency Card -->
+  <div class="p-4 Card agency-card">
+    <!-- Header -->
+    <div
+      class="agency-card-header d-flex justify-content-between align-items-center border_bottom pb-3"
+    >
+      <h3 class="mb-0 Sub-Heading Medium">Agency Details</h3>
+
+      <span
+        class="status-badge"
+        [ngClass]="
+          agency.status === 'ACTIVE' ? 'status-active' : 'status-inactive'
+        "
+      >
+        {{ agency.status }}
+      </span>
+    </div>
+
+    <!-- Body -->
+    <div class="agency-card-body d-flex gap-4 flex-wrap mt-3">
+      <!-- Logo -->
+      <div class="agency-logo-wrapper">
+        <img
+          [src]="agency.logo || 'assets/images/svg-img/E.svg'"
+          class="agency-logo"
+          alt="Agency Logo"
+        />
+      </div>
+
+      <!-- Details -->
+      <div class="agency-details-grid flex-grow-1">
+        <div class="detail-item">
+          <span class="label">Agency Name</span>
+          <span class="value">{{ agency.agencyName }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Contact</span>
+          <span class="value">{{ agency.phone }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Email</span>
+          <span class="value">{{ agency.email }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Address</span>
+          <span class="value">{{ agency.address }}</span>
+        </div>
+
+        <div class="detail-item full-width">
+          <span class="label">Note</span>
+          <span class="value muted">{{ agency.notes || "—" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="Card">
+    <div class="p-3 d-flex justify-content-between align-items-center">
+      <h3 class="mb-0 large-text Medium primary">Users</h3>
+      <div
+        data-bs-toggle="modal"
+        href="#addUserModal"
+        role="button"
+        class="primary_btn small-text Medium py-2 px-3"
+      >
+        + Add User
+      </div>
+    </div>
+
+    <div class="h-100 overflow_scroll scrollbar_hide p-0">
+      <div class="table-responsive table_data">
+        <table class="table mb-0" cellspacing="0" width="100%">
+          <thead>
+            <tr class="Primarylight_background">
+              <th>User Profile</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Contact No.</th>
+              <th>User Role</th>
+              <th>Last Login Date</th>
+              <th class="text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <div class="d-flex align-items-center gap-3">
+                  <img
+                    [src]="
+                      user.profilePicture || 'assets/images/svg-img/Avatar.svg'
+                    "
+                    class="user-avatar"
+                  />
+                </div>
+              </td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phone }}</td>
+              <td>{{ user.role }}</td>
+              <td>
+                {{
+                  user.lastLogin ? (user.lastLogin | date : "dd-MM-yyyy") : "-"
+                }}
+              </td>
+
+                    <td>
+            <ng-container *ngIf="isAdmin(); else viewOnlyStatus">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="user.status === 'ACTIVE'"
+                  (change)="toggleStatus(user)"
+                />
+                <span class="slider round"></span>
+              </label>
+            </ng-container>
+
+            <ng-template #viewOnlyStatus>
+              <span>{{ user.status }}</span>
+            </ng-template>
+          </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <nav
+        aria-label="Page navigation"
+        class="table-pagination d-flex justify-content-end gap-2 mt-2"
+      >
+        <button
+          class="secondary arrow small-text Medium"
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 0"
+        >
+          <img src="assets/images/svg-img/pagination-arrow-left.svg" /> Previous
+        </button>
+
+        <span class="small-text Medium"
+          >Page {{ currentPage + 1 }} of {{ totalPages }}</span
+        >
+
+        <button
+          class="secondary arrow small-text Medium"
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage + 1 >= totalPages"
+        >
+          Next <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+        </button>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered large_modal">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <h4 class="mb-4">
+          {{ "Add User" }}
+        </h4>
+
+        <div class="add-user-grid">
+          <!-- User Name -->
+          <label>User Name</label>
+          <div class="field-wrapper">
+            <input
+              class="form-control"
+              [(ngModel)]="newUser.name"
+              name="name"
+              (input)="clearError('name')"
+            />
+            <small class="error-text" *ngIf="errors.name">
+              {{ errors.name }}
+            </small>
+          </div>
+
+          <!-- Email -->
+          <label>Email</label>
+          <div class="field-wrapper">
+            <input
+              class="form-control"
+              [(ngModel)]="newUser.email"
+              name="email"
+              (input)="clearError('email')"
+            />
+            <small class="error-text" *ngIf="errors.email">
+              {{ errors.email }}
+            </small>
+          </div>
+
+          <!-- Contact -->
+          <label>Contact</label>
+          <div class="field-wrapper">
+            <input
+              class="form-control"
+              [(ngModel)]="newUser.phone"
+              name="phone"
+              (input)="clearError('phone')"
+            />
+            <small class="error-text" *ngIf="errors.phone">
+              {{ errors.phone }}
+            </small>
+          </div>
+
+          <!-- Password -->
+
+          <label>Password</label>
+          <div class="field-wrapper">
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="newUser.password"
+              name="password"
+            />
+            <small class="error-text" *ngIf="errors.password">
+              {{ errors.password }}
+            </small>
+          </div>
+
+          <!-- Profile Image -->
+          <label>Profile</label>
+          <div class="field-wrapper">
+            <div class="profile-upload">
+              <div class="avatar-wrapper">
+                <img
+                  [src]="profilePreview || 'assets/images/svg-img/Avatar.svg'"
+                  class="profile-avatar"
+                />
+
+                <label class="edit-icon">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    (change)="onFileSelected($event)"
+                  />
+                  <i class="bi bi-pencil-fill"></i>
+                </label>
+              </div>
+            </div>
+
+            <small class="error-text" *ngIf="errors.profileImage">
+              {{ errors.profileImage }}
+            </small>
+          </div>
+
+          <!-- Role -->
+          <label>User Role</label>
+          <div class="field-wrapper">
+            <select
+              class="form-control"
+              [(ngModel)]="newUser.role"
+              name="role"
+              (change)="clearError('role')"
+            >
+              <option value="">Select Role</option>
+
+              <option
+                *ngIf="currentUser?.role === 'AGENCY_SUPER_ADMIN'"
+                value="AGENCY_ADMIN"
+              >
+                Agency Admin
+              </option>
+
+              <option value="AGENCY_TEAM_MEMBER">Team Member</option>
+
+              <option value="AGENCY_RELATIONSHIP_MANAGER">
+                Relationship Manager
+              </option>
+            </select>
+
+            <small class="error-text" *ngIf="errors.role">
+              {{ errors.role }}
+            </small>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="d-flex justify-content-end gap-3 mt-4">
+          <button class="secondary_outline_btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+
+          <button class="primary_btn" (click)="createUser()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

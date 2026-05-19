@@ -1,0 +1,185 @@
+.add-user-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  row-gap: 18px;
+  align-items: start;
+}
+
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-text {
+  font-size: 12px;
+  color: #ff4d4f;
+  margin-top: 4px;
+}
+.profile-upload {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e0e0e0;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  background: #00a6a6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.edit-icon i {
+  color: #fff;
+  font-size: 11px;
+}
+.agency-card {
+  border-radius: 14px;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background: #e6f7ee;
+  color: #1e9e61;
+}
+
+.status-inactive {
+  background: #fdeaea;
+  color: #e53935;
+}
+
+.agency-logo-wrapper {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.agency-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #f5f5f5;
+  padding: 8px;
+}
+
+.agency-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 16px 24px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-item.full-width {
+  grid-column: span 2;
+}
+
+.label {
+  font-size: 12px;
+  color: #7a7a7a;
+  font-weight: 500;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.value.muted {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .agency-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-item.full-width {
+    grid-column: span 1;
+  }
+}
+/* Table */
+.users-table th {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b4b4b;
+}
+
+.users-table td {
+  vertical-align: middle;
+  padding: 14px 12px;
+}
+
+/* Avatar */
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #f3f3f3;
+}
+
+/* Name */
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+/* Muted text */
+.muted {
+  font-size: 12px;
+  color: #7a7a7a;
+}
+
+/* Role badge */
+.role-badge {
+  padding: 6px 12px;
+  background: #f4f6fa;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  white-space: nowrap;
+}
+
+/* Status switch alignment */
+.users-table td:last-child {
+  text-align: center;
+}

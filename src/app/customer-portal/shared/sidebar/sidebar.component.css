@@ -1,0 +1,16 @@
+/* Target the branch PNG icon */
+a img[src*="branch.png"] {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%)
+    contrast(100%);
+  width: 24px;
+  height: 24px;
+}
+
+/* Target the user SVG icon and make it white */
+a img[src*="user-img.svg"] {
+  filter: brightness(0) invert(1);
+  width: 24px;
+  height: 24px;
+}
+
+

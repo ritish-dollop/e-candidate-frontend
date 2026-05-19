@@ -1,0 +1,242 @@
+.chat-popup {
+  position: fixed;
+  width: calc(100% - 293px);
+}
+
+.modal_medium_size {
+  max-width: 600px;
+}
+
+.chatscrollbar {
+  overflow-y: scroll;
+  height: 72vh;
+}
+
+.chat-popup.showbox {
+  display: block;
+}
+
+.nav button {
+  background-color: transparent;
+  border: 0;
+}
+
+.nav-item.active>button {
+  border-bottom: 1px solid var(--Action-color);
+  background-color: transparent;
+  border-width: 2px;
+  color: var(--Action-color) !important;
+  font-weight: 600;
+}
+
+.chatbox {
+  background-color: var(--chat-background);
+}
+
+.borderRadius_card {
+  border-radius: 4px 0px 4px 4px;
+}
+
+.dashboard-chat-area {
+  height: calc(100vh - 13vh);
+  overflow: hidden;
+  display: flex;
+
+
+  .modal-content {
+    border: none;
+    border-radius: 0;
+    outline: 0;
+    height: 100%;
+    box-shadow: none;
+  }
+
+  .showbox {
+    border-radius: 0;
+  }
+}
+
+.img_send {
+  border-radius: 6px;
+}
+
+.chatbox_file {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Action-color);
+}
+
+.modal_checkbox input {
+  height: 24px;
+  width: 530px;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+}
+
+.nav-item span {
+  display: none;
+}
+
+.nav-item.active {
+  span {
+    display: block;
+  }
+}
+
+.checkmarks {
+  position: absolute;
+  top: 0;
+  left: -24px;
+  height: 24px;
+  width: 24px;
+  border-radius: 2px;
+  background-color: var(--WhiteBackground-color);
+  border: 1px solid var(--Action-color);
+}
+
+.modal_checkbox .checkmarks:after {
+  left: 9px;
+  top: 4px;
+  width: 7px;
+  height: 12px;
+  border: solid var(--Textwhite-color);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(42deg);
+}
+
+.dashboard-chat-area {
+  .chatbox {
+    width: 100%;
+    transition: all 0.5s ease;
+    border-left: none;
+  }
+}
+
+.newchatscrollbar {
+  overflow-y: scroll;
+  height: 35vh;
+}
+
+.chatbox_dropdown {
+  inset: 0px auto auto -166px !important;
+}
+
+.modal_details {
+  .user-chat:hover {
+    background-color: var(--Primarylight-color);
+    cursor: pointer;
+  }
+}
+
+.chatscrollbargroupchat {
+  overflow-y: scroll;
+  height: 15vh;
+}
+
+/* @media (max-width:992px) {
+  .dashboard-chat-lists-mobile {
+    width: calc(100vw - 33vh);
+  }
+} */
+
+
+
+.group_preview_img {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: -5px;
+}
+
+.modal_checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.modal_checkbox {
+  position: relative;
+  display: inline-block;
+}
+
+.checkmarks {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #4d7cff;
+  display: inline-block;
+}
+
+.modal_checkbox input:checked ~ .checkmarks {
+  background-color: #4d7cff;
+}
+.modal_checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.modal_checkbox {
+  position: relative;
+  display: inline-block;
+}
+
+.checkmarks {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #4d7cff;
+  display: inline-block;
+}
+
+.modal_checkbox input:checked ~ .checkmarks {
+  background-color: #4d7cff;
+}
+
+
+.user-chat {
+  padding: 12px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user-chat:hover {
+  background-color: #f5f7fb;
+}
+
+.active-chat {
+  background-color: #e6f4ff;
+}
+
+.unread-badge {
+  background-color: #0d6efd;
+  color: #fff;
+  min-width: 20px;
+  height: 20px;
+  font-size: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatavtar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

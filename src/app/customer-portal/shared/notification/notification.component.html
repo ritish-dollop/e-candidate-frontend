@@ -1,0 +1,30 @@
+<div #notificationOffcanvas class="offcanvas offcanvas-end p-3 notification-offcanvas" tabindex="-1" id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header p-0 mb-4">
+    <h5 id="offcanvasRightLabel" class="Sub-Heading Medium mb-0">Notifications</h5>
+    <button type="button" class="btn btn-link p-0 text-primary small-text Semibold clear-btn" (click)="handleClearAll()" aria-label="Clear all">
+      Clear all
+    </button>
+  </div>
+  <div class="offcanvas-body p-0 d-flex flex-column gap-3">
+    <ng-container *ngIf="visibleNotifications.length; else emptyState">
+      <div
+        class="secondary_card_background p-2 notification_card cursor-pointer"
+        *ngFor="let note of visibleNotifications"
+        [class.unread]="!note.readStatus"
+        (click)="handleNotificationClick(note)">
+        <div class="d-flex justify-content-between mb-2">
+          <h5 class="mb-0 small-text Medium">{{ note.message }}</h5>
+          <h6 class="mb-0 Caption Regular">{{ note.timestamp  | date:'short'}}</h6>
+        </div>
+        <!-- <h6 class="mb-0 Caption Medium ">{{ note.message }}</h6> -->
+      </div>
+    </ng-container>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        No notifications yet.
+      </div>
+    </ng-template>
+  </div>
+</div>

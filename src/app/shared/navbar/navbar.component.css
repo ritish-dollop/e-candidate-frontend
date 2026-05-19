@@ -1,0 +1,8 @@
+/* HEADER CSS */
+.header {
+    padding: 12px 1050px;
+    background-color: var(--WhiteBackground-color);
+}
+.search::placeholder{
+    color: var(--TextDark-color);
+}

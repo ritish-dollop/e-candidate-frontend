@@ -1,0 +1,5 @@
+/* Adjust profile dropdown vertical position */
+.profiles_dropdown {
+  margin-top: 35px; /* increase value if you want it further down */
+}
+

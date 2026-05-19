@@ -1,0 +1,306 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  background: #f2f0f0;
+}
+
+.add-btn {
+  background-color: #00a6a6;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  table-layout: fixed; /* prevents overlap */
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background-color: white;
+  color: black;
+  font-size: 16px;
+}
+
+.edit,
+.delete {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+th,
+td {
+  padding: 12px 14px;
+  white-space: nowrap; /* avoids text breaking weirdly */
+  overflow: hidden; /* avoids spilling */
+  text-overflow: ellipsis; /* shows '...' when content is long */
+}
+.role-col {
+  white-space: normal !important; /* allows wrapping */
+  overflow: visible !important; /* shows full text */
+  text-overflow: unset !important; /* removes ... */
+  word-wrap: break-word; /* breaks long text */
+}
+table td:nth-child(4),
+table th:nth-child(4) {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  width: auto !important;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 4px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s;
+  height: 27px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #00a6a6;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+.link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.link:hover {
+  color: #0056b3;
+}
+.action-col {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+td.action-col {
+  padding-top: 27px !important;   /* increase this number to move it further down */
+  vertical-align: middle !important;
+}
+
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.action-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.action-btn.edit {
+  background: #c6d5d7;
+}
+
+.action-btn.delete {
+  background: #ffe4e4;
+}
+
+.action-btn.delete img {
+  width: 20px;
+  height: 20px;
+  filter: invert(100%) brightness(200%);
+}
+.action-btn.delete img {
+  filter: invert(23%) sepia(88%) saturate(7481%) hue-rotate(356deg)
+    brightness(92%) contrast(120%);
+}
+
+.scroll-wrapper {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-right: 5px;
+}
+.pagination {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end; /* Pushes all buttons to the right */
+}
+
+.header h2 {
+  position: relative;
+  font-size: 22px;
+  font-weight: 550;
+  padding-bottom: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 130px; /* 🔥 Increase underline width here */
+  height: 2px; /* underline thickness */
+  background-color: #000;
+}
+.page-wrapper {
+  background-color: #f2f0f0;
+  min-height: 100vh; /* Full page height */
+  padding: 20px;
+}
+
+.pagination-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* left - center - right */
+  align-items: center;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+/* LEFT + RIGHT BUTTONS */
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid #d4d4d4;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.nav-btn .arrow {
+  font-size: 16px;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* PAGE NUMBERS CENTER */
+.numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.num-btn {
+  padding: 8px 14px;
+  border: 1px solid #d4d4d4;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.num-btn.active {
+  background: #9fd1ee;
+  color: white;
+}
+
+
+/* Background overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 998;
+}
+
+/* Popup modal container */
+.popup-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 780px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  z-index: 999;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0px 5px 25px rgba(0,0,0,0.3);
+}
+
+/* Popup header */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+td.action-col {
+  vertical-align: top !important;   /* icons ko upar align karega */
+}
+
+td.action-col .action-btn {
+  margin-top: -6px !important;      /* thoda aur upar for perfect look */
+}
+
+
+

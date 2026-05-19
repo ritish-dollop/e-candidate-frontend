@@ -1,0 +1,574 @@
+<div
+  class="back-btn"
+  style="
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: #fff;
+  "
+  (click)="goBack()"
+>
+  <img src="assets-1/images/svg-img/back.svg" height="24" width="24" />
+</div>
+
+<div class="h-100 secondary_card_background p-4">
+  <!-- single leads user details  -->
+  <div
+    class="white_card_background p-4 mb-3 d-flex justify-content-between single_details"
+  >
+    <div class="">
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <h2 class="large-text Semibold mb-0">
+          {{ lead.applicantName || lead.name }}
+        </h2>
+        <h5 class="Caption Semibold mb-0 Hired_bg px-3 py-2 green">
+          {{ lead.scorecardScore }}
+        </h5>
+      </div>
+      <h3 class="Caption Semibold mb-0">{{ lead.campaignName }}</h3>
+    </div>
+    <div class="">
+      <h3 class="Caption Semibold mb-3">
+        Created Date : {{ lead.createdAt | date : "dd-MM-yyyy" }}
+      </h3>
+      <div class="dropdowns d-flex justify-content-end">
+        <a
+          class="{{ getStatusClass(lead.status) }} dropdown_toggle py-2 px-3"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          *ngIf="isAdmin()"
+        >
+          {{ lead.status }}
+        </a>
+        <!-- NON-CLICKABLE for team member -->
+        <a
+          class="{{ getStatusClass(lead.status) }} dropdown_toggle py-2 px-3"
+          *ngIf="isTeamMember()"
+        >
+          {{ lead.status }}
+        </a>
+
+        <ul class="dropdown-menu" *ngIf="isAdmin()">
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'UNADDRESSED')"
+              >Unprocessed</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'IN_CONTACT')"
+              >In Contact</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'NOT_REACHED_PROCESSED')"
+              >Not Reached</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'CV_REQUEST')"
+              >CV Request</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'INTERVIEW')"
+              >Interview</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'HIRED')"
+              >Hired</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              (click)="updateLeadStatus(lead.id!, 'REJECTION')"
+              >Rejected</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row contentSection">
+    <!-- single lead details profile components -->
+    <div class="col-md-6 mb-4">
+      <div class="white_card_background p-4 h-100 d-flex flex-column gap-4">
+        <!-- tabs list name -->
+        <div class="single_tab py-3">
+          <ul class="nav d-flex gap-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active p-1"
+                id="pills-Profile-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-Profile"
+                type="button"
+                role="tab"
+                aria-controls="pills-Profile"
+                aria-selected="true"
+              >
+                Profile
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link p-1"
+                id="pills-File-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-File"
+                type="button"
+                role="tab"
+                aria-controls="pills-File"
+                aria-selected="false"
+              >
+                File
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link p-1"
+                id="pills-JobForm-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-JobForm"
+                type="button"
+                role="tab"
+                aria-controls="pills-JobForm"
+                aria-selected="false"
+              >
+                Job Form
+              </button>
+            </li>
+          </ul>
+        </div>
+        <!-- tabs start -->
+        <div class="tab-content" id="pills-tabContent">
+          <!-- Profile tabs -->
+          <div
+            class="tab-pane fade show active"
+            id="pills-Profile"
+            role="tabpanel"
+            aria-labelledby="pills-Profile-tab"
+            tabindex="0"
+          >
+            <div class="tabs_list_details">
+              <ul class="d-flex flex-column gap-4 mb-0 px-3">
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>Yes</h3>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>Yes</h3>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>10:00 AM</h3>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>24/04/2024</h3>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>rashmi123gmail.com</h3>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                  <li>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.
+                  </li>
+                  <h3>No</h3>
+                </div>
+              </ul>
+            </div>
+          </div>
+
+          <!-- File tabs -->
+           <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab" tabindex="0">
+            <div class="d-flex flex-column gap-4">
+              <!-- ===================== APPLICANT UPLOAD SECTION ===================== -->
+              <!-- <div class="tabs_list_details d-flex flex-column gap-4">
+                <h2 class="m-0 small-text Medium">
+                  Files uploaded by applicant
+                </h2>
+
+                <div class="position-relative file_select_box">
+                  <input type="file" class="input_feilds bg_light file_select w-100"
+                    (change)="onApplicantFileUpload($event)" />
+
+                  <label class="w-75">
+                    <img src="assets/images/svg-img/file.svg" class="CVRequest" />
+                    <h4 class="small-text Medium mb-0">Upload File</h4>
+                  </label>
+                </div>
+              </div> -->
+
+              <div class="tabs_list_details d-flex flex-column gap-4">
+                <h2 class="small-text Medium m-0">Applicant Files</h2>
+
+                <div class="d-flex flex-column gap-4">
+                  <!-- 🔥 Dynamic File Loop -->
+                  <div *ngFor="let file of files; let i = index"
+                    class="d-flex justify-content-between align-items-center border_bottom pb-3"
+                    [class.disabled-file]="!lead.active">
+                    <div class="document_card d-flex gap-3" (click)="openFile(file, $event)">
+                      <img src="assets/images/svg-img/pdf.svg" width="27" />
+
+                      <div>
+                        <h3 class="small-text Medium mb-1">
+                          {{ file?.name }}
+                        </h3>
+
+                        <h4 class="Caption Medium mb-0">
+                          {{ file.size || "-- KB" }}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <div class="document_card d-flex gap-3">
+                      <!-- Download -->
+                      <div class="CVRequest_bg document_pdf_icon d-flex justify-content-center align-items-center"
+                        (click)="downloadFile(file, $event)">
+                        <img src="assets/images/svg-img/download.svg" height="16" />
+                      </div>
+
+                      <div class="Rejection_bg Rejection document_pdf_icon 
+                            d-flex justify-content-center align-items-center" (click)="deleteFile(file, $event)">
+
+                        <img src="assets/images/svg-img/delete.svg" height="16">
+                      </div>
+                      <!-- <label class="switch" (click)="$event.stopPropagation()">
+                        <input
+                          type="checkbox"
+                          [checked]="lead?.active"
+                          (click)="toggleActive($event)"
+                        />
+                        <span class="slider"></span>
+                      </label> -->
+                    </div>
+                  </div>
+                  <!-- End Dynamic Loop -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Form tabs -->
+          <div
+            class="tab-pane fade"
+            id="pills-JobForm"
+            role="tabpanel"
+            aria-labelledby="pills-JobForm-tab"
+            tabindex="0"
+          >
+            <div class="p-3 note_discription">
+              <!-- job form details -->
+              <div class="d-flex flex-column gap-4">
+                <!-- job form top details -->
+                <div
+                  class="secondary_card_background single_details p-3 d-flex flex-column gap-2"
+                >
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h2 class="Sub-Heading Medium mb-0">
+                      Senior Software Developer
+                    </h2>
+                    <h3 class="Caption Medium mb-0">18-04-2024</h3>
+                  </div>
+                  <h4 class="small-text Medium mb-0">XYZ Tech Solutions</h4>
+                </div>
+                <!-- job form questions -->
+                <div class="single_details">
+                  <h2 class="small-text Medium mb-0">
+                    Job Post Form Questions and Responses:
+                  </h2>
+                </div>
+                <!-- question answer -->
+                <div class="job_form_details">
+                  <ul class="d-flex flex-column gap-4 mb-0 px-3">
+                    <div class="d-flex flex-column gap-3">
+                      <li class="Medium small-text">
+                        "What are the primary responsibilities of this role?"
+                      </li>
+                      <h3 class="Medium small-text">
+                        <span>Response :</span> Develop and maintain web
+                        applications, collaborate with cross-functional teams,
+                        and ensure software quality.
+                      </h3>
+                    </div>
+                    <div class="d-flex flex-column gap-3">
+                      <li class="Medium small-text">
+                        "What qualifications are required for this position?"
+                      </li>
+                      <h3 class="Medium small-text">
+                        <span>Response :</span> Bachelor's degree in Computer
+                        Science, 5+ years of experience in software development,
+                        proficiency in JavaScript and Python.
+                      </h3>
+                    </div>
+                    <div class="d-flex flex-column gap-3">
+                      <li class="Medium small-text">
+                        "What is the expected salary range?"
+                      </li>
+                      <h3 class="Medium small-text">
+                        <span>Response :</span> $80,000 - $100,000 per year.
+                      </h3>
+                    </div>
+                    <div class="d-flex flex-column gap-3">
+                      <li class="Medium small-text">
+                        "What is the preferred start date?"
+                      </li>
+                      <h3 class="Medium small-text">
+                        <span>Response :</span> 2024-07-01
+                      </h3>
+                    </div>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- single lead details contact components -->
+    <div class="col-md-6 mb-4">
+      <div class="white_card_background p-4 h-100 d-flex flex-column gap-4">
+        <!-- tabs list name -->
+        <div class="d-flex single_tab py-3">
+          <ul class="nav d-flex gap-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active p-1"
+                id="pills-Contact-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-Contact"
+                type="button"
+                role="tab"
+                aria-controls="pills-Contact"
+                aria-selected="true"
+              >
+                Contact Detail
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link p-1"
+                id="pills-Task-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-Task"
+                type="button"
+                role="tab"
+                aria-controls="pills-Task"
+                aria-selected="false"
+              >
+                Task
+              </button>
+            </li>
+          </ul>
+        </div>
+        <!-- tabs content -->
+        <div class="tab-content" id="pills-tabContent">
+          <!-- Contact tabs -->
+          <div
+            class="tab-pane fade show active"
+            id="pills-Contact"
+            role="tabpanel"
+            aria-labelledby="pills-Contact-tab"
+            tabindex="0"
+          >
+            <div class="mb-4 d-flex gap-5 single_details">
+              <div class="">
+                <h3 class="small-text Medium mb-2">E-Mail</h3>
+                <h4 class="small-text Medium mb-0">{{ lead.email }}</h4>
+              </div>
+              <div class="">
+                <h3 class="small-text Medium mb-2">Contact No.</h3>
+                <h4 class="small-text Medium mb-0">{{ lead.contactNo }}</h4>
+              </div>
+            </div>
+            <div class="single_details mb-3">
+              <h2 class="mb-2 small-text Medium">Description</h2>
+              <!-- editor add -->
+              <div id="editor" class="ckeditor"></div>
+            </div>
+
+            <div class="">
+              <h2 class="small-text Medium mb-2">Note</h2>
+
+              <div class="p-3 note_discription d-flex flex-column gap-4">
+                <!-- Add Note -->
+                <div class="position-relative">
+                  <input
+                    type="text"
+                    class="note_discription p-3 w-100 small-text Medium"
+                    placeholder="Add note"
+                    [(ngModel)]="newNote"
+                  />
+
+                  <button
+                    type="submit"
+                    class="send_btn2 medium-text Medium py-1 p-3"
+                    (click)="addNote()"
+                  >
+                    Send
+                  </button>
+                </div>
+
+                <!-- Contact note Detail  -->
+                <div class="d-flex flex-column gap-2">
+                  <div
+                    class="secondary_card_background note_details d-flex flex-column gap-2 p-2"
+                    *ngFor="let n of notes"
+                  >
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="circle blue-filter"></span>
+
+                      <div class="user_name">
+                        <h4 class="Caption Medium mb-0">
+                          {{ n.createdByName | customerRole }}
+                        </h4>
+                      </div>
+
+                      <h3 class="x-small-text Medium mb-0">
+                        {{ n.createdAt | date : "dd.MM.yyyy" }}
+                      </h3>
+
+                      <img
+                        src="assets/images/svg-img/delete.svg"
+                        class="mx-0 ms-auto Rejection"
+                        *ngIf="isAdmin()"
+                        (click)="deleteNote(n.id)"
+                      />
+                    </div>
+
+                    <h4 class="small-text Medium mb-0">{{ n.content }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Task tabs-->
+          <div
+            class="tab-pane fade"
+            id="pills-Task"
+            role="tabpanel"
+            aria-labelledby="pills-Task-tab"
+            tabindex="0"
+          >
+            <div class="d-flex flex-column gap-4">
+              <div class="d-flex flex-column gap-3">
+                <div
+                  class="d-flex justify-content-between align-items-center task_calendar_header"
+                >
+                  <div class="d-flex gap-3 align-items-center">
+                    <h2 class="card_heading Sub-Heading Medium mb-0">March</h2>
+                    <div class="action_light_btn small-text Medium">
+                      + Add Task
+                    </div>
+                  </div>
+                  <div class="d-flex gap-3">
+                    <select
+                      class="calendar_dropdown px-2 py-1 medium-text Medium"
+                    >
+                      <option value="-1">Week</option>
+                      <option value="-2">Month</option>
+                      <option value="1">Day</option>
+                    </select>
+                    <div class="d-flex align-items-center gap-1">
+                      <a href="#"
+                        ><img src="assets/images/svg-img/left-arrow.svg"
+                      /></a>
+                      <h2 class="small-text Medium mb-0 daily_status">Today</h2>
+                      <a href="#"
+                        ><img src="assets/images/svg-img/arrow.svg"
+                      /></a>
+                    </div>
+                  </div>
+                </div>
+                <!-- CALENDAR img-->
+                <img src="assets/images/png-img/task.png" class="w-100" />
+              </div>
+              <div class="d-flex">
+                <h2
+                  class="card_heading Sub-Heading Medium heading_border_bottom mb-0"
+                >
+                  Task Detail
+                </h2>
+              </div>
+              <div class="d-flex flex-column gap-4">
+                <div class="task_details_card d-flex flex-column gap-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <h2 class="card_heading mb-0 Caption Medium">
+                      Title - Figma UI Design
+                    </h2>
+                    <div class="action_light_btn smaller-text Medium py-1">
+                      Task completed
+                    </div>
+                    <div class="task_details mx-0 ms-auto">
+                      <h3 class="mb-0 Medium Caption">15-06-24</h3>
+                    </div>
+                  </div>
+                  <div class="task_details">
+                    <h2 class="mb-2 Medium Caption">Description</h2>
+                    <h3 class="mb-0 Medium Caption">
+                      Lorem ipsum dolor sit amet consectetur. Sit nisl purus
+                      eget elit. Sit volutpat ullamcorper leo faucibus
+                      adipiscing lorem ut nec tortor.
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- editor -->
+<!-- <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/40.0.0/ckeditor.min.js"></script>
+<script>
+    ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+        console.error(error);
+    });
+
+</script> -->

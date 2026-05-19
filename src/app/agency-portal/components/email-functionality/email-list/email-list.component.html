@@ -1,0 +1,401 @@
+<div class="Card h-100 rounded_8" *ngIf="currentUser">
+  <!-- cards -->
+  <div class="p-3 user_details d-flex flex-column gap-3">
+    <!-- email user accout -->
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- user icon -->
+      <div class="dropdown">
+        <div
+          href="#"
+          role="button"
+          id="dropdownMenuLink"
+          data-bs-toggle="dropdown"
+          aria-expanded="true"
+        >
+          <img src="assets/images/svg-img/user-icon.svg" class="email_icon" />
+        </div>
+        <ul
+          class="dropdown-menu user_dropdown"
+          aria-labelledby="dropdownMenuLink"
+          data-popper-placement="bottom-end"
+        >
+          <div class="d-flex flex-column gap-3">
+            <button
+              type="button"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              class="btn-close p-1"
+            ></button>
+            <li
+              class="profile_dropdown d-flex align-items-center gap-3 secondary_card_background p-2 rounded_4"
+            >
+              <img
+                class="rounded-circle user_icon"
+                src="../../../../assets/images/svg-img/emailAvatar.svg"
+              />
+              <div>
+                <h2 class="medium-text Medium mb-1">{{ currentUser.name }}</h2>
+                <h3 class="Regular Caption mb-0 text_light">
+                  {{ currentUser.email }}
+                </h3>
+              </div>
+              <!-- <img
+                src="/assets/images/svg-img/Googal.svg"
+                class="mx-0 ms-auto"
+                height="16"
+                width="16"
+              /> -->
+            </li>
+            <!-- <li
+              class="profile_dropdown d-flex align-items-center gap-3 border_bottom pb-2 px-2"
+            >
+              <img
+                class="rounded-circle profile_img"
+                src="../../../../assets/images/svg-img/user-icon.svg"
+              />
+
+              <img
+                src="/assets/images/svg-img/Microsoft.svg"
+                class="mx-0 ms-auto"
+                height="16"
+                width="16"
+              />
+            </li>
+            <h4 class="small-text Medium mb-0 action cursor_pointer">
+              + Add Account
+            </h4> -->
+          </div>
+        </ul>
+      </div>
+      <div class="d-flex gap-3">
+        <!--Filter options selector start - FIXED DROPDOWN-->
+        <div class="filter-box position-relative">
+          <div class="select-menu">
+            <!-- CLICKABLE HEADER -->
+            <div
+              class="select-btn cursor_pointer d-flex align-items-center gap-2"
+              (click)="toggleDropdown()"
+            >
+              <span class="sBtn-text medium-text Medium primary">
+                {{ selectedFolder }}
+              </span>
+
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M16.9655 9.51733L11.9999 14.4829L7.03442 9.51733"
+                  stroke="#083160"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  [attr.transform]="dropdownOpen ? 'rotate(180 12 12)' : null"
+                />
+              </svg>
+            </div>
+
+            <!-- DROPDOWN LIST -->
+            <ul class="dropdown-menu show" *ngIf="dropdownOpen">
+              <li
+                class="option d-flex align-items-center gap-2 border_bottom pb-1"
+                (click)="selectFolder('Inbox')"
+              >
+                <img src="assets/images/svg-img/inbox.svg" height="20" />
+                <span class="option-text">Inbox</span>
+              </li>
+
+              <li
+                class="option d-flex align-items-center gap-2 border_bottom pb-1"
+                (click)="selectFolder('Sent')"
+              >
+                <img src="assets/images/svg-img/sent.svg" height="20" />
+                <span class="option-text">Sent</span>
+              </li>
+
+              <li
+                class="option d-flex align-items-center gap-2 border_bottom pb-1"
+                (click)="selectFolder('Starred')"
+              >
+                <img src="assets/images/svg-img/star.svg" height="20" />
+                <span class="option-text">Starred</span>
+              </li>
+              <!-- <li
+                class="option d-flex align-items-center gap-2 border_bottom pb-1"
+                (click)="selectFolder('Trash')"
+              >
+                <img src="assets/images/svg-img/star.svg" height="20" />
+                <span class="option-text">Trash</span>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- button -->
+        <button
+          type="button"
+          class="primary_btn medium-text Medium px-4 py-2"
+          data-bs-toggle="modal"
+          href="#Message"
+          role="button"
+        >
+          Compose
+        </button>
+      </div>
+    </div>
+    <!-- search box -->
+    <!-- search box -->
+    <!-- search box -->
+    <div class="rounded_4 d-flex gap-2 search_bar p-2">
+      <img src="/assets/images/svg-img/search.svg" class="gray" />
+      <input
+        type="search"
+        placeholder="Search"
+        class="border-0 lh-0 w-100 small-text Medium search"
+        (input)="onSearch($any($event.target).value)"
+        [value]="searchTerm"
+      />
+      <button
+        class="btn btn-sm ms-2"
+        *ngIf="searchTerm"
+        (click)="clearSearch()"
+      >
+        Clear
+      </button>
+    </div>
+
+    <!-- dynamic cards -->
+<ul class="nav nav-pills mb-3 email_tabs">
+  <li
+    class="nav-item"
+    *ngFor="let mail of filteredEmails; let i = index"
+  >
+    <a
+      class="nav-link p-0 rounded-0"
+      [class.active]="i === selectedIndex"
+      [routerLink]="['email-containt', mail.mailId]"
+    >
+      <div class="p-3 d-flex justify-content-between border_bottom">
+
+        <!-- LEFT -->
+        <div class="d-flex align-items-start gap-3">
+          <img
+            [src]="mail.avatar || 'assets/images/png-img/default-profile.png'"
+            class="email_avtar"
+          />
+          <div class="email_card_details d-flex flex-column gap-2">
+            <h2 class="mb-0">{{ mail.from }}</h2>
+            <h3 class="mb-0">{{ getPreview(mail.subject, 20) }}</h3>
+            <p class="email-preview mb-0">
+              {{ getPreview(mail.body, 30) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="card_right_details">
+          <h2>{{ mail.sentAt | gmailTime }}</h2>
+
+          <div class="rating" (click)="$event.stopPropagation()">
+            <span
+              class="star cursor_pointer"
+              [class.filled]="mail.starred"
+              (click)="toggleStar(mail, $event)"
+            ></span>
+          </div>
+        </div>
+
+      </div>
+    </a>
+  </li>
+</ul>
+
+  </div>
+</div>
+
+<!-- ============================== COMPOSE MODAL ============================== -->
+<div class="modal fade" id="Message" aria-hidden="true">
+  <div class="modal-dialog large_modal modal-dialog-centered mx-0 ms-auto">
+    <div class="modal-content modal_bottom">
+      <div
+        class="modal-header secondary_card_background modal_heading px-4 py-3">
+        <h2 class="modal-title Sub-Heading Medium text_dark">New Message</h2>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body modal_details p-0">
+        <div class="d-flex align-items-start py-2 px-4 border_bottom">
+          <span class="text_light medium-text Medium me-2">To :</span>
+
+          <div class="flex-grow-1 d-flex flex-wrap gap-2">
+            <span class="chip" *ngFor="let email of toEmails; let i = index">
+              {{ email }}
+              <span class="remove-chip" (click)="removeTo(i)">×</span>
+            </span>
+
+            <input
+              class="chip-input"
+              [(ngModel)]="toInput"
+              (keyup)="searchEmail(toInput, 'to')"
+              (keyup.enter)="addTo()"
+              placeholder="name@example.com"
+            />
+
+            <ul class="suggestion-box" *ngIf="toSuggestions.length">
+              <li
+                *ngFor="let email of toSuggestions"
+                (click)="selectEmail(email, 'to')"
+              >
+                {{ email }}
+              </li>
+            </ul>
+          </div>
+
+          <div class="d-flex gap-3 ms-auto mt-1">
+            <span
+              *ngIf="!isCcVisible"
+              class="cursor_pointer medium-text Medium"
+              (click)="toggleCcField()"
+              >Cc</span
+            >
+            <span
+              *ngIf="!isBccVisible"
+              class="cursor_pointer medium-text Medium"
+              (click)="toggleBccField()"
+              >Bcc</span
+            >
+          </div>
+        </div>
+
+        <div
+          *ngIf="isCcVisible"
+          class="d-flex align-items-start py-2 px-4 border_bottom"
+        >
+          <span class="text_light medium-text Medium me-2">Cc :</span>
+
+          <div class="d-flex flex-wrap gap-2 flex-grow-1">
+            <span class="chip" *ngFor="let email of ccEmails; let i = index">
+              {{ email }}
+              <span class="remove-chip" (click)="removeCc(i)">×</span>
+            </span>
+
+            <input
+              class="chip-input"
+              [(ngModel)]="ccInput"
+              (keyup)="searchEmail(ccInput, 'cc')"
+            />
+            <ul class="suggestion-box" *ngIf="ccSuggestions.length">
+              <li
+                *ngFor="let email of ccSuggestions"
+                (click)="selectEmail(email, 'cc')"
+              >
+                {{ email }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          *ngIf="isBccVisible"
+          class="d-flex align-items-start py-2 px-4 border_bottom"
+        >
+          <span class="text_light medium-text Medium me-2">Bcc :</span>
+
+          <div class="d-flex flex-wrap gap-2 flex-grow-1">
+            <span class="chip" *ngFor="let email of bccEmails; let i = index">
+              {{ email }}
+              <span class="remove-chip" (click)="removeBcc(i)">×</span>
+            </span>
+
+            <input
+              class="chip-input"
+              [(ngModel)]="bccInput"
+              (keyup)="searchEmail(bccInput, 'bcc')"
+            />
+
+            <ul class="suggestion-box" *ngIf="bccSuggestions.length">
+              <li
+                *ngFor="let email of bccSuggestions"
+                (click)="selectEmail(email, 'bcc')"
+              >
+                {{ email }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2 py-2 px-4 border_bottom">
+          <input
+            type="text"
+            class="text_light medium-text Medium w-100"
+            placeholder="Subject :"
+            [(ngModel)]="emailSubject"
+          />
+        </div>
+
+        <app-text-editor
+          [(value)]="emailBody"
+          [(attachmentUrls)]="attachmentUrls"
+        >
+        </app-text-editor>
+        <!-- <app-text-editor></app-text-editor> -->
+        <div class="d-flex justify-content-end p-4">
+          <button
+            class="primary_btn medium-text Medium py-2 px-4"
+            (click)="sendEmail()"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- email user profile modal -->
+<div
+  class="modal fade"
+  id="emailprofile"
+  aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-0">
+      <div class="modal-header px-4 py-3 rounded-0 border-0 mb-3">
+        <button
+          type="button"
+          class="btn-close rounded-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body px-4 py-0 mb-4 modal_details rounded-0">
+        <div class="d-flex gap-3 secondary_card_background p-2 mb-3">
+          <img
+            src="assets/images/svg-img/candidate-Avatar.svg"
+            class="avtar rounded-circle"
+          />
+          <div class="email_profile">
+            <h4 class="small-text Medium mb-1 text_dark">Rashmi rajput</h4>
+            <h3 class="Medium small-text mb-0 text_light">emailgmailcom</h3>
+          </div>
+        </div>
+        <div class="d-flex gap-3 p-2 email_details">
+          <img
+            src="assets/images/svg-img/user-icon.svg"
+            class="rounded-circle"
+            height="35"
+            width="35"
+          />
+          <div class="email_profile">
+            <h4 class="Caption Medium mb-1 text_dark">Rashmi rajput</h4>
+            <h3 class="Medium Caption mb-0 text_light">emailgmailcom</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

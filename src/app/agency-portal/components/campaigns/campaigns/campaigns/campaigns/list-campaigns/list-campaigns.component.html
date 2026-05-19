@@ -1,0 +1,426 @@
+<div class="full-background secondaryLight_background  p-4 borderRadius_25">
+
+
+  <!-- <div
+  class="back-btn"
+  style="
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: #fff;
+  "
+  (click)="goBack()"
+> -->
+
+  <!-- ================= SUMMARY CARD ================= -->
+
+  <div class="agency-summary-card">
+
+    <div class="summary-left">
+      <img [src]="customerLogo" class="agency-logo" alt="customer logo"
+        (error)="customerLogo = 'assets/images/svg-img/E.svg'" />
+      <span class="agency-title">
+        {{ customerName }}
+      </span>
+    </div>
+
+
+    <div class="summary-right">
+
+      <div class="info-box">
+        <span class="label">Total number of active campaigns </span>
+        <span class="value"> {{ activeCampaignCount }}</span>
+      </div>
+
+      <div class="info-box">
+        <span class="label">Total number of leads</span>
+        <span class="value">{{ totalLeadsCount }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ================= TABS ================= -->
+
+  <div class="tabs-card">
+    <span class="tab" [class.active]="currentTab === 'CAMPAIGNS'" (click)="setTab('CAMPAIGNS')">Campaigns</span>
+
+    <span class="tab" [class.active]="currentTab === 'CUSTOMERS'" (click)="setTab('CUSTOMERS')">Customer Room</span>
+
+    <span class="tab" [class.active]="currentTab === 'BRANCHES'" (click)="setTab('BRANCHES')">Branches</span>
+
+    <span class="tab" [class.active]="currentTab === 'USERS'" (click)="setTab('USERS')">Users</span>
+  </div>
+
+  <!-- ================= TAB CONTENT ================= -->
+
+
+  <div *ngIf="currentTab === 'CUSTOMERS'">
+    <app-customer-room></app-customer-room>
+  </div>
+
+  <div *ngIf="currentTab === 'BRANCHES'">
+    Branches content
+  </div>
+
+  <div *ngIf="currentTab === 'USERS'">
+    Users content
+  </div>
+  <br>
+
+  <div class="contentSection pb-3" *ngIf="currentTab === 'CAMPAIGNS'">
+
+    <!-- leads details -->
+
+    <div class="content white_card_background" data-number="2">
+      <div class="row py-3 px-4 m-0 table_actions border_bottom">
+        <!--  top  content -->
+        <div class="col-md-5 d-flex gap-3 p-0">
+
+          <button class="secondary_btn d-flex align-items-center gap-1" (click)="resetFilters()">
+            <img src="assets/images/svg-img/filter.svg">
+            <h4 class="Caption Medium mb-0">Filter</h4>
+          </button>
+
+          <div class="dropdownss position-relative">
+            <a class="filter_status dropdown_toggle py-1 px-3 Caption Medium h-100" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              {{ selectedStatus === 'ALL' ? 'Filter By Status' : selectedStatus }}
+            </a>
+
+            <ul class="dropdown-menu">
+              <li *ngFor="let status of campaignStatuses">
+                <a class="dropdown-item" href="#" (click)="filterByStatus(status); $event.preventDefault()">
+                  {{ status }}
+                </a>
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-7 d-flex justify-content-end gap-3 p-0">
+          <div class="position-relative search_input2">
+            <input type="text" placeholder="Search" class="search_input_field py-1 px-4 ps-2  w-100"
+              [(ngModel)]="searchText" (input)="onSearch()">
+            <img src="assets/images/svg-img/search.svg" class="search_img">
+          </div>
+
+          <button type="button" class="primary_btn medium-text Medium px-4" data-bs-toggle="modal"
+            data-bs-target="#addCampaign" *ngIf="currentUser.role!='AGENCY_TEAM_MEMBER'">
+            +&nbsp;&nbsp;Create campaign
+          </button>
+
+          <div class="selectSection lead_tab">
+            <button type="button" data-number="1" class="active">
+              <img src="assets/images/svg-img/table-view.svg">
+            </button>
+            <button type="button" data-number="2">
+              <img src="assets/images/svg-img/list-view.svg">
+            </button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <!-- Campaigns cards -->
+      <div class="Campaigns_grid_cards">
+        <a *ngFor="let campaign of campaigns"
+          class="white_card_background Campaigns_cards p-3 h-100 d-flex flex-column gap-3"
+          (click)="onCampaignClick(campaign)" [style.cursor]="
+    campaign.status.toUpperCase() === 'ACTIVE'
+      ? 'pointer'
+      : 'default'
+  ">
+
+
+          <!-- campaigns header -->
+          <div class="d-flex justify-content-between active_status" [ngClass]="getStatusClass(campaign.status)">
+
+            <h2 class="medium-text Medium mb-0">{{ campaign.name }}</h2>
+
+            <div class="d-flex align-items-center gap-2">
+
+              <!-- STATUS TEXT -->
+              <h4 class="Caption Medium mb-0 campaign-status-text" [ngClass]="getCampaignStatusClass(campaign)">
+                {{ campaign.status }}
+              </h4>
+
+
+
+              <!-- ACTION MENU -->
+              <div class="dropdown" (click)="$event.stopPropagation()">
+
+                <button class="btn btn-sm p-0" type="button" data-bs-toggle="dropdown">
+                  ⋮
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                  <li *ngIf="campaign.status !== 'ACTIVE'">
+                    <a class="dropdown-item text-success" (click)="changeStatus(campaign, 'ACTIVE')">
+                      Activate
+                    </a>
+                  </li>
+
+                  <li *ngIf="campaign.status === 'ACTIVE'">
+                    <a class="dropdown-item text-danger" (click)="changeStatus(campaign, 'INACTIVE')">
+                      Inactive
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- status buttons -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="Campaigns_btn_status Rejection_bg ">
+              <h4 class="Caption Regular mb-0 "><span>8</span> Overdue</h4>
+            </div>
+            <div class="Campaigns_btn_status Hired_bg">
+              <h5 class="Caption Regular mb-0 "><span>8</span> Unedited</h5>
+            </div>
+          </div>
+          <!-- Campaigns leads details -->
+          <div class="d-flex flex-column gap-2">
+            <div class="Campaigns d-flex justify-content-between">
+              <h3 class="Caption Medium mb-0">Total number of leads.</h3>
+              <h4 class="Caption Medium mb-0">{{ campaign.leadIds.length || 0 }}</h4>
+            </div>
+            <div class="Campaigns d-flex justify-content-between">
+              <h3 class="Caption Medium mb-0">Last lead date-time</h3>
+              <h4 class="Caption Medium mb-0">{{ campaign.startDate | date:'dd/MM/yyyy - hh:mm a' }}</h4>
+            </div>
+            <div class="Campaigns d-flex justify-content-between">
+              <h3 class="Caption Medium mb-0">Last updated date-time</h3>
+              <h4 class="Caption Medium mb-0">{{ campaign.updatedAt | date:'dd/MM/yyyy - hh:mm a' }}</h4>
+            </div>
+          </div>
+          <!-- progressbar -->
+          <div class="progress-stacked mt-2">
+            <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0"
+              aria-valuemax="100" style="width: 40%">
+              <div class="progress-bar blue" data-toggle="tooltip" data-html="true" data-placement="top"
+                title="Pending"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0"
+              aria-valuemax="100" style="width:20%">
+              <div class="progress-bar red" data-toggle="tooltip" data-placement="top" title="Rejection"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0"
+              aria-valuemax="100" style="width: 20%">
+              <div class="progress-bar green" data-toggle="tooltip" data-placement="top" title="Active"></div>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Segment four" aria-valuenow="20" aria-valuemin="0"
+              aria-valuemax="100" style="width: 20%">
+              <div class="progress-bar yellow" data-toggle="tooltip" data-placement="top" title="In progress"></div>
+            </div>
+          </div>
+        </a>
+      </div>
+      <nav aria-label="Page navigation example" class="table-pagination" *ngIf="totalPages > 1">
+        <a class="secondary arrow small-text Medium d-flex gap-1" (click)="prevPage()"
+          [class.disabled]="page === 0"><img src="assets/images/svg-img/pagination-arrow-left.svg"> Previous</a>
+        <ul class="pagination mb-0 gap-2">
+          <li *ngFor="let p of [].constructor(totalPages); let i = index">
+            <a class="page-link" [class.active]="i === page" (click)="goToPage(i)">
+              {{ i + 1 }}
+            </a>
+          </li>
+        </ul>
+        <a class="secondary arrow small-text Medium d-flex gap-1" (click)="nextPage()"
+          [class.disabled]="page === totalPages - 1"> Next <img
+            src="assets/images/svg-img/pagination-arrow-right.svg"></a>
+      </nav>
+    </div>
+    <div class="content white_card_background " data-number="1" style="display:none">
+      <div class="row py-3 px-4 m-0 table_actions border_bottom">
+        <!--  top  content -->
+        <div class="col-md-5 d-flex gap-3 p-0">
+          <button class="secondary_btn d-flex align-items-center gap-1" (click)="resetFilters()">
+            <img src="assets/images/svg-img/filter.svg">
+            <h4 class="Caption Medium mb-0">Filter</h4>
+          </button>
+          <div class="dropdownss position-relative">
+            <a class="filter_status dropdown_toggle py-1 px-3 Caption Medium h-100" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Filter By Status
+            </a>
+
+            <ul class="dropdown-menu">
+              <li *ngFor="let status of campaignStatuses">
+                <a class="dropdown-item" href="#" (click)="filterByStatus(status); $event.preventDefault()">
+                  {{ status }}
+                </a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+        <div class="col-md-7 d-flex justify-content-end gap-3 p-0">
+          <div class="position-relative search_input2">
+            <input type="text" placeholder="Search" class="search_input_field py-1 px-4 ps-2  w-100"
+              [(ngModel)]="searchText" (input)="onSearch()">
+            <img src="assets/images/svg-img/search.svg" class="search_img">
+          </div>
+
+          <div class="selectSection lead_tab">
+            <button type="button" data-number="1">
+              <img src="assets/images/svg-img/table-view.svg">
+            </button>
+            <button type="button" data-number="2" class="active">
+              <img src="assets/images/svg-img/list-view.svg">
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- table start -->
+      <div class="table-responsive table_data">
+        <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+          <thead>
+            <tr class="table_heading">
+              <th scope="col" style="width: 13%;">Campaign</th>
+              <th scope="col" style="width: 13%;">Overdue</th>
+              <th scope="col" style="width: 13%;">New leads</th>
+              <th scope="col" style="width: 13%;">Total leads</th>
+              <th scope="col" style="width: 13%;">last lead generated</th>
+              <th scope="col" style="width: 13%;">last updated</th>
+              <th scope="col" style="width: 13%;">Status</th>
+            </tr>
+          </thead>
+          <tbody class="bg_light">
+            <tr *ngFor="let campaign of campaigns"
+              [routerLink]="campaign.status.toUpperCase() === 'active' ? ['/home/campaign/details', campaign.id] : null"
+              (click)="handleClick(campaign)"
+              [style.cursor]="campaign.status.toLowerCase() === 'active' ? 'pointer' : 'default'">
+              <!-- Campaign Name -->
+              <td>{{ campaign.name }}</td>
+
+              <!-- Overdue -->
+              <td>{{ campaign.overdueCount || 0 }}</td>
+              <td>{{ campaign.unaddressedCount || 0 }}</td>
+              <td>{{ campaign.totalLeads || 0 }}</td>
+
+              <td>
+                {{ campaign.lastLeadDate
+                ? (campaign.lastLeadDate | date:'dd/MM/yyyy')
+                : '-' }}
+              </td>
+
+
+              <!-- Last Update -->
+              <td>
+                {{ campaign.updatedAt | date:'dd/MM/yyyy - hh:mm a' }}
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span class="Campaigns__status" [ngClass]="getStatusClass(campaign.status)">
+                </span>
+                {{ campaign.status }}
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <nav aria-label="Page navigation example" class="table-pagination" *ngIf="totalPages > 1">
+        <a class="secondary arrow small-text Medium d-flex gap-1" (click)="prevPage()"
+          [class.disabled]="page === 0"><img src="assets/images/svg-img/pagination-arrow-left.svg"> Previous</a>
+        <ul class="pagination mb-0 gap-2">
+          <li *ngFor="let p of [].constructor(totalPages); let i = index">
+            <a class="page-link" [class.active]="i === page" (click)="goToPage(i)">
+              {{ i + 1 }}
+            </a>
+          </li>
+        </ul>
+        <a class="secondary arrow small-text Medium d-flex gap-1" (click)="nextPage()"
+          [class.disabled]="page === totalPages - 1"> Next <img
+            src="assets/images/svg-img/pagination-arrow-right.svg"></a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ================= CREATE CAMPAIGN POPUP ================= -->
+
+<div class="modal fade" id="addCampaign" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+
+        <div class="single_tab">
+          <button class="nav-link active p-1 Sub-Heading">
+            Create Campaign
+          </button>
+        </div>
+
+        <form #campaignForm="ngForm" (ngSubmit)="saveCampaign()" class="d-flex flex-column gap-3 add_task">
+
+          <!-- Campaign Name -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Campaign Name</h3>
+            <div class="w-75">
+              <input type="text" name="name" placeholder="Enter campaign name" class="search_input_field small-text p-2"
+                required minlength="2" [(ngModel)]="newCampaign.name" #name="ngModel" />
+              <br>
+              <span class="text-danger small" *ngIf="name.invalid && name.touched">
+                Campaign name is required
+              </span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Description</h3>
+            <div class="w-75">
+
+              <textarea name="description" placeholder="Campaign description" class="search_input_field small-text p-2"
+                rows="3" [(ngModel)]="newCampaign.description">
+              </textarea>
+            </div>
+          </div>
+
+          <!-- Start Date -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Start Date</h3>
+            <div class="w-75">
+              <input type="date" name="startDate" class="search_input_field small-text p-2"
+                [(ngModel)]="newCampaign.startDate" />
+            </div>
+          </div>
+
+          <!-- End Date -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">End Date</h3>
+            <div class="w-75">
+              <input type="date" name="endDate" class="search_input_field small-text p-2"
+                [(ngModel)]="newCampaign.endDate" />
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-4 justify-content-end mt-3">
+            <button type="button" class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal"
+              (click)="closeModalSafely()">
+              Cancel
+            </button>
+
+            <button type="submit" class="primary_btn medium-text Medium w-25 px-0"
+              [disabled]="campaignForm.invalid || loading">
+              Save
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,205 @@
+<div *ngIf="!showCreateForm" class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+    <!-- <h2 class=" small-text Medium mb-2">Job Post Requests</h2> -->
+
+    <div class="row py-3 px-4 m-0 table_actions border_bottom">
+        <!--  top  content -->
+        <div class="row py-3 px-4 m-0 table_actions border_bottom"> <!-- top content -->
+            <div class="col-md-5 d-flex gap-3 p-0"> <button class="secondary_btn d-flex align-items-center gap-1"
+                    (click)="clearFilter()"> <img src="assets/images/svg-img/filter.svg">
+                    <h4 class="Caption Medium mb-0">Filter</h4>
+                </button>
+                <div class="dropdownss position-relative"> <a
+                        class="filter_status dropdown_toggle py-1 px-3 Caption Medium h-100" href="#" role="button"
+                        (click)="toggleStatusDropdown(); $event.preventDefault()"> {{ currentFilterStatus ?
+                        currentFilterStatus : 'Filter By Status' }}
+                    </a>
+                    <ul class="dropdown-menu cursor_pointer" [class.show]="isStatusDropdownOpen"
+                        (click)="$event.stopPropagation()">
+                        <li> <a class="dropdown-item"
+                                (click)="applyStatusFilter('PENDING'); $event.stopPropagation()">Pending</a> </li>
+                        <li> <a class="dropdown-item"
+                                (click)="applyStatusFilter('APPROVED'); $event.stopPropagation()">Approved</a> </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-7 d-flex justify-content-end gap-3 p-0">
+                <div class="position-relative search_input2">
+                    <input type="text" placeholder="Search" class="search_input_field py-1 px-4 ps-2  w-100"
+                        [(ngModel)]="searchText" (input)="onSearch()">
+                    <img src="assets/images/svg-img/search.svg" class="search_img">
+                </div>
+
+                <!-- Add New Task button (top-right) -->
+                <div class="d-flex justify-content-end">
+                    <!-- NOTE: no data-bs-toggle / data-bs-target here -->
+                    <button type="button" class="action_light_btn small-text Medium py-1 px-3"
+                        (click)="openCreateForm()" *ngIf="isBranchAdmin()">
+                        Create New Jobpost
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="Campaigns_grid_cards">
+            <!-- Campaigns cards data -->
+            <a *ngFor="let post of jobPosts"
+                class="white_card_background  Campaigns_cards p-3 h-100 d-flex flex-column gap-3">
+                <!-- campaigns header -->
+                <div class="d-flex justify-content-between active_status">
+                    <h2 class="medium-text Medium mb-0">{{ post.jobTitle }}</h2>
+                    <h4 class="Caption Medium mb-0 d-flex align-items-center gap-2"
+                        [ngClass]="getStatusClass(post.status)">
+
+                        <span class="Campaigns__status"></span>
+                        {{ post.status }}
+
+                    </h4>
+                </div>
+
+                <!-- Campaigns leads details -->
+                <div class="d-flex flex-column gap-2">
+                    <div class="Campaigns d-flex justify-content-between">
+                        <h3 class="Caption Medium mb-0">Branch</h3>
+                        <h4 class="Caption Medium mb-0">{{ post.branchName }}</h4>
+                    </div>
+                    <div class="Campaigns d-flex justify-content-between">
+                        <h3 class="Caption Medium mb-0">Date Created</h3>
+                        <h4 class="Caption Medium mb-0">{{ post.createdAt | date:'dd/MM/yyyy - hh:mm a' }}</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <nav class="table-pagination">
+        <!-- Previous -->
+        <a class="arrow" (click)="goToPage(page - 1)" [class.disabled]="page === 0">
+            <img src="assets/images/svg-img/pagination-arrow-left.svg" />
+            Previous
+        </a>
+
+        <!-- Page numbers -->
+        <ul class="pagination">
+            <li *ngFor="let p of [].constructor(totalPages); let i = index">
+                <a class="page-link" (click)="goToPage(i)" [class.active]="i === page">
+                    {{ i + 1 }}
+                </a>
+            </li>
+        </ul>
+
+        <!-- Next -->
+        <a class="arrow" (click)="goToPage(page + 1)" [class.disabled]="page === totalPages - 1">
+            Next
+            <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+        </a>
+    </nav>
+</div>
+
+
+
+<!-- CREATE FORM VIEW -->
+<div *ngIf="showCreateForm" class="p-4 white_card_background h-100 d-flex flex-column gap-4">
+
+    <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+        </div> -->
+
+    <!-- Field Name -->
+    <div class="add_task">
+        <h3 class="mb-2">Title</h3>
+        <input type="text" [(ngModel)]="jobPostForm.jobTitle" placeholder="title"
+            class="search_input_field small-text p-2 w-100">
+    </div>
+
+    <!-- Description -->
+    <div class="add_task">
+        <h3 class="mb-2 small-text">Description</h3>
+        <textarea [(ngModel)]="jobPostForm.description" placeholder="Description"
+            class="search_input_field small-text p-2 w-100"></textarea>
+    </div>
+
+    <!-- Text Input -->
+    <div class="d-flex justify-content-between gap-3 jobpost">
+        <!-- <div class="w-50 position-relative"></div> -->
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Required Skills</h3>
+            <input type="text" [(ngModel)]="jobPostForm.requiredSkills" placeholder="title"
+                class="search_input_field small-text p-2 w-100">
+        </div>
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Experience Level</h3>
+            <input type="text" [(ngModel)]="jobPostForm.experienceLevel" placeholder="Field Name"
+                class="search_input_field small-text p-2 w-100">
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-between gap-3 jobpost">
+        <!-- <div class="w-50 position-relative"></div> -->
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Department</h3>
+            <input type="text" [(ngModel)]="jobPostForm.department" placeholder="Field Name"
+                class="search_input_field small-text p-2 w-100">
+        </div>
+
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Location</h3>
+            <input type="text" [(ngModel)]="jobPostForm.location" placeholder="Field Name"
+                class="search_input_field small-text p-2 w-100">
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between gap-3 jobpost">
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Work Mode</h3>
+
+            <select [(ngModel)]="jobPostForm.workMode" class="search_input_field small-text p-2 w-100">
+                <option value="" disabled selected>Select Work Mode</option>
+                <option value="ONSITE">Onsite</option>
+                <option value="REMOTE">Remote</option>
+                <option value="HYBRID">Hybrid</option>
+            </select>
+        </div>
+        <div class="w-50 position-relative">
+            <h3 class="mb-2">Work Type</h3>
+            <select [(ngModel)]="jobPostForm.workType" class="search_input_field small-text p-2 w-100">
+                <option value="" disabled selected>Select Work Type</option>
+                <option value="FULL_TIME">Full Time</option>
+                <option value="PART_TIME">Part Time</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Upload Image -->
+    <div class="add_task">
+        <h3 class="mb-3">Upload Image </h3>
+        <div class="position-relative file_select_box mt-3" style="overflow: hidden;">
+            <input type="file" accept="image/*" class="input_feilds bg_light file_select w-100"
+                (change)="onFileSelected($event)">
+
+            <!-- Image Preview inside upload section -->
+            <div *ngIf="imagePreview"
+                class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+                style="padding: 12px; box-sizing: border-box;">
+                <img [src]="imagePreview" alt="Selected image preview"
+                    style="width: 100%; height: 100%; object-fit: contain; border-radius: 4px;">
+            </div>
+
+            <!-- Upload label - hide when image is selected -->
+            <label *ngIf="!imagePreview" for="fileupload" class="w-75"><img src="assets/images/svg-img/file.svg">
+                <h4 class="small-text Medium mb-0">Upload File</h4>
+            </label>
+        </div>
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-3">
+        <button type="button" class="secondary_btn medium-text Medium px-6 py-1" (click)="cancelCreateForm()">
+            Cancel
+        </button>
+        <button type="button" class="primary_btn medium-text Medium px-6 py-1" (click)="createJobpost()">
+            Submit
+        </button>
+    </div>
+
+</div>

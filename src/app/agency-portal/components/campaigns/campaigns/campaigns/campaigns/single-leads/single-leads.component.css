@@ -1,0 +1,12 @@
+.full-background {
+  min-height: 100vh;
+  height: auto;
+  width: 100vw;
+  overflow-y: auto;
+  margin-right: 0;
+  box-sizing: border-box;
+  
+}
+.full-background::-webkit-scrollbar {
+  display: none;
+}

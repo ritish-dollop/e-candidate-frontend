@@ -1,0 +1,228 @@
+<div class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+  <div class="jobpost-container h-100">
+    <div class="row g-0 h-100">
+      <!-- Left Panel - Job List (Image exact) -->
+      <div
+        class="col-lg-4 col-xl-3 bg-white border-end job-list-panel h-100 d-flex flex-column"
+      >
+        <!-- Header Section -->
+        <div
+          class="p-3 border-bottom d-flex justify-content-between align-items-center"
+        >
+          <div>
+            <h5 class="mb-0 fw-bold text-dark">
+              Total Jobposts ({{ totalCount }})
+            </h5>
+          </div>
+        </div>
+        <div class="filter-wrapper d-flex gap-3 p-3 border-bottom">
+          <button
+            class="secondary_btn d-flex align-items-center gap-1"
+            (click)="clearFilter()"
+          >
+            <img src="assets/images/svg-img/filter.svg" />
+            <span class="Caption Medium">Filter</span>
+          </button>
+
+          <div class="dropdownss position-relative">
+            <a
+              class="status-dropdown-toggle d-flex align-items-center justify-content-between"
+              href="#"
+              role="button"
+              (click)="toggleStatusDropdown(); $event.preventDefault()"
+            >
+              <span>
+                <span>
+                  {{
+                    (currentFilterStatus
+                      ? currentFilterStatus
+                      : "Filter by Status"
+                    )  | lowercase | titlecase
+                  }}
+                </span>
+              </span>
+              <i class="fas fa-chevron-down ms-2"></i>
+            </a>
+
+            <ul
+              class="status-dropdown-menu"
+              [class.show]="isStatusDropdownOpen"
+              (click)="$event.stopPropagation()"
+            >
+              <li>
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    applyStatusFilter('PENDING'); $event.stopPropagation()
+                  "
+                >
+                  Pending
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    applyStatusFilter('APPROVED'); $event.stopPropagation()
+                  "
+                >
+                  Approved
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item"
+                  (click)="
+                    applyStatusFilter('REJECTED'); $event.stopPropagation()
+                  "
+                >
+                  Rejected
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job List -->
+        <div class="flex-grow-1 p-2 overflow-auto">
+          <div
+            class="list-group list-group-flush"
+            *ngFor="let job of jobPosts; trackBy: trackByJobId"
+          >
+            <div
+              class="list-group-item list-group-item-action px-3 py-3 cursor-pointer border-0 mb-2 rounded-3"
+              [class.bg-primary-subtle]="selectedJob?.id === job.id"
+              (click)="selectJob(job)"
+            >
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1 me-3">
+                  <div class="row g-1 text-xs">
+                    <div class="col-6">
+                      <h6
+                        class="mb-1 fw-semibold text-truncate"
+                        style="font-size: 0.95rem"
+                      >
+                        {{ job.jobTitle }}
+                      </h6>
+                    </div>
+                    <div class="col-6">
+                      <span
+                        class="badge"
+                        [ngClass]="getStatusBadgeClass(job.status)"
+                        style="font-size: 0.7rem; padding: 0.25rem 0.5rem"
+                        >{{ job.status }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <i
+                  class="fas fa-chevron-right text-muted mt-1"
+                  style="font-size: 0.8rem"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel - Job Details -->
+      <div class="col-lg-8 col-xl-9 h-100 d-flex flex-column position-relative">
+        <div *ngIf="selectedJob" class="flex-grow-1 p-4 overflow-auto">
+          <!-- Header -->
+          <div
+            class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4"
+          >
+            <div class="flex-grow-1">
+              <h4 class="mb-1 fw-bold">{{ selectedJob.jobTitle }}</h4>
+              <p class="text-muted mb-0 fs-6">
+                {{ selectedJob.customerName || selectedJob.department }} •
+                {{ selectedJob.location }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-5">
+            <h6 class="fw-bold mb-3 text-primary">Description</h6>
+            <div class="bg-light p-4 rounded-3">
+              <p class="mb-0 text-dark">{{ selectedJob.description }}</p>
+            </div>
+          </div>
+
+          <!-- Skills & Details -->
+          <div class="row g-4 mb-5">
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Required Skills</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">
+                  {{ selectedJob.requiredSkills }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Experience Level</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">
+                  {{ selectedJob.experienceLevel }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Work Type</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">
+                  {{ selectedJob.workType | customerRole }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">WorkMode</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">
+                  {{ selectedJob.workMode | customerRole }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">Branch Name</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">{{ selectedJob.branchName }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold mb-3">CreatedAt</h6>
+              <div class="bg-light p-3 rounded-3">
+                <p class="mb-0 small text-dark">
+                  {{ selectedJob.createdAt | date : "dd MMM yyyy, hh:mm a" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-end gap-3 mt-4 border-top pt-4">
+      <!--  -->
+      <button
+        class="btn btn-outline-danger px-4"
+        (click)="rejectJob()"
+        [disabled]="selectedJob?.status !== 'PENDING'"
+      >
+        Reject
+      </button>
+
+      <!-- -->
+      <button
+        class="btn btn-success px-4"
+        (click)="approveJob()"
+        [disabled]="selectedJob?.status !== 'PENDING'"
+      >
+        Approve
+      </button>
+    </div>
+  </div>
+</div>

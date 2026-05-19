@@ -1,0 +1,270 @@
+<div class="back-btn" style="z-index:9999; position:absolute; left:20px; top:20px; background:#fff;" (click)="goBack()">
+</div>
+
+<div class="main_content secondaryLight_background p-4 borderRadius_25" id="main-content"></div>
+
+<div class="add-customer-page" *ngIf="showAddPage">
+
+  <div class="white-card">
+
+    <!-- ================= TABS SECTION ================= -->
+    <div class="tabs-section">
+      <div class="tabs">
+        <div class="tab" [class.active]="activeTab === 'company'" (click)="activeTab = 'company'">
+          Company
+        </div>
+
+        <div class="tab" [class.active]="activeTab === 'admin'" [class.disabled]="!company?.id"
+          (click)="company?.id && (activeTab = 'admin')">
+          Company Admin
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================= FORM SECTION ================= -->
+    <div class="form-section">
+
+      <!-- ========== COMPANY TAB ========== -->
+      <form #companyForm="ngForm" *ngIf="activeTab === 'company'" class="form-wrapper"
+        (ngSubmit)="submitCompany(companyForm)">
+
+        <div class="form-container">
+
+          <!-- LEFT -->
+          <div class="left-box">
+            <label class="section-label">Logo</label>
+            <div class="logo-box">
+              <img [src]="companyLogoPreview || 'assets/images/svg-img/E.svg'" />
+            </div>
+
+            <button type="button" class="primary_btn" (click)="companyLogoInput.click()">
+              Add Logo
+            </button>
+
+            <input type="file" hidden #companyLogoInput (change)="onFileSelected($event, 'company')" />
+
+          </div>
+
+          <!-- RIGHT -->
+          <div class="right-box">
+
+            <!-- Company Name -->
+            <div class="form-row">
+              <label>Company Name</label>
+              <input type="text" name="companyName" required minlength="2" [(ngModel)]="company.companyName"
+                #companyName="ngModel" />
+              <br>
+              <span class="text-danger small" *ngIf="companyName.invalid && companyName.touched">
+                Company name is required (min 2 characters)
+              </span>
+            </div>
+
+            <!-- Contact -->
+            <div class="form-row">
+              <label>Contact No.</label>
+              <input type="text" name="contactNo" required pattern="^[6-9][0-9]{9}$" [(ngModel)]="company.contactNo"
+                #contactNo="ngModel" />
+              <br>
+              <span class="text-danger small" *ngIf="contactNo.invalid && contactNo.touched">
+                Contact number must be 10 digits
+              </span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-row">
+              <label>Billing Email</label>
+              <input type="email" name="billingEmail" required email [(ngModel)]="company.billingEmail"
+                #billingEmail="ngModel" (blur)="checkEmailDuplicate()" />
+
+              <br>
+              <span class="text-danger small" *ngIf="billingEmail.errors?.['required'] && billingEmail.touched">
+                Billing email is required
+              </span>
+
+              <span class="text-danger small" *ngIf="billingEmail.errors?.['email'] && billingEmail.touched">
+                Enter a valid email
+              </span>
+
+              <span class="text-danger small" *ngIf="!billingEmail.errors && emailExists">
+                Email already exists
+              </span>
+
+            </div>
+
+            <!-- Managed By -->
+            <div class="form-row">
+              <label>Managed By</label>
+              <input type="text" [value]="managedByName" readonly />
+            </div>
+
+            <!-- Registration -->
+            <div class="form-row">
+              <label>Registration No.</label>
+              <input type="text" name="registrationNumber" required minlength="3"
+                [(ngModel)]="company.registrationNumber" #registrationNumber="ngModel"
+                (blur)="checkRegistrationDuplicate()" />
+
+              <br>
+              <span class="text-danger small"
+                *ngIf="registrationNumber.errors?.['required'] && registrationNumber.touched">
+                Registration number is required
+              </span>
+
+              <span class="text-danger small"
+                *ngIf="registrationNumber.errors?.['minlength'] && registrationNumber.touched">
+                Registration number must be at least 3 characters
+              </span>
+
+              <span class="text-danger small" *ngIf="!registrationNumber.errors && registrationExists">
+                Registration number already exists
+              </span>
+
+            </div>
+
+            <!-- Address -->
+            <div class="form-row">
+              <label>Billing Address</label>
+              <input type="text" name="billingAddress" required minlength="5" [(ngModel)]="company.billingAddress"
+                #billingAddress="ngModel" />
+              <br>
+              <span class="text-danger small" *ngIf="billingAddress.invalid && billingAddress.touched">
+                Billing address is required
+              </span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="actions">
+              <button type="button" class="btn-cancel" (click)="cancelAdd()">
+                Cancel
+              </button>
+
+              <button type="submit" class="primary_btn medium-text Medium px-4" [disabled]="companyForm.invalid || emailExists ||
+                    registrationExists">
+                Save
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+
+      <!-- ========== ADMIN TAB ========== -->
+      <form #adminForm="ngForm" *ngIf="activeTab === 'admin'" class="form-wrapper" (ngSubmit)="submitAdmin(adminForm)">
+
+        <div class="form-container">
+
+          <div class="left-box">
+            <label class="section-label">Profile Picture</label>
+            <div class="profile-box">
+              <img [src]="adminPhotoPreview || 'assets/images/svg-img/Avatar.svg'" />
+            </div>
+
+            <button type="button" class="btn-primary" (click)="adminPhotoInput.click()">
+              Change Photo
+            </button>
+
+            <input type="file" #adminPhotoInput hidden accept="image/*" (change)="onFileSelected($event, 'admin')" />
+
+          </div>
+
+          <div class="right-box">
+
+            <!-- Admin Name -->
+            <div class="form-row">
+              <label>Admin Name</label>
+              <input type="text" name="adminName" required minlength="2" [(ngModel)]="admin.adminName"
+                #adminName="ngModel" />
+
+              <span class="text-danger small" *ngIf="adminName.invalid && adminName.touched">
+                Admin name is required (min 2 characters)
+              </span>
+            </div>
+
+            <!-- Contact No -->
+            <div class="form-row">
+              <label>Contact No.</label>
+              <input type="text" name="adminContactNo" required pattern="^[6-9][0-9]{9}$" [(ngModel)]="admin.contactNo"
+                #adminContactNo="ngModel" />
+
+              <span class="text-danger small" *ngIf="adminContactNo.invalid && adminContactNo.touched">
+                Contact number must be 10 digits
+              </span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-row">
+              <label>Email Address</label>
+              <input
+  type="email"
+  name="adminEmail"
+  required
+  email
+  [(ngModel)]="admin.email"
+  #adminEmail="ngModel"
+  (blur)="checkAdminEmailDuplicate()" />
+
+             
+<span class="text-danger small"
+      *ngIf="adminEmail.errors?.['required'] && adminEmail.touched">
+  Email is required
+</span>
+
+
+<span class="text-danger small"
+      *ngIf="adminEmail.errors?.['email'] && adminEmail.touched">
+  Enter a valid email address
+</span>
+
+
+<span class="text-danger small"
+      *ngIf="!adminEmail.errors && adminEmailExists">
+  Email already exists
+</span>
+
+            </div>
+
+            <!-- Password -->
+            <div class="form-row">
+              <label>Password</label>
+              <input type="password" name="password" required minlength="6" [(ngModel)]="admin.password"
+                #password="ngModel" />
+
+              <span class="text-danger small" *ngIf="password.invalid && password.touched">
+                Password must be at least 6 characters
+              </span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-row">
+              <label>Confirm Password</label>
+              <input type="password" name="confirmPassword" required [(ngModel)]="admin.confirmPassword"
+                #confirmPassword="ngModel" />
+
+              <span class="text-danger small"
+                *ngIf="confirmPassword.touched && admin.password !== admin.confirmPassword">
+                Passwords do not match
+              </span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="actions">
+              <button type="button" class="btn-cancel" (click)="cancelAdd()">
+                Cancel
+              </button>
+
+              <button type="submit" class="btn-save"
+                [disabled]="adminForm.invalid || admin.password !== admin.confirmPassword || adminEmailExists" >
+                Save
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+</div>

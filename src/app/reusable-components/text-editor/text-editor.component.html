@@ -1,0 +1,161 @@
+<!-- Editor area -->
+<div class="p-4 border_bottom" style="height: 250px">
+  <div
+    #editor
+    class="w-100 text_light medium-text Medium editor-content"
+    style="
+      height: 100%;
+      resize: none;
+      border: 0;
+      outline: 0;
+      overflow: auto;
+    "
+    contenteditable="true"
+    (input)="onEditorInput($event)"
+  ></div>
+</div>
+
+<!-- Attachment Preview -->
+<div class="attachment-container p-3" *ngIf="attachmentUrls?.length">
+  <div
+    class="attachment-item d-flex align-items-center gap-2 mb-2"
+    *ngFor="let item of attachmentUrls; let i = index"
+  >
+    <img
+      *ngIf="item.contentType?.startsWith('image/')"
+      [src]="item.url"
+      alt=""
+      class="rounded"
+      style="width: 40px; height: 40px; object-fit: cover"
+    />
+    <div *ngIf="!item.contentType?.startsWith('image/')" class="flex-grow-1">
+      <div class="small fw-bold">
+        {{ item.filename | slice : 0 : 25 }}{{ item.filename.length > 25 ? '...' : '' }}
+      </div>
+      <small class="text-muted">{{ item.contentType }}</small>
+    </div>
+    <button
+      class="btn-close btn-close-sm"
+      type="button"
+      (click)="attachmentUrls.splice(i, 1); attachmentUrlsChange.emit(attachmentUrls)"
+      aria-label="Remove"
+    ></button>
+  </div>
+</div>
+
+<!-- Toolbar -->
+<div class="d-flex align-items-center justify-content-between px-4 py-2 border_bottom">
+  <div class="d-flex align-items-center gap-2">
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('bold')">
+      <b>B</b>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('italic')">
+      <i>I</i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('underline')">
+      <u>U</u>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('strikeThrough')">
+      <s>S</s>
+    </button>
+
+    <div class="vr"></div>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="insertList('ul')">
+      <i class="bi bi-list-ul"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="insertList('ol')">
+      <i class="bi bi-list-ol"></i>
+    </button>
+
+    <div class="vr"></div>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="insertQuote()">
+      <i class="bi bi-chat-left-quote"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="removeFormatting()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <div class="vr"></div>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="addLink()">
+      <i class="bi bi-link-45deg"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="insertCode()">
+      <i class="bi bi-code-slash"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="openEmoji()">
+      <i class="bi bi-emoji-smile"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="uploadAttachment()">
+      <i class="bi bi-paperclip"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="uploadImage()">
+      <i class="bi bi-image"></i>
+    </button>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('justifyLeft')">
+      <i class="bi bi-text-left"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('justifyCenter')">
+      <i class="bi bi-text-center"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('justifyRight')">
+      <i class="bi bi-text-right"></i>
+    </button>
+
+    <div class="vr"></div>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('undo')">
+      <i class="bi bi-arrow-counterclockwise"></i>
+    </button>
+
+    <button type="button" class="btn btn-sm btn-light border" (click)="format('redo')">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Emoji picker -->
+<div class="emoji-picker p-3 border-top" *ngIf="showEmojiPicker">
+  <div class="emoji-grid d-flex flex-wrap gap-2">
+    <span
+      *ngFor="let e of emojis"
+      class="p-2 rounded cursor_pointer me-2 mb-2"
+      style="font-size: 20px"
+      (click)="addEmoji(e)"
+      title="Click to insert"
+    >
+      {{ e }}
+    </span>
+  </div>
+</div>
+
+<!-- Hidden file inputs -->
+<input
+  type="file"
+  #fileInputAttachment
+  hidden
+  (change)="onAttachmentSelected($event)"
+/>
+<input
+  type="file"
+  #fileInputImage
+  accept="image/*"
+  hidden
+  (change)="onImageSelected($event)"
+/>

@@ -1,0 +1,126 @@
+<img src="assets/images/png-img/background-img.png" class="background_img" />
+
+<!-- THEME CHANGE -->
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="theme"
+  class="dark_theme cursor_pointer position-absolute"
+>
+  theme
+</button>
+
+<div
+  class="container d-flex align-items-center justify-content-center h-100 py-5 p-0"
+>
+  <div class="row justify-content-center login_middle_content">
+    <div class="col-md-6">
+      <img src="assets/images/svg-img/logo.svg" class="img-fluid logo" />
+    </div>
+    <div class="col-md-6 login_details">
+      <div class="login_background">
+        <div class="d-flex flex-column login_content">
+          <a href="auth/login" class="cursor_pointer">
+            <img
+              src="assets/images/svg-img/login-left-arrow.svg"
+              width="30"
+              height="50"
+            />
+          </a>
+
+          <div class="login_text">
+            <h1 class="Semibold mb-3 Heading">Verify OTP</h1>
+            <h2 class="light mb-1 Sub-Heading">
+              Enter the verification code sent on
+            </h2>
+            <h2 class="light Sub-Heading">
+              {{ email }}
+              <span
+                class="action_color Regular ms-2 mx-0 cursor"
+                (click)="
+                  router.navigate(['/auth/login'], {
+                    state: { email: email, password: password },
+                    replaceUrl: true
+                  })
+                "
+              >
+                Edit <img src="assets/images/svg-img/edit.svg" />
+              </span>
+            </h2>
+          </div>
+
+          <!-- ✅ Message Box -->
+          <div *ngIf="message" class="alert-box" [ngClass]="messageType">
+            {{ message }}
+          </div>
+
+          <!-- ✅ OTP Inputs -->
+          <div class="otp">
+            <input
+              type="text"
+              class="otp_field"
+              maxlength="1"
+              [(ngModel)]="otp1"
+              (keypress)="allowOnlyNumbers($event)"
+              (input)="autoFocusNext($event, 2)"
+            />
+            <input
+              type="text"
+              class="otp_field"
+              maxlength="1"
+              [(ngModel)]="otp2"
+              (keypress)="allowOnlyNumbers($event)"
+              (input)="autoFocusNext($event, 3)"
+            />
+            <input
+              type="text"
+              class="otp_field"
+              maxlength="1"
+              [(ngModel)]="otp3"
+              (keypress)="allowOnlyNumbers($event)"
+              (input)="autoFocusNext($event, 4)"
+            />
+            <input
+              type="text"
+              class="otp_field"
+              maxlength="1"
+              [(ngModel)]="otp4"
+              (keypress)="allowOnlyNumbers($event)"
+            />
+          </div>
+
+          <!-- ✅ Verify Button -->
+          <div>
+            <button
+              type="button"
+              (click)="combineOtp()"
+              class="primary_btn medium-text Medium"
+              [disabled]="loading"
+            >
+              {{ loading ? "Verifying..." : "Verify" }}
+            </button>
+          </div>
+
+          <!-- ✅ Resend OTP Section -->
+          <div class="mt-6 text-center bold-text Regular">
+            <span *ngIf="timer > 0" class="text-muted">
+              Resend OTP in {{ timer }}s
+            </span>
+
+            <button
+              *ngIf="timer === 0 && !resend"
+              class="secondary_outline_btn action_color cursor_pointer"
+              (click)="resendOtp()"
+              type="button"
+            >
+              Resend OTP
+            </button>
+
+            <span *ngIf="resend" class="text-muted"> Resend OTP... </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+``

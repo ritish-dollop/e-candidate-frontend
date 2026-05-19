@@ -1,0 +1,744 @@
+/* ================================
+   BRANCH USERS CONTAINER
+================================ */
+.branch-users-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+  overflow-x: auto;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+/* ================================
+   HEADER
+================================ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-left: 2px;
+}
+/* Reduce Branch Users heading font size */
+.branch-user-container .header h2 {
+  font-size: 18px !important;
+  margin-left: 0 !important;  /* move left */
+  padding-left: 0 !important; /* ensure no extra space */
+
+}
+.branch-user-container .add-btn {
+  margin-right: -20px; /* adjust as needed */
+}
+
+.header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 3px solid #19191a;
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.add-btn {
+  background-color: #00a6a6 !important;
+  color: white !important;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.add-btn:hover {
+  background-color: #008f8f;
+}
+
+/* ================================
+   TABLE
+================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+thead {
+  background: #f7f8fa;
+  border-bottom: 2px solid #eaeaea;
+}
+
+th {
+  text-align: left;
+  padding: 12px 10px;
+  color: #141313;
+  font-weight: 500;
+  font-size: 20px;
+}
+/* Reduce table header font size */
+.branch-user-container thead th {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+
+/* ✔ Base table cell spacing */
+td {
+  padding: 12px 10px !important;
+  height: 54px !important;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* ================================
+   PROFILE IMAGE
+================================ */
+td img {
+  border-radius: 1%;
+  object-fit: cover;
+  height: 40px;
+  width: 40px;
+}
+
+/* ================================
+   RESET PASSWORD
+================================ */
+
+.reset-btn {
+  cursor: pointer;
+  color: #0891b2 !important;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.reset-btn:hover {
+  color: #0e7490;
+  text-decoration: underline;
+}
+/* ================================
+   ACTION BUTTONS (EDIT / DELETE)
+================================ */
+.action-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* BUTTON BOX */
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  margin-top: -2px !important; /* ✔ match screenshot */
+}
+
+.action-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Move profile image slightly to the right */
+.user-img {
+  margin-left: 14px; /* Adjust value as you like: 8px, 10px, 12px, 15px */
+}
+.reset-btn{
+  margin-left: -14px;
+}
+
+/* EDIT */
+.action-btn.edit {
+  background: #d3f3f4;
+}
+
+/* DELETE */
+.action-btn.delete {
+  background: #ffe5e5;
+}
+
+.action-btn.delete img {
+  filter: invert(23%) sepia(88%) saturate(7481%) hue-rotate(356deg)
+    brightness(92%) contrast(120%);
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+  border-radius: 0; /* ← RECTANGLE instead of circle */
+}
+
+input:checked + .slider {
+  background-color: #00a6a6;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 8px 6px;
+  }
+
+  .add-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  td img {
+    width: 32px;
+    height: 32px;
+  }
+}
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.action-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Background colors */
+.action-btn.edit {
+  background: #c6d5d7;
+  margin-bottom: 60px;
+}
+
+.action-btn.delete {
+  background: #ffe4e4;
+  margin-bottom: 60px;
+}
+
+/* EDIT icon color (gray/black based on your SVG) */
+.action-btn.edit img {
+  filter: none;
+}
+
+
+/* DELETE icon color (red) */
+.action-btn.delete img {
+  filter: invert(23%) sepia(88%) saturate(7481%) hue-rotate(356deg)
+    brightness(92%) contrast(120%);
+}
+.action-col {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* spacing between icons */
+}
+
+/* ---------------------------- */
+/*   BRANCH NAME TITLE          */
+/* ---------------------------- */
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+  margin-left: 20px;
+}
+
+/* ---------------------------- */
+/*     TOP DETAILS ROW BOX      */
+/* ---------------------------- */
+
+.details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  background: #fbfbfb;
+
+  padding: 18px 22px;
+  border-radius: 10px;
+
+  font-family: "Inter", sans-serif;
+  margin-bottom: 25px;
+}
+
+/* Individual items inside the row */
+.details-row div {
+  font-size: 14px;
+  color: #333;
+  min-width: 25%;
+}
+
+.details-row strong {
+  font-weight: 600;
+  color: #000;
+  margin-right: 4px;
+}
+.branch-title-row {
+  display: flex;
+  justify-content: flex-start; /* name + status closer */
+  align-items: center;
+  gap: 1700px; /* reduce spacing between them */
+  margin-bottom: 8px; /* reduced bottom space */
+}
+
+.branch-title-row h2 {
+  font-size: 20px; /* slightly smaller */
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
+  margin-left: 20px;
+}
+
+/* Status badge compact */
+.branch-status {
+  padding: 4px 12px; /* smaller padding */
+  border-radius: 16px; /* tighter badge */
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ACTIVE badge */
+.branch-status.ACTIVE {
+  background: #e7f8ee;
+  color: #1b9c57;
+  border: 1px solid #b9e6cb;
+}
+
+/* DEACTIVE badge */
+.branch-status.DEACTIVE {
+  background: #fdecec;
+  color: #d9534f;
+  border: 1px solid #f5b5b5;
+}
+
+/* Reset Password button inside branch users table */
+.reset-btn {
+  color: white; /* White text */
+  border: none;
+  border-radius: 6px; /* Matches add-btn radius */
+  padding: 6px 12px;
+  font-size: 14px; /* Consistent with add-btn */
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  margin-top: 4px; /* Small spacing below password dots */
+  text-decoration: underline;
+  align-self: flex-start;
+}
+/* Add Branch User button */
+
+.add-btn {
+  background-color: #00a6a6 !important; /* Green background */
+  color: white !important; /* White text */
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.preview-img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  background: white;
+  margin-bottom: 30px;
+}
+.pagination button.active {
+  background: #0284c7;
+  color: white;
+  font-weight: bold;
+}
+.pagination button:disabled {
+  background: #eee;
+  cursor: not-allowed;
+}
+.page-bg {
+  background-color: #f2f0f0;
+  min-height: 100vh;
+  padding: 20px;
+}
+.header {
+  background-color: #f2f0f0;
+}
+
+.masked-password {
+  font-weight: bold;
+  letter-spacing: 8px;
+}
+.masked-password br {
+  line-height: 0 !important;
+}
+
+.masked-password .reset-btn {
+  margin-top: -50px !important; /* reduce spacing */
+}
+.back-btn-container {
+  position: absolute; /* position at top-left */
+  top: 20px; /* adjust distance from top */
+  left: 20px; /* adjust distance from left */
+  z-index: 10; /* make sure it is above other content */
+  margin-top: -5px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  font-size: 36px;
+
+  cursor: pointer;
+  color: #292727 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.branch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: #fff;
+  padding: 25px 30px;
+  /* border-radius: 8px; */
+  border: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
+.branch-header {
+  padding: 15px 18px !important;  /* vertical padding reduced */
+  margin-bottom: 10px !important; /* space below also smaller */
+}
+
+.branch-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin-left: 5px;
+  color: #0d343e;
+}
+
+.info-row {
+  display: flex;
+  gap: 140px;
+}
+.info-row {
+  margin-top: -10px !important;  /* adjust upward */
+}
+
+.info-block label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.info-block p {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.address {
+  width: 260px;
+}
+
+/* Status badge */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-badge.Active {
+  background: #d4f7e4;
+  color: #1d9d5f;
+}
+
+.status-badge.DEACTIVE  {
+  background: #ffe5e5;
+  color: #d9534f;
+}
+/* DEACTIVE (Red Badge) */
+.user-status.DEACTIVE {
+  background: #fde4e4 !important;   /* light red background */
+  color: #d92a2a !important;        /* dark red text */
+}
+
+/* Red dot */
+.user-status.DEACTIVE::before {
+  background: #d92a2a !important;   /* dark red dot */
+}
+.user-status {
+  padding: 6px 16px;
+  /* border-radius: 20px; */
+  font-size: 12px;
+  font-weight: 450;
+  position: relative;
+  padding-left: 28px; /* space for the dot */
+  text-transform: capitalize;
+  margin-left: -120px;
+}
+
+/* Dot */
+.user-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ACTIVE */
+.user-status.ACTIVE {
+  background: #d8f5e8;
+  color: #1f9d61;
+}
+.user-status.ACTIVE::before {
+  background: #1f9d61;
+}
+
+/* INACTIVE */
+.user-status.DEACTIVE  {
+  background: #f1f1f1;
+  color: #7a7a7a;
+}
+.user-status.DEACTIVE ::before {
+  background: #7a7a7a;
+}
+.header-divider {
+  width: 1400px;
+  height: 1px;
+  background: #e5e5e5;
+  margin: 12px 0 18px;
+  flex-basis: 100%; /* REQUIRED */
+  flex-grow: 1; /* REQUIRED */
+}
+.action-col {
+  margin-top: 60px;
+}
+
+/* Reduce row height in Branch User table */
+.branch-user-container td {
+  padding: 4px 8px !important;   /* smaller padding */
+  height: 34px !important;       /* reduced row height */
+}
+
+.branch-user-container th {
+  padding: 6px 8px !important;   /* header padding also reduced */
+}
+
+/* Background overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(1px);
+  z-index: 998;
+}
+
+/* Popup modal container */
+.popup-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 780px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  z-index: 999;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0px 5px 25px rgba(0,0,0,0.3);
+}
+
+/* Popup header */
+.popup-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.popup-header h2 {
+  margin: 0;
+  text-align: left;
+  font-size: 28px;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 3px solid #19191a;
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.upload-row {
+  /* gap: 12px; */
+  align-items: flex-start;
+}
+
+.upload-row h3 {
+  line-height: 32px;
+  min-width: 130px;
+  margin-top: 35px;
+}
+
+.upload-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.image-preview {
+  width: 120px;
+  height: 120px;
+  border: 1px solid #d6d6d6;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-img-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #444;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.remove-img-btn:hover {
+  background: #fff;
+  color: #d9534f;
+}
+
+.upload-box {
+  width: 160px;
+  height: 120px;
+  border: 2px dashed #00a6a6;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  color: #00a6a6;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.upload-box img {
+  width: 36px;
+  height: 36px;
+}
+
+.upload-box:hover {
+  background: rgba(0, 166, 166, 0.08);
+  border-color: #008080;
+}
+

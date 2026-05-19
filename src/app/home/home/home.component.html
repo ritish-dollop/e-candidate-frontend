@@ -1,0 +1,19 @@
+<ng-container *ngIf="showSidebar(); else fullPageLayout">
+  <div class="d-flex overflow_hidden">
+    <app-sidebar></app-sidebar>
+    <div class="middle_content">
+
+      <app-navbar></app-navbar>
+      <div class="main_content secondaryLight_background p-4">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>  
+</ng-container>
+
+<ng-template #fullPageLayout>
+  <div class="middle_content w-100">
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

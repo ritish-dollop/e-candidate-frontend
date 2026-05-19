@@ -1,0 +1,742 @@
+<div class="main_content contentSection secondary_card_background p-0">
+  <!-- Calendar Section -->
+  <div class="content white_card_background p-4" [class.hidetab]="activeTab !== 1" data-number="1">
+    <div class="d-flex flex-column gap-4">
+      <div class="calendar_task">
+        <div class="d-flex align-items-center gap-3">
+          <h2 class="card_heading Sub-Heading Medium mb-0">
+            {{ currentMonth }}
+          </h2>
+          <img src="assets/images/svg-img/calender.svg" class="cursor_pointer" (click)="openMonthYearPicker()" />
+          <!-- Updated Add button -->
+          <div *ngIf="!hideAddButton" class="action_light_btn small-text Medium py-1 px-2" data-bs-toggle="modal"
+            [attr.data-bs-target]="'#' + addModalId">
+            + Add
+          </div>
+        </div>
+
+        <!-- calendar view tabs -->
+        <div class="gap-3 p-0 calendar_details">
+          <select class="calendar_dropdown px-2 py-1 medium-text Medium" (change)="onCalendarViewChange($event)">
+            <option value="dayGridMonth">Month</option>
+            <option value="timeGridWeek">Week</option>
+            <option value="timeGridDay">Day</option>
+          </select>
+
+          <div class="d-flex align-items-center gap-1">
+            <a href="javascript:void(0)" (click)="goPrevious()"><img src="assets/images/svg-img/left-arrow.svg" /></a>
+            <h2 class="small-text Medium mb-0 daily_status" (click)="goToday()">{{ currentDayLabel }}</h2>
+            <a href="javascript:void(0)" (click)="goNext()"><img src="assets/images/svg-img/arrow.svg" /></a>
+          </div>
+
+          <div class="selectSection d-flex gap-3">
+            <button type="button" class="primary_outline_btn medium-text Medium px-4" [class.active]="activeTab === 1"
+              (click)="setActiveTab(1)">
+              Calendar
+            </button>
+            <button type="button" class="primary_outline_btn medium-text Medium px-4" [class.active]="activeTab === 2"
+              (click)="setActiveTab(2)">
+              Task & Event
+            </button>
+            <!-- <button type="button" class="primary_outline_btn medium-text Medium px-4"
+                data-bs-toggle="modal" [attr.data-bs-target]="'#' + addModalId" (click)="openAddMeeting()">
+                Add Meeting
+              </button> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- FullCalendar embedded -->
+      <div>
+        <app-calender (calendarItemClick)="handleCalendarClick($event)" [openAddEventForm]="openAddMeetingMode"
+          [defaultModalTab]="'event'"></app-calender>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task & Event Section -->
+  <div *ngIf="!openAddEventForm" class="content white_card_background p-4 h-100" [class.hidetab]="activeTab !== 2"
+    data-number="2">
+    <div class="d-flex flex-column gap-4 h-100 overflow_scroll scrollbar_hide">
+      <div class="calendar_task">
+        <div class="d-flex align-items-center gap-3">
+          <h2 class="card_heading Sub-Heading Medium mb-0">
+            {{ currentMonth }}
+          </h2>
+          <img src="assets/images/svg-img/calender.svg" />
+          <!-- Updated Add button -->
+          <div *ngIf="!hideAddButton" class="action_light_btn small-text Medium px-2 py-1" data-bs-toggle="modal"
+            [attr.data-bs-target]="'#' + addModalId">
+            + Add
+          </div>
+        </div>
+
+        <div class="selectSection d-flex gap-3">
+          <button type="button" class="primary_outline_btn medium-text Medium px-4" [class.active]="activeTab === 1"
+            (click)="setActiveTab(1)">
+            Calendar
+          </button>
+          <button type="button" class="primary_outline_btn medium-text Medium px-4" [class.active]="activeTab === 2"
+            (click)="setActiveTab(2)">
+            Task & Event
+          </button>
+        </div>
+      </div>
+
+      <!-- Inner Task/Event Tabs -->
+      <div class="single_tab">
+        <ul class="nav d-flex gap-4" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link p-1 Sub-Heading" [class.active]="activeInnerTab === 'task'"
+              (click)="setInnerTab('task')">
+              Task
+            </button>
+          </li>
+
+          <li class="nav-item" role="presentation">
+            <button class="nav-link p-1 Sub-Heading" [class.active]="activeInnerTab === 'event'"
+              (click)="setInnerTab('event')">
+              Event
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Task Tab -->
+        <div class="tab-pane fade" [class.active]="activeInnerTab === 'task'" [class.show]="activeInnerTab === 'task'">
+          <div class="d-flex flex-column gap-4">
+            <div *ngFor="let task of tasks" class="d-flex justify-content-between task_cards p-2">
+              <div class="task_card d-flex flex-column gap-2">
+                <h2 class="mb-0 small-text Medium">
+                  {{ task.assignedToName }}
+                </h2>
+                <div class="d-flex align-items-center gap-2">
+                  <h3 class="mb-0 small-text Medium">
+                    Title - {{ task.title }}
+                  </h3>
+                  <h5 *ngIf="task.status" class="smaller-text Semibold mb-0 CVRequest_bg p-1 CVRequest">
+                    {{ task.status }}
+                  </h5>
+                </div>
+                <h4 class="mb-0 medium-text Medium">{{ task.description }}</h4>
+                <div class="d-flex">
+                  <h5 class="Caption Medium secondary_card_background p-1 mb-0">
+                    {{ formatDateWithDay(task.startDate) }}
+                  </h5>
+                </div>
+              </div>
+              <div class="dropdown" [class.dropdown-disabled]="task.status === 'COMPLETED'">
+                <img src="assets/images/svg-img/dropdown_icon.svg" height="22" width="22" class="dropdown-toggle"
+                  type="button" data-bs-toggle="dropdown"
+                  [attr.data-bs-toggle]="task.status === 'COMPLETED' ? null : 'dropdown'" aria-expanded="false" />
+                <ul class="dropdown-menu dropdown_details">
+                  <li>
+                    <a class="dropdown-item" [class.disabled]="task.status === 'COMPLETED'"
+                      (click)="task.status !== 'COMPLETED' && markTaskCompleted(task)">Task Completed</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Tab -->
+        <div class="tab-pane fade" [class.active]="activeInnerTab === 'event'"
+          [class.show]="activeInnerTab === 'event'">
+          <div class="d-flex flex-column gap-4">
+            <div *ngFor="let event of events" class="d-flex justify-content-between task p-2">
+              <div class="task_card d-flex flex-column gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0 small-text Medium">{{ event.title }}</h2>
+                  <h5 *ngIf="event.status" class="smaller-text Semibold mb-0 CVRequest_bg p-1 CVRequest">
+                    {{ event.status }}
+                  </h5>
+                </div>
+                <h4 class="mb-0 medium-text Medium">{{ event.description }}</h4>
+                <div class="d-flex">
+                  <h5 class="Caption Medium secondary_card_background p-1 mb-0">
+                    {{ formatDateWithDay(event.startDate) }}
+                  </h5>
+                </div>
+              </div>
+              <div class="dropdown" [class.dropdown-disabled]="event.status === 'COMPLETED'">
+                <img src="assets/images/svg-img/dropdown_icon.svg" height="22" width="22" class="dropdown-toggle"
+                  type="button" data-bs-toggle="dropdown"
+                  [attr.data-bs-toggle]="event.status === 'COMPLETED' ? null : 'dropdown'" aria-expanded="false" />
+                <ul class="dropdown-menu dropdown_details">
+                  <li>
+                    <button class="dropdown-item" *ngIf="event.id" (click)="updateEventStatus(event.id, 'COMPLETED')">
+                      Event Completed
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Task/Event Modal -->
+<div class="modal fade" [id]="addModalId" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+        <!-- Tabs -->
+        <div class="single_tab">
+          <ul class="nav d-flex gap-4" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link p-1 Sub-Heading" [class.active]="modalActiveTab === 'task'" id="pills-AddTask-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-AddTask" type="button" role="tab"
+                [attr.aria-selected]="modalActiveTab === 'task'" (click)="setModalTab('task')">
+                Add Task
+              </button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link p-1 Sub-Heading" [class.active]="modalActiveTab === 'event'"
+                id="pills-AddEvent-tab" data-bs-toggle="pill" data-bs-target="#pills-AddEvent" type="button" role="tab"
+                [attr.aria-selected]="modalActiveTab === 'event'" (click)="setModalTab('event')">
+                Add Event
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="pills-tabContent">
+          <!-- Add Task -->
+          <div class="tab-pane fade" [class.show]="modalActiveTab === 'task'" [class.active]="modalActiveTab === 'task'"
+            id="pills-AddTask" role="tabpanel">
+            <div class="d-flex flex-column gap-4">
+              <div class="d-flex flex-column gap-3 add_task">
+                <!-- Title -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Title</h3>
+                  <input type="text" placeholder="Field Name" class="search_input_field small-text p-2"
+                    [(ngModel)]="newTask.title" />
+                </div>
+
+                <!-- Assignee -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Assignee</h3>
+                  <select class="search_input_field" [(ngModel)]="newTask.assignedCustomerUserId"
+                    *ngIf="customerRoomMode; else agencyTaskAssign">
+
+                    <option [ngValue]="null">Select Customer User</option>
+                    <option *ngFor="let user of customerUsers" [ngValue]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+
+                  <ng-template #agencyTaskAssign>
+                    <select class="search_input_field" [(ngModel)]="newTask.assignedToId">
+                      <option [ngValue]="null">Select Agency User</option>
+                      <option *ngFor="let user of agencyUsers" [ngValue]="user.id">
+                        {{ user.name }}
+                      </option>
+                    </select>
+                  </ng-template>
+
+                </div>
+
+                <!-- Description -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Description</h3>
+                  <textarea placeholder="Description" class="search_input_field small-text p-2"
+                    [(ngModel)]="newTask.description"></textarea>
+                </div>
+
+                <!-- checkbox -->
+                <div class="d-flex modal_heading">
+                  <h3 class="mb-0">All day</h3>
+                  <div class="d-flex gap-2 position-relative">
+                    <label class="modal_checkbox">
+                      <input type="checkbox" [(ngModel)]="newTask.allDay" />
+                      <span class="checkmarks"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- start date time -->
+                <div class="d-flex gap-4">
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">Start date</h3>
+                    <input type="date" placeholder="Field Name" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newTask.startDate" />
+                  </div>
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">Start time</h3>
+                    <input type="time" placeholder="Field Name" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newTask.startTime" />
+                  </div>
+                </div>
+
+                <div class="d-flex gap-4">
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">End date</h3>
+                    <input type="date" placeholder="Field Name" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newTask.endDate" />
+                  </div>
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">End time</h3>
+                    <input type="time" placeholder="Field Name" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newTask.endTime" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="d-flex gap-4 justify-content-end">
+                <button class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="primary_btn medium-text Medium w-25 px-0" (click)="saveTask()" data-bs-dismiss="modal">
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Event -->
+          <div class="tab-pane fade" id="pills-AddEvent" role="tabpanel" [class.show]="modalActiveTab === 'event'"
+            [class.active]="modalActiveTab === 'event'">
+            <div class="d-flex flex-column gap-4">
+              <div class="d-flex flex-column gap-3 add_task">
+                <!-- Title -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Title</h3>
+                  <input type="text" placeholder="title" class="search_input_field small-text p-2"
+                    [(ngModel)]="newEvent.title" />
+                </div>
+
+                <!-- Date/Time -->
+                <div class="d-flex gap-4">
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">Start date</h3>
+                    <input type="date" placeholder="Start Date" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newEvent.startDate" />
+                  </div>
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">Start time</h3>
+                    <input type="time" placeholder="Start Time" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newEvent.startTime" />
+                  </div>
+                </div>
+
+                <div class="d-flex gap-4">
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">End Date</h3>
+                    <input type="date" placeholder="End Date" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newEvent.endDate" />
+                  </div>
+                  <div class="d-flex justify-content-between w-50">
+                    <h3 class="mb-0 w-50">End time</h3>
+                    <input type="time" placeholder="EndTime" class="search_input_field small-text p-2 w-75"
+                      [(ngModel)]="newEvent.endTime" />
+                  </div>
+                </div>
+
+                <!-- All day -->
+                <div class="d-flex modal_heading">
+                  <h3 class="mb-0">All day</h3>
+                  <div class="d-flex gap-2 position-relative check_box_field">
+                    <label class="modal_checkbox">
+                      <input type="checkbox" [(ngModel)]="newEvent.allDay" />
+                      <span class="checkmarks"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- goole meet -->
+                <div class="d-flex justify-content-between">
+                  <div class="googlemeet d-flex justify-content-start">
+                    <img src="assets/images/svg-img/google_meet_icon1.svg" height="42" />
+                  </div>
+                  <div class="google_meet_clipboard">
+                    <button id="meet-button" class="meet-button small-text Medium" onclick="showLoading()">
+                      Add Google Meet video conferencing
+                    </button>
+                    <!-- loading-spinner -->
+                    <div id="loading-spinner" class="loading-spinner" style="display: none"></div>
+                    <!-- after loading add link -->
+                    <div id="after-loading" class="after-loading" style="display: none">
+                      <button id="join-button" class="meet_btn small-text Medium">
+                        meet.google.com/ipr-tnkp-kyvUp to 100 guest connections
+                      </button>
+                      <!-- action buttons -->
+                      <div>
+                        <!-- copy button -->
+                        <button id="copy-link-button" class="meet_btn" onclick="copyLink()">
+                          <img src="assets/images/svg-img/clipboard.svg" height="20" />
+                        </button>
+                        <!-- close button -->
+                        <button id="close-button" class="meet_btn" onclick="closeActions()">
+                          <img src="assets/images/svg-img/close.svg" height="20" class="gray" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Assignee -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Assignee</h3>
+                  <select class="search_input_field" *ngIf="customerRoomMode"
+                    [(ngModel)]="newEvent.assignedCustomerUserId">
+
+                    <option [ngValue]="null">Select Customer User</option>
+                    <option *ngFor="let user of customerUsers" [ngValue]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+
+                  <select class="search_input_field" *ngIf="!customerRoomMode" [(ngModel)]="newEvent.assignedUserId">
+
+                    <option [ngValue]="null">Select Agency User</option>
+                    <option *ngFor="let user of agencyUsers" [ngValue]="user.id">
+                      {{ user.name }}
+                    </option>
+                  </select>
+
+                </div>
+
+                <!-- Location -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Location</h3>
+                  <input type="text" placeholder="Location" class="search_input_field small-text p-2"
+                    [(ngModel)]="newEvent.location" />
+                </div>
+
+                <!-- Address -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Address</h3>
+                  <input type="text" placeholder="Address" class="search_input_field small-text p-2"
+                    [(ngModel)]="newEvent.address" />
+                </div>
+
+                <!-- Description -->
+                <div class="d-flex justify-content-between">
+                  <h3 class="mb-0">Description</h3>
+                  <textarea placeholder="Description" class="search_input_field small-text p-2"
+                    [(ngModel)]="newEvent.description"></textarea>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="d-flex gap-4 justify-content-end">
+                <button class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button class="primary_btn medium-text Medium w-25 px-0" (click)="saveEvent()" data-bs-dismiss="modal">
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event calendar modal -->
+<div class="modal fade" id="agencyEventModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content d-flex flex-column gap-3">
+      <div class="modal-header secondary_card_background modal_heading px-4 py-3">
+        <h1 class="modal-title small-text Medium" id="exampleModalToggleLabel">
+          {{ selectedEvent?.startDate | date : "dd-MM-yyyy" }}
+          <span>({{ selectedEvent?.startDate | date : "EEEE" }})</span>
+        </h1>
+        <div class="d-flex gap-2 calendar modal_actions_btn">
+          <img class="cursor_pointer" src="assets/images/svg-img/edit-modal.svg" (click)="openEventEditModel()" />
+          <img class="cursor_pointer" src="assets/images/svg-img/delete.svg" *ngIf="selectedEvent?.id"
+            (click)="deleteEvent(selectedEvent.id)" />
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+
+      <div class="modal-body p-4 pt-0 modal_details d-flex flex-column gap-3">
+        <div class="d-flex align-items-center gap-1">
+          <h3 class="Medium medium-text mb-0">{{ selectedEvent?.title }}</h3>
+          <div class="action_light_btn smaller-text Medium py-1 px-3">
+            {{ selectedEvent?.status }}
+          </div>
+        </div>
+
+        <div class="d-flex flex-column gap-2">
+          <u class="Medium small-text mb-0">Thoughts about</u>
+          <h4 class="Regular small-text mb-0">
+            {{ selectedEvent?.description }}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Event  -->
+<div class="modal fade" id="agencyEventEditModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+        <div class="single_tab">
+          <button class="nav-link active p-1 Sub-Heading">Event</button>
+        </div>
+        <!-- Event edit -->
+        <div class="d-flex flex-column gap-3 add_task">
+          <!-- title -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Title</h3>
+            <input type="text" placeholder="Field Name " class="search_input_field small-text p-2"
+              [(ngModel)]="editEventModel.title" />
+          </div>
+          <!-- start date time -->
+          <div class="d-flex gap-4">
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">Start date</h3>
+              <input type="date" placeholder="Field Name " class="search_input_field small-text p-2 w-75"
+                [(ngModel)]="editEventModel.startDate" />
+            </div>
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">Start time</h3>
+              <input type="time" placeholder="Field Name " class="search_input_field small-text p-2 w-75"
+                [(ngModel)]="editEventModel.startTime" />
+            </div>
+          </div>
+          <div class="d-flex gap-4">
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">End Date</h3>
+              <input type="date" placeholder="Field Name " class="search_input_field small-text p-2 w-75"
+                [(ngModel)]="editEventModel.endDate" />
+            </div>
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">End time</h3>
+              <input type="time" placeholder="Field Name " class="search_input_field small-text p-2 w-75"
+                [(ngModel)]="editEventModel.endTime" />
+            </div>
+          </div>
+
+          <!-- Assignee select -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Assignee</h3>
+            <select class="search_input_field" [(ngModel)]="editEventModel.assignedUserId">
+              <option [ngValue]="null">Select Agency User</option>
+              <option *ngFor="let user of agencyUsers" [ngValue]="user.id">
+                {{ user.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Location -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Location</h3>
+            <input type="text" placeholder="Location" class="search_input_field small-text p-2"
+              [(ngModel)]="editEventModel.location" />
+          </div>
+
+          <!-- Address -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Address</h3>
+            <input type="text" placeholder="Address" class="search_input_field small-text p-2"
+              [(ngModel)]="editEventModel.address" />
+          </div>
+          <!-- Description -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Description</h3>
+            <textarea placeholder="Description" class="search_input_field small-text p-2"
+              [(ngModel)]="editEventModel.description"></textarea>
+          </div>
+        </div>
+        <!-- buttons -->
+        <div class="d-flex gap-4 justify-content-end">
+          <button class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal" aria-label="Close">
+            Cancel
+          </button>
+          <button class="primary_btn medium-text Medium w-25 px-0" (click)="updateEvent()">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task calendar modal -->
+<div class="modal fade" id="agencyTaskModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content d-flex flex-column gap-3">
+      <!-- modal header -->
+      <div class="modal-header secondary_card_background modal_heading px-4 py-3">
+        <h1 class="modal-title small-text Medium mb-0" id="exampleModalToggleLabel">
+          {{ selectedTask?.startDate | date : "dd-MM-yyyy" }}
+          <span>({{ selectedTask?.startDate | date : "EEEE" }})</span>
+        </h1>
+
+        <div class="d-flex gap-2 modal_actions_btn">
+          <img class="cursor_pointer" src="assets/images/svg-img/edit-modal.svg" (click)="openEditModal()" />
+          <img class="cursor_pointer" src="assets/images/svg-img/delete.svg" (click)="deleteTask()" />
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+
+      <!-- modal details -->
+      <div class="modal_details p-4 pt-0 d-flex flex-column gap-4">
+        <!-- modal middle content -->
+        <div class="d-flex flex-column gap-3">
+          <h3 class="Medium small-text mb-0">
+            Title - {{ selectedTask?.title }}
+          </h3>
+
+          <div class="modal-body p-0 d-flex flex-column gap-2">
+            <u class="Medium small-text mb-0">Description</u>
+            <h4 class="Regular small-text mb-0">
+              {{ selectedTask?.description }}
+            </h4>
+          </div>
+        </div>
+
+        <!-- modal bottom -->
+        <div class="modal-footer border-0 p-0">
+          <div class="form-check d-inline-block position-relative account_option ms-auto">
+            <label for="vehicle1" class="checkbox">
+              <input type="checkbox" id="vehicle1" name="vehicle1" class="d-none"
+                [checked]="selectedTask?.status === 'COMPLETED'" />
+              <span class="checkmark"></span>
+              <div class="check_box">Task Completed</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Task edit modal -->
+<div class="modal fade" id="agencyTaskEditModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+        <div class="single_tab">
+          <button class="nav-link active p-1 Sub-Heading">Task</button>
+        </div>
+
+        <!-- Task edit -->
+        <div class="d-flex flex-column gap-3 add_task">
+          <!-- Title -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Title</h3>
+            <input type="text" placeholder="Field Name" class="search_input_field small-text p-2"
+              [(ngModel)]="editTaskModel.title" />
+          </div>
+
+          <!-- Assignee -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Assignee</h3>
+            <select class="search_input_field" [(ngModel)]="editTaskModel.assignedToId">
+              <option [ngValue]="null">Select Agency User</option>
+              <option *ngFor="let user of agencyUsers" [ngValue]="user.id">
+                {{ user.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Description</h3>
+            <textarea placeholder="Description" class="search_input_field small-text p-2"
+              [(ngModel)]="editTaskModel.description"></textarea>
+          </div>
+
+          <!-- All day -->
+          <div class="d-flex modal_heading">
+            <h3 class="mb-0">All day</h3>
+            <div class="d-flex gap-2 position-relative">
+              <label class="modal_checkbox">
+                <input type="checkbox" [(ngModel)]="editTaskModel.allDay" />
+                <span class="checkmarks"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Start date / Start time -->
+          <div class="d-flex gap-4">
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">Start date</h3>
+              <input type="date" class="search_input_field small-text p-2 w-75" [(ngModel)]="editTaskModel.startDate" />
+            </div>
+
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">Start time</h3>
+              <input type="time" class="search_input_field small-text p-2 w-75" [(ngModel)]="editTaskModel.startTime" />
+            </div>
+          </div>
+
+          <!-- End date / End time -->
+          <div class="d-flex gap-4">
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">End date</h3>
+              <input type="date" class="search_input_field small-text p-2 w-75" [(ngModel)]="editTaskModel.endDate" />
+            </div>
+
+            <div class="d-flex justify-content-between w-50">
+              <h3 class="mb-0 w-50">End time</h3>
+              <input type="time" class="search_input_field small-text p-2 w-75" [(ngModel)]="editTaskModel.endTime" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-4 justify-content-end">
+          <button class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal" aria-label="Close">
+            Cancel
+          </button>
+
+          <button class="primary_btn medium-text Medium w-25 px-0" (click)="saveEditedTask()">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Month-Year Picker Modal -->
+<div class="modal fade" id="agencyMonthYearPicker" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <h4 class="mb-3">Select Month & Year</h4>
+
+      <div class="d-flex gap-4">
+        <!-- MONTH -->
+        <select class="mb-0 w-50" [(ngModel)]="selectedMonth">
+          <option *ngFor="let m of months; let i = index" [value]="i">
+            {{ m }}
+          </option>
+        </select>
+
+        <!-- YEAR -->
+        <select class="mb-0 w-50" [(ngModel)]="selectedYear">
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+
+      <div class="text-end mt-3 d-flex justify-content-end gap-3">
+        <button class="secondary_outline_btn medium-text Medium w-25 px-0" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button class="primary_btn medium-text Medium w-25 px-0" (click)="applyMonthYear()" data-bs-dismiss="modal">
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

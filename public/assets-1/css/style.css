@@ -1,0 +1,2577 @@
+/* ROOT VARIABLE */
+
+/* LIGHT THEME */
+:root,
+[data-theme="light"] {
+
+  --Primary-color: #083160;
+  /* Blue */
+
+  --PrimaryBackground-color: #083160;
+  /* Blue */
+
+  --Primarylight-color: #EBFBFF;
+  /* Bluelight */
+
+  --Secondary-color: #F8F4F0;
+  /* Linen */
+
+  --Action-color: #00A0A3;
+  /* LightSeaGreen */
+
+  --ActionLight-color: #EFFEFD;
+  /* Light */
+
+  --WhiteBackground-color: #FFFFFF;
+  /* White */
+
+  --Textwhite-color: #FFFFFF;
+  /* White */
+
+  --Success-color: #03B517;
+  /* Green */
+
+  --Red-color: rgb(237, 17, 18);
+  /* Red */
+
+  --Orange-color: #FF6D00;
+  /* Orange */
+
+  --SlateGray-color: #7E8B9C;
+  /* SlateGray	 */
+
+  --Pink-color: #BB2A6D;
+  /* Black */
+
+  --DarkBlue-color: #07284B;
+  /* DarkBlue */
+
+  --Yellow-color: #FDB200;
+  /* Yellow */
+
+  --lightGreen-color: #8ECC47;
+  /* LightGreen */
+
+  --Gray-color: #B0B0B0;
+  /* Gray */
+
+  --TextDark-color: #2F3337;
+  /* Dark */
+
+  --TextDark2-color: #2F3337;
+  /* Dark */
+
+  --TextLight-color: #7D8C9D;
+  /* Light */
+
+  --Input-color: #FFFFFF;
+  /* Light */
+
+  --Border-color: #E7E7E7;
+
+  --LinearGradient-color: linear-gradient(90deg, rgba(253, 253, 253, 0.20) 0%, rgba(253, 253, 253, 0.00) 100%);
+  /* Gradient */
+
+  --light: #E5E5E5;
+
+  --chat-background: #D3F3FF;
+
+
+}
+
+/* DARK THEME */
+[data-theme="dark"] {
+
+  --Primary-color: #E7E7E7;
+  /* Blue */
+
+  --PrimaryBackground-color: #0D0D0D;
+  /* Blue */
+
+  --Primarylight-color: #171717;
+  /* Bluelight */
+
+  --Secondary-color: #171918;
+  /* Linen */
+
+  --Action-color: #04C8C7;
+  /* LightSeaGreen */
+
+  --WhiteBackground-color: #0D0D0D;
+  /* White */
+
+  --Success-color: #03B517;
+  /* Green */
+
+  --Red-color: #ED1112;
+  /* Red */
+
+  --Orange-color: #FF6D00;
+  /* Orange */
+
+  --SlateGray-color: #7E8B9C;
+  /* SlateGray	 */
+
+  --Pink-color: #BB2A6D;
+  /* Black */
+
+  --DarkBlue-color: #07284B;
+  /* DarkBlue */
+
+  --Yellow-color: #FDB200;
+  /* Yellow */
+
+  --lightGreen-color: #8ECC47;
+  /* LightGreen */
+
+  --Textwhite-color: #E7E7E7;
+  /* White */
+
+  --TextDark-color: #F6F6F6;
+  /* Dark */
+
+  --TextDark2-color: #2F3337;
+  /* Dark */
+
+  --TextLight-color: #D1D1D1;
+  /* Light */
+
+  --Input-color: #24282D;
+  /* Light */
+
+  --Border-color: #262626;
+
+
+  --LinearGradient-color: linear-gradient(90deg, rgba(0, 185, 188, 0.20) 0%, rgba(253, 253, 253, 0.00) 100%);
+  /* Gradient */
+
+  --chat-background: #D3F3FF;
+
+
+}
+
+/* CUSTOM CSS HERE */
+* {
+  font-family: "Galano Classic";
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: scroll;
+  /* height: 100vh; */
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  box-sizing: border-box;
+  line-height: normal;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  max-width: 1500px !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+/* body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
+
+.lh-0 {
+  line-height: 0px;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+
+/* CUSTOM CSS */
+
+/* FONT SIZE */
+.Heading {
+  font-size: clamp(16px, 2vw, 32px);
+}
+
+.large-text {
+  font-size: clamp(14px, 1vw, 20px);
+}
+
+.Sub-Heading {
+  font-size: clamp(14px, 1vw, 18px) !important;
+}
+
+.medium-text {
+  font-size: clamp(12px, 1vw, 16px);
+}
+
+.small-text {
+  font-size: clamp(12px, 1vw, 14px) !important;
+}
+
+.Caption {
+  font-size: clamp(10px, 1vw, 12px);
+}
+
+.smaller-text {
+  font-size: 11px;
+}
+
+.x-small-text {
+  font-size: 10px;
+}
+
+
+/* FONT WEIGHT */
+
+.light {
+  font-weight: 300;
+}
+
+.Regular {
+  font-weight: 400;
+}
+
+.Medium {
+  font-weight: 500;
+}
+
+.Semibold {
+  font-weight: 600;
+}
+
+.Bold {
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: var(--Primary-color) auto 0px;
+}
+
+
+/* background colors */
+.white_card_background {
+  background-color: var(--WhiteBackground-color) !important;
+}
+
+.secondary_card_background {
+  background-color: var(--Secondary-color);
+}
+
+.primary_card_background {
+  background-color: var(--Primary-color);
+}
+
+.action_card_background {
+  background-color: var(--Action-color);
+}
+
+.Primarylight_background {
+  background-color: var(--Primarylight-color);
+}
+
+/* Filter */
+.white-filter {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(25%) hue-rotate(70deg) brightness(108%) contrast(108%);
+}
+
+.blue-filter {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(100%) saturate(940%) hue-rotate(185deg) brightness(94%) contrast(100%);
+}
+
+.dark-gray {
+  filter: brightness(0) saturate(100%) invert(18%) sepia(16%) saturate(298%) hue-rotate(169deg) brightness(90%) contrast(91%);
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}
+
+.single_page {
+  height: 100vh;
+}
+
+/* LOGIN CSS */
+
+.background_img {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  position: absolute;
+  z-index: -1;
+}
+
+.login_middle_content {
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.login_details {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.login_background {
+  padding: 60px;
+  height: 690px;
+  overflow: hidden;
+  background-color: var(--PrimaryBackground-color);
+}
+
+.login_content {
+  gap: 40px;
+  height: calc(100vh - 200px);
+  overflow: scroll;
+}
+
+.scrollbar_hide ::-webkit-scrollbar {
+  display: none;
+}
+
+.login_content::-webkit-scrollbar {
+  display: none;
+}
+
+.login_text h1 {
+  color: var(--Textwhite-color);
+}
+
+.login_text h2 {
+  color: var(--Textwhite-color);
+}
+
+.input_field {
+  background-color: var(--Input-color);
+  color: var(--Primary-color);
+  border: 1px solid transparent;
+  width: 100%;
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 500;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.Forgot {
+  color: var(--Action-color);
+}
+
+.eye_img {
+  position: absolute;
+  right: 8px;
+  top: 20px;
+  width: 16px;
+  height: 16px;
+}
+
+/* buttons  */
+.primary_btn {
+  background-color: var(--Action-color);
+  color: var(--WhiteBackground-color);
+  box-shadow: 0px 0px 14px 0px rgba(0, 160, 163, 0.13);
+  border: 1px solid transparent;
+  padding: 8px 48px;
+}
+
+.primary_outline_btn {
+  background-color: transparent;
+  border: 1px solid var(--Action-color);
+  color: var(--Action-color);
+  box-shadow: 0px 0px 14px 0px rgba(0, 160, 163, 0.13);
+  padding: 4px 48px;
+}
+
+.secondary_btn {
+  color: var(--TextLight-color);
+  border: 1px solid var(--Gray-color);
+  padding: 4px 8px;
+  background-color: transparent;
+}
+
+.secondary_outline_btn {
+  color: var(--TextDark-color);
+  border: 1px solid var(--Border-color);
+  padding: 8px 48px;
+  background-color: transparent;
+}
+
+.outline_primary_btn {
+  padding: 6px 12px;
+  border: 1px solid var(--Action-color);
+  color: var(--Action-color);
+  background-color: var(--WhiteBackground-color);
+}
+
+.login_bottom_caption {
+  color: var(--Textwhite-color);
+}
+
+.action_color {
+  color: var(--Action-color);
+}
+
+/* otp */
+.otp {
+  display: flex;
+  gap: 34px;
+}
+
+.otp_field {
+  background-color: var(--Input-color);
+  color: var(--Primary-color);
+  text-align: center;
+  padding: 16px;
+  border: 1px solid transparent;
+  width: 60px;
+  height: 60px;
+  font-size: clamp(12px, 1vw, 32px);
+  font-weight: 600;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+/* DASHBOARD CSS START */
+.Sidebar {
+  height: 100vh;
+  width: 242px;
+  background-color: var(--PrimaryBackground-color);
+}
+
+.middle_content {
+  width: calc(100% - 242px);
+}
+
+.main_content {
+  height: calc(100vh - 58px);
+  overflow-y: scroll;
+}
+
+.main_content::-webkit-scrollbar {
+  display: none;
+}
+
+.overflow_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* overflow scrollbar */
+.overflow_scroll {
+  overflow: hidden;
+  overflow-y: scroll;
+  padding: 0px 2px;
+}
+
+
+/* HEADER CSS */
+.header {
+  padding: 12px 20px;
+  height: 58px;
+  background-color: var(--WhiteBackground-color);
+}
+
+
+/* SIDEBAR */
+.dashboard_logo {
+  background-color: var(--WhiteBackground-color);
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar_scroll {
+  overflow: scroll;
+  height: calc(100vh - 16px);
+  padding-bottom: 20px;
+}
+
+.sidebar_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dashboard_logo img {
+  height: 27px;
+  scale: 1.5;
+}
+
+.sidebar_navbar ul {
+  margin-top: 30px;
+  padding-left: 0 !important;
+}
+
+.sidebar_navbar li {
+  padding: 20px 12px;
+  margin-bottom: 16px;
+}
+
+.sidebar_navbar img {
+  height: 30px;
+  width: 30px;
+}
+
+.sidebar_navbar a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 500;
+  color: var(--Textwhite-color);
+  font-size: clamp(14px, 1vw, 16px);
+}
+
+li.active {
+  background: var(--LinearGradient-color);
+}
+
+
+/* MIDDLE CONTENT  */
+.card_heading {
+  color: var(--Primary-color);
+}
+
+.recive_email_icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.Received_Emails h2 {
+  color: var(--TextDark-color);
+}
+
+.user_name_icon {
+  height: 41px;
+  background-color: var(--Action-color);
+  opacity: 0.4;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--Textwhite-color);
+  border-radius: 50%;
+}
+
+.grid_cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
+  gap: 16px;
+}
+
+.candidate_text {
+  h2 {
+    color: var(--TextDark-color);
+  }
+}
+
+.avtar {
+  height: 40px;
+  width: 40px;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+/* pagination */
+.border_top {
+  border-top: 1px solid var(--Border-color);
+}
+
+.pagination img {
+  height: 36px;
+  width: 36px;
+}
+
+.pagination h2 {
+  color: var(--Primary-color);
+}
+
+/* PROFILE DROPDOWN */
+.profiles_dropdown {
+  inset: 16px 0px auto auto !important;
+  width: 400px;
+  padding: 20px !important;
+  border-radius: 8px;
+  background: var(--WhiteBackground-color) !important;
+  box-shadow: 4px 8px 32px 0px rgba(0, 0, 0, 0.24);
+  border: 1px solid transparent !important;
+}
+
+.dropdown-menu.show {
+  display: block;
+  background-color: var(--WhiteBackground-color);
+
+}
+
+.arrow_transform {
+  transform: rotate(90deg);
+}
+
+.profile_list li {
+  color: var(--TextDark-color);
+  cursor: pointer;
+}
+
+.dropdown a {
+  color: var(--TextDark-color);
+}
+
+.dropdown-toggle {
+  color: var(--TextDark-color);
+}
+
+.profile_img {
+  height: 34px;
+  width: 34px;
+}
+
+.profile_dropdown img {
+  height: 50px;
+  width: 50px;
+}
+
+.profile_dropdown {
+  h2 {
+    color: var(--TextDark-color);
+  }
+
+  h3 {
+    color: var(--TextLight-color);
+  }
+}
+
+
+.danger {
+  color: var(--Red-color) !important;
+}
+
+.calendar_dropdown {
+  background-color: var(--Primarylight-color);
+  border: 1px solid transparent;
+  color: var(--Primary-color);
+}
+
+.daily_status {
+  color: var(--TextDark-color);
+}
+
+
+/* Campaigns css */
+.Campaigns_details_cards {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+}
+
+
+.Campaigns_grid_cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(307px, 1fr));
+  gap: 24px;
+}
+
+.Campaigns_cards {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+}
+
+.Campaigns_btn_status {
+  padding: 8px;
+  border-radius: 24px;
+
+  h4 {
+    color: var(--Red-color);
+  }
+
+  h5 {
+    color: var(--Success-color);
+  }
+}
+
+.Campaigns {
+  h3 {
+    color: var(--TextLight-color);
+
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+  }
+}
+
+.Campaigns_cards {
+  h2 {
+    color: var(--TextDark-color);
+  }
+}
+
+.Campaigns__status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.active_status {
+  span {
+    background-color: var(--Success-color);
+  }
+
+  h4 {
+    color: var(--Success-color);
+  }
+}
+
+.inactive_status {
+  span {
+    background-color: var(--SlateGray-color);
+  }
+
+  h4 {
+    color: var(--SlateGray-color);
+  }
+}
+
+.pending_status {
+  span {
+    background-color: var(--DarkBlue-color);
+  }
+
+  h4 {
+    color: var(--DarkBlue-color);
+  }
+}
+
+.inprogress_status {
+  span {
+    background-color: var(--Yellow-color);
+  }
+
+  h4 {
+    color: var(--Yellow-color);
+  }
+}
+
+.search_input {
+  width: 26%;
+}
+
+input.search_input_field:focus {
+  border: 1px solid var(--Action-color);
+}
+
+.search_input2 {
+  width: 56%;
+}
+
+.search_input_field {
+  background-color: transparent;
+  color: var(--Primary-color);
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 500;
+  border: 2px solid var(--Border-color);
+  padding: 6px;
+  height: 35px;
+  z-index: 99;
+}
+
+
+.search_img {
+  position: absolute;
+  right: 12px;
+  top: 9px;
+}
+
+.heading_border_bottom {
+  border-bottom: 2px solid var(--Primary-color);
+  padding-bottom: 4px;
+}
+
+.border_bottom {
+  border-bottom: 1px solid var(--Border-color);
+}
+
+.user_details_top h4 {
+  color: var(--TextDark-color);
+  line-height: 40px;
+}
+
+/* list view card details */
+.user_details {
+  h2 {
+    color: var(--TextDark-color);
+  }
+
+  h3 {
+    color: var(--TextLight-color);
+  }
+}
+
+/* progress bar  */
+.progress,
+.progress-stacked {
+  --bs-progress-height: 5px !important;
+}
+
+.progress-bar {
+  border-radius: 13px;
+}
+
+.progress-stacked {
+  .blue {
+    background-color: var(--DarkBlue-color);
+  }
+
+  .red {
+    background-color: var(--Red-color);
+  }
+
+  .green {
+    background-color: var(--Success-color);
+  }
+
+  .yellow {
+    background-color: var(--Yellow-color);
+  }
+}
+
+.blue {
+  color: var(--Primary-color);
+}
+
+/* TABLE CSS leads details */
+th {
+  color: var(--TextDark-color);
+  font-size: clamp(10px, 1vw, 14px);
+  font-weight: 500;
+  padding: 12px 24px !important;
+  white-space: nowrap;
+}
+
+.table_data {
+  height: calc(-322px + 100vh);
+}
+
+td {
+  color: var(--TextLight-color);
+  font-size: clamp(10px, 1vw, 14px);
+  font-weight: 500;
+  padding: 16px 24px !important;
+  line-height: 36px;
+  white-space: nowrap;
+}
+
+td a {
+  color: var(--TextLight-color);
+}
+
+.table>:not(caption)>*>* {
+  border-color: var(--Border-color) !important;
+}
+
+.dropdown_toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 12px;
+  gap: 8px;
+  border: 1px solid #fff;
+  font-weight: 500;
+  font-size: clamp(10px, 1vw, 12px);
+}
+
+.dropdowns .dropdown_toggle::after {
+  content: url('../images/svg-img/downarrow.svg');
+}
+
+.dropdownss .dropdown_toggle::after {
+  content: url('../images/svg-img/downarrow.svg');
+  filter: brightness(0) saturate(100%) invert(17%) sepia(53%) saturate(1416%) hue-rotate(178deg) brightness(95%) contrast(100%);
+}
+
+.dropdowns li a {
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 500;
+  color: var(--TextDark-color);
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.hidetab,
+.secondtabs {
+  display: none;
+}
+
+/* filters */
+.green {
+  color: var(--Success-color);
+}
+
+/* red button */
+.Rejection {
+  filter: brightness(0) saturate(100%) invert(16%) sepia(99%) saturate(4253%) hue-rotate(349deg) brightness(93%) contrast(98%);
+}
+
+.Rejection_bg {
+  background-color: color-mix(in srgb, var(--Red-color) 10%, transparent);
+}
+
+/* yellow button */
+.Unprocessed {
+  filter: brightness(0) saturate(100%) invert(62%) sepia(83%) saturate(1040%) hue-rotate(2deg) brightness(103%) contrast(103%);
+}
+
+.Unprocessed_bg {
+  background-color: color-mix(in srgb, var(--Yellow-color) 10%, transparent);
+}
+
+/* green button */
+.Hired {
+  filter: brightness(0) saturate(100%) invert(39%) sepia(94%) saturate(1376%) hue-rotate(101deg) brightness(97%) contrast(105%);
+}
+
+.Hired_bg {
+  background-color: color-mix(in srgb, var(--Success-color) 10%, transparent);
+}
+
+/* gray button */
+.NotReached {
+  filter: brightness(0) saturate(100%) invert(55%) sepia(24%) saturate(244%) hue-rotate(174deg) brightness(94%) contrast(93%);
+}
+
+.NotReached_bg {
+  background-color: color-mix(in srgb, var(--Gray-color) 10%, transparent);
+}
+
+/* pink button */
+.Interview {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(33%) saturate(4754%) hue-rotate(309deg) brightness(94%) contrast(90%);
+}
+
+.Interview_bg {
+  background-color: color-mix(in srgb, var(--Pink-color) 10%, transparent);
+}
+
+/* LightSeaGreen button */
+.CVRequest {
+  filter: brightness(0) saturate(100%) invert(48%) sepia(67%) saturate(5622%) hue-rotate(157deg) brightness(99%) contrast(101%);
+}
+
+.CVRequest_bg {
+  background-color: color-mix(in srgb, var(--Action-color) 10%, transparent);
+}
+
+/* orange button */
+.InContact {
+  filter: brightness(0) saturate(100%) invert(70%) sepia(77%) saturate(5846%) hue-rotate(360deg) brightness(102%) contrast(105%);
+}
+
+.InContact_bg {
+  background-color: color-mix(in srgb, var(--Orange-color) 10%, transparent);
+}
+
+/* black */
+.black {
+  filter: brightness(0) saturate(100%) invert(19%) sepia(20%) saturate(232%) hue-rotate(169deg) brightness(91%) contrast(93%);
+}
+
+/* gray */
+.gray {
+  filter: brightness(0) saturate(100%) invert(45%) sepia(9%) saturate(888%) hue-rotate(186deg) brightness(101%) contrast(84%);
+}
+
+/* blue  */
+.filter_status {
+  border: 1px solid var(--Gray-color);
+  color: var(--TextLight-color);
+  background-color: transparent;
+}
+
+.gray_border_bottom {
+  border-bottom: 1px solid var(--border-bottom-color);
+}
+
+/* tabs button in campaigns page */
+
+.lead_tab button {
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+
+.selectSection button.active {
+  background-color: var(--Action-color);
+  color: var(--Textwhite-color);
+
+  img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(95%) saturate(1%) hue-rotate(17deg) brightness(103%) contrast(100%);
+  }
+}
+
+.lead_cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_details {
+  min-width: 280px;
+}
+
+.user_list_details {
+  height: calc(100vh - 350px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* signle lead details */
+
+.single_tab button {
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 500;
+  color: var(--TextLight-color);
+}
+
+.single_tab h4 {
+  color: var(--Textwhite-color);
+}
+
+.single_tab button.active {
+  border-bottom: 1px solid var(--Action-color);
+  background-color: transparent;
+  border-width: 2px;
+  color: var(--Action-color) !important;
+  font-weight: 600;
+}
+
+.tabs_list_details {
+  li {
+    list-style: auto;
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 500;
+    color: var(--TextLight-color);
+  }
+
+  h3 {
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 500;
+    color: var(--TextDark-color);
+    margin: 0;
+  }
+
+  h2 {
+    color: var(--Primary-color);
+  }
+}
+
+.single_details {
+  h2 {
+    color: var(--Primary-color);
+  }
+
+  h3 {
+    color: var(--TextLight-color);
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+  }
+}
+
+
+
+.document_card {
+  h3 {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--TextLight-color);
+  }
+}
+
+.document_pdf_icon {
+  height: 34px;
+  width: 34px;
+}
+
+.note_discription {
+  border: 1px solid var(--Border-color);
+}
+
+.send_btn2 {
+  background-color: var(--Action-color);
+  color: var(--WhiteBackground-color);
+  border: 1px solid transparent;
+  position: absolute;
+  right: 16px;
+  top: 11px;
+}
+
+.user_name {
+  padding: 4px 8px;
+  border-radius: 20px;
+  background-color: #0831601a;
+  color: #083160;
+}
+
+.note_details {
+  h3 {
+    color: var(--TextLight-color);
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+  }
+}
+
+.action_light_btn {
+  background-color: var(--Action-color);
+  color: var(--Textwhite-color);
+  border: 1px solid transparent;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.task_details {
+  h2 {
+    color: var(--TextDark-color);
+  }
+
+  h3 {
+    color: var(--TextLight-color);
+  }
+}
+
+.task_details_card {
+  border: 1px solid var(--Border-color);
+  padding: 8px;
+}
+
+/* job form */
+.job_form_details {
+  li {
+    color: var(--TextDark-color);
+    list-style: auto;
+  }
+
+  span {
+    color: var(--TextDark-color);
+  }
+
+  h3 {
+    color: var(--TextLight-color);
+    margin: 0;
+  }
+}
+
+
+
+
+/* CUSTOM TOGGLE BTN */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #E7E7E7;
+  -webkit-transition: .4s;
+  transition: .4s;
+  width: 45px;
+  height: 25px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 6px;
+  bottom: 5px;
+  background-color: var(--Textwhite-color);
+  -webkit-transition: .4s;
+  transition: .4s;
+  filter: drop-shadow(-2px 1px 6px rgba(0, 0, 0, 0.25));
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
+}
+
+input:checked+.slider {
+  background-color: var(--Action-color);
+  border: 1px solid transparent;
+}
+
+input:checked+.slider:before {
+  transform: translateX(18px);
+  bottom: 4px;
+}
+
+
+/* Theme Change */
+
+.dark_theme {
+  font-size: 0px;
+  background-color: var(--color-bg);
+  border: 1px solid transparent;
+  height: 18px;
+  width: 55px;
+  position: relative;
+  z-index: 999;
+}
+
+.darktheme_switch {
+  position: absolute;
+  width: 40px;
+  right: 0px;
+  top: 2px;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 6px;
+}
+
+.slider.round:before {
+  border-radius: 2px;
+}
+
+/* task & calendar */
+.calendar {
+  a {
+    color: var(--Textwhite-color);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.task_cards {
+  background: #FFF;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+  opacity: 0.8;
+}
+
+
+.task_card {
+  h2 {
+    color: var(--Primary-color);
+  }
+
+  h3 {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--TextLight-color);
+  }
+
+  h5 {
+    color: var(--TextDark-color);
+  }
+
+  span {
+    color: var(--TextLight-color);
+  }
+}
+
+.calendar_task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar_details {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* calendar modal */
+.modal-content {
+  border-radius: 12px !important;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.btn-close {
+  font-size: 12px;
+  background-color: var(--light) !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.modal_bottom {
+  position: absolute !important;
+  bottom: 0;
+}
+
+.modal-header {
+  border-radius: 12px 12px 0px 0px !important;
+}
+
+.modal_heading {
+  h1 {
+    color: var(--TextDark-color);
+  }
+
+  span {
+    color: var(--TextLight-color);
+  }
+}
+
+.modal_details {
+  h3 {
+    color: var(--Primary-color);
+  }
+
+  u {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--TextLight-color);
+  }
+}
+
+
+/* checkbox css */
+
+.check_box {
+  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.08);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 6px 40px 6px 8px;
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 500;
+  color: var(--Action-color);
+  border: 1px solid var(--Action-color) !important;
+}
+
+.chacktext {
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 500;
+}
+
+.checkbox {
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  height: 40px;
+}
+
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 12px;
+  top: 12px;
+  border: 1px solid var(--Action-color);
+  border-radius: 16px;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox input:checked~.checkmark:after {
+  display: block;
+}
+
+.checkbox .checkmark:after {
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 8px;
+  border: solid var(--Action-color);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.account_option input:checked~.check_box {
+  background-color: var(--Action-color) !important;
+  color: var(--Textwhite-color);
+}
+
+.account_option input:checked~.checkmark {
+  background-color: var(--WhiteBackground-color) !important;
+}
+
+/* large modal */
+.large_modal {
+  max-width: 800px !important;
+}
+
+/* add task modal */
+.add_task {
+  h3 {
+    color: var(--TextDark-color);
+    font-size: clamp(12px, 1vw, 16px);
+    font-weight: 500;
+    width: 20%;
+  }
+
+  .googlemeet {
+    width: 20%;
+  }
+
+  input,
+  select,
+  .check_box_field,
+  .google_meet_clipboard {
+    width: 84%;
+  }
+
+  textarea {
+    width: 84%;
+    resize: none;
+    height: 115px;
+  }
+
+  h1 {
+    color: var(--TextDark-color);
+
+  }
+}
+
+/* Create a custom checkbox */
+.checkmarks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 35px;
+  width: 35px;
+  background-color: var(--WhiteBackground-color);
+  border: 1px solid var(--Border-color);
+}
+
+.modal_checkbox input {
+  height: 35px;
+  width: 35px;
+}
+
+/* On mouse-over, add a grey background color */
+.modal_checkbox:hover input~.checkmarks {
+  background-color: var(--Textwhite-color);
+}
+
+/* When the checkbox is checked, add a blue background */
+.modal_checkbox input:checked~.checkmarks {
+  background-color: var(--Action-color);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmarks:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.modal_checkbox input:checked~.checkmarks:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.modal_checkbox .checkmarks:after {
+  left: 13px;
+  top: 10px;
+  width: 7px;
+  height: 12px;
+  border: solid var(--Textwhite-color);
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(42deg);
+}
+
+/* modal dropdown */
+
+.dropdown_details li a {
+  color: var(--TextLight-color);
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 500;
+}
+
+.dropdown-item:active {
+  background-color: var(--Action-color) !important;
+}
+
+/* Email Functionality */
+
+.email_icon {
+  height: 47px;
+  width: 47px;
+  object-fit: cover;
+}
+
+/*Filter options selector start*/
+.select-btn {
+  gap: 8px;
+  display: flex;
+  overflow: hidden;
+  color: var(--Primary-color);
+  align-items: center;
+  justify-content: space-between;
+  background: var(--WhiteBackground-color);
+  border: 1px solid transparent;
+  padding: 2px 8px;
+}
+
+.select-menu .select-btn .sBtn-text {
+  font-weight: 500;
+  font-size: clamp(12px, 1vw, 14px);
+
+}
+
+.options {
+  position: absolute;
+  width: 122px;
+  color: var(--TextDark-color);
+  margin-top: 10px;
+  border-radius: 8px;
+  background: var(--WhiteBackground-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  animation: fadeInDown 0.35s both;
+}
+
+.options::-webkit-scrollbar {
+  display: none;
+}
+
+.options .option {
+  display: flex;
+  cursor: pointer;
+  padding: 0 16px;
+  align-items: center;
+  background: var(--WhiteBackground-color);
+}
+
+.option {
+  margin: 8px 0;
+}
+
+.options .option:hover {
+  background: #f2f2f2;
+}
+
+.options .option .option-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--TextDark-color);
+
+}
+
+.select-btn svg {
+  height: 24px;
+  width: 24px;
+  transition: 0.2s;
+}
+
+.active .select-btn svg {
+  transform: rotate(180deg);
+}
+
+.active .options {
+  display: block;
+  opacity: 0;
+  z-index: 10;
+  animation: fadeInUp 0.4s both;
+}
+
+/*Animation for options box fade up-down*/
+
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, 30px, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translate3d(0, 20px, 0);
+    opacity: 0;
+  }
+}
+
+
+/* email tabs */
+.email_tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+.email_tabs .nav-link.active,
+.email_tabs .show>.nav-link {
+  border: 1px solid var(--Action-color) !important;
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.21);
+}
+
+.email_tabs button {
+  width: 100%;
+}
+
+.email_card_details {
+  h2 {
+    font-size: clamp(10px, 1vw, 14px);
+    color: var(--TextDark-color);
+    font-weight: 500;
+  }
+
+  h3 {
+    font-size: clamp(12px, 1vw, 16px);
+    color: var(--TextDark-color);
+    font-weight: 500;
+    text-align: start;
+  }
+
+  h4 {
+    font-size: clamp(10px, 1vw, 14px);
+    color: var(--TextLight-color);
+    font-weight: 500;
+    text-align: start;
+  }
+}
+
+.card_right_details {
+  width: 22%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.card_right_details h2 {
+  font-size: clamp(10px, 1vw, 11px);
+  font-weight: 400;
+  color: var(--TextDark-color);
+}
+
+.user_email {
+  h3 {
+    color: var(--TextLight-color);
+  }
+
+  h5 {
+    color: var(--TextDark-color);
+  }
+}
+
+.email_details {
+  border-bottom: 1px solid var(--Border-color);
+  padding-bottom: 24px;
+}
+
+.document_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+.document_card {
+  padding: 8px;
+}
+
+.email_details {
+  p {
+    font-size: clamp(10px, 1vw, 12px);
+    font-weight: 400;
+    color: var(--TextLight-color);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(12px, 1vw, 16px);
+    font-weight: 500;
+    color: var(--TextDark-color);
+  }
+
+  h2 {
+    font-size: clamp(12px, 1vw, 16px);
+    font-weight: 400;
+    color: var(--TextDark-color);
+  }
+}
+
+.document_attech h3 {
+  color: var(--TextDark-color);
+}
+
+.send_email {
+  h2 {
+    color: var(--TextLight-color);
+  }
+}
+
+.send_email {
+  border-bottom: 1px solid var(--Border-color);
+  padding-bottom: 10px;
+}
+
+/* editor */
+.ck-reset_all :not(.ck-reset_all-excluded *) {
+  background-color: var(--Secondary-color) !important;
+}
+
+
+/* rating  start */
+.rating {
+  font-size: 0;
+}
+
+.star {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url("../images/svg-img/star.svg");
+  background-size: cover;
+}
+
+.star.active {
+  background-image: url("../images/svg-img/starfill.svg");
+  animation: fillStar 0.5s forwards;
+}
+
+@keyframes fillStar {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* compose */
+.Compose_email {
+  border-bottom: 1px solid var(--Border-color);
+  padding-bottom: 10px;
+}
+
+.Compose_email {
+  h2 {
+    color: var(--Gray-color);
+  }
+
+}
+
+.Compose_emails {
+  label {
+    color: var(--Gray-color);
+  }
+}
+
+.email_profile {
+  h3 {
+    color: var(--TextLight-color);
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+  }
+
+}
+
+.new_input_field_add {
+  border: 1px solid transparent;
+}
+
+/* Agency Room */
+
+.Agency_tabs .nav-link {
+  width: 200px;
+  padding: 16px;
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 500;
+  color: var(--TextDark-color);
+}
+
+.Agency_tabs .nav-link.active {
+  color: var(--TextDark-color) !important;
+  background-color: var(--WhiteBackground-color) !important;
+  border-radius: 0;
+  padding: 24px;
+}
+
+.Agencyroom_groupchat {
+  position: absolute;
+  inset: 0px auto auto 0px;
+  margin: 0px;
+  transform: translate(-153px, 34px) !important;
+}
+
+/*Agency Room chat */
+
+.chat_search_icon {
+  position: absolute;
+  left: 22px;
+  top: 12px;
+}
+
+.chat_user_search {
+  background: #F5F5F5;
+  border-radius: 22px;
+  border: 1px solid transparent;
+  font-size: clamp(12px, 1vw, 14px);
+
+}
+
+.chat_edit {
+  height: 40px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Action-color);
+  border-radius: 50%;
+}
+
+.overflow_hidden {
+  overflow: hidden;
+}
+
+.user_chat {
+  h3 {
+    color: var(--TextLight-color);
+    text-align: start;
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+    text-align: start;
+  }
+}
+
+.user_chat_right {
+  h3 {
+    color: var(--TextLight-color);
+  }
+
+  span {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: var(--Action-color);
+    color: var(--Textwhite-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+.chat_middle_section {
+  background-color: var(--chat-background);
+  padding: 24px 24px 0px  !important;
+
+}
+
+.border_right {
+  border-right: 1px solid var(--Border-color);
+}
+
+.Agency_Room_chats {
+  height: calc(100% - 167px);
+}
+
+.chat_middle_section {
+  overflow-y: auto;
+}
+
+.chat_middle_section::-webkit-scrollbar {
+  display: none;
+}
+
+.chat_bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 0px 8px;
+  border-radius: 8px;
+}
+
+.chatting {
+  justify-content: end;
+  height: 100%;
+}
+
+.chat_box {
+  h3 {
+    color: var(--TextDark-color);
+  }
+}
+
+.nav-link:focus-visible {
+  outline: 0;
+  box-shadow: none !important;
+}
+
+/* jobpost */
+
+.jobpost {
+  h3 {
+    color: var(--TextDark-color);
+    font-size: clamp(12px, 1vw, 16px);
+    font-weight: 500;
+  }
+
+  input {
+    color: var(--Primary-color);
+  }
+}
+
+/* upload file */
+.file_select_box {
+  border-radius: 6px;
+  border: 1px dashed var(--Action-color);
+  height: 113px;
+  padding: 12px;
+}
+
+.file_select {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  position: relative;
+}
+
+.file_select_box input:not(:placeholder-shown)+label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 29%;
+  left: 12%;
+  font-size: 17px;
+  font-weight: 500;
+  z-index: 9;
+}
+
+.file_select_box h4 {
+  color: var(--Action-color);
+}
+
+/* custom dropdown job form */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--WhiteBackground-color);
+  width: 100%;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  z-index: 10;
+  padding: 8px 0px 0px;
+}
+
+.dropdown-content label {
+  display: flex;
+  padding: 8px 16px;
+  cursor: pointer;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: clamp(10px, 1vw, 14px);
+  color: var(--TextDark-color);
+  margin-bottom: 8px;
+}
+
+.dropdown-content label:hover {
+  background-color: var(--light);
+}
+
+.dropdown-content input[type="checkbox"] {
+  width: 1%;
+}
+
+.dropdown-content {
+  display: none;
+}
+
+.show-dropdown .dropdown-content {
+  display: block;
+}
+
+.updown_arrow {
+  position: absolute;
+  right: 8px;
+  top: 13px;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 9px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  bottom: 2%;
+  z-index: 9;
+}
+
+/* Hide the default arrow icon */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  z-index: 999;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  z-index: 999;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  z-index: 999;
+}
+
+input[type="date"] {
+  padding-right: 25px;
+}
+
+
+/* notification css */
+.notification_circle {
+  width: 12px;
+  height: 12px;
+  background-color: var(--Red-color);
+  border-radius: 50%;
+  font-size: clamp(6px, 1vw, 8px);
+  color: var(--Textwhite-color);
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+}
+
+.offcanvas-header {
+  h5 {
+    color: var(--TextDark-color);
+  }
+
+  h6 {
+    color: var(--Action-color);
+    cursor: pointer;
+  }
+}
+
+.notification_card {
+  h5 {
+    color: var(--TextDark-color);
+  }
+
+  h6 {
+    color: var(--TextLight-color);
+  }
+}
+
+.offcanvas-body::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* CHATBOX CSS HERE */
+.open-button {
+  padding: 12px 20px;
+  background-color: var(--Action-color);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.39);
+  border: none;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 78px;
+  height: 64px;
+  z-index: 9999;
+}
+
+#close {
+  display: none;
+}
+
+.chatbox_scroll {
+  height: 333px;
+  overflow-y: scroll;
+}
+
+.chatbox_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* .send_btn {
+  background-color: var(--Action-color);
+  color: var(--WhiteBackground-color);
+  border: 1px solid transparent;
+  position: absolute;
+  right: 16px;
+  bottom: 0px;
+} */
+
+.form-container {
+  border-radius: 8px;
+  background-color: var(--WhiteBackground-color);
+  color: #777;
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.39);
+  height: 100%;
+}
+
+.form-container textarea:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .cancel {
+  background-color: #1974D2;
+}
+
+.input_text {
+  height: 43px;
+  color: var(--Primary-color);
+}
+
+.input_text input {
+  width: 90%;
+}
+
+.input_text::placeholder {
+  color: var(--TextDark-color);
+  opacity: 0.4;
+}
+
+.chatbox_header {
+  h3 {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+    opacity: 0.6;
+  }
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  background-color: var(--Action-color);
+  border-radius: 50%;
+}
+
+.chatbox_message {
+  h3 {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--Textwhite-color);
+  }
+
+  h5 {
+    color: var(--TextLight-color);
+  }
+}
+
+/* message sender */
+.message_sender {
+  h3 {
+    color: var(--TextDark-color);
+  }
+
+  h4 {
+    color: var(--TextDark-color);
+  }
+
+  h5 {
+    color: var(--Textwhite-color);
+  }
+}
+
+.small_dropdown {
+  border: 1px solid transparent !important;
+  width: 200px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.24);
+}
+
+/* chatbox */
+
+.chat-area {
+  position: relative;
+  width: 100%;
+  background-color: var(--WhiteBackground-color);
+  border-radius: 0.3rem;
+  height: calc(100vh - 33vh);
+  overflow: hidden;
+  display: flex;
+}
+
+.chat-area .modal-content {
+  border: none;
+  border-radius: 0;
+  outline: 0;
+  height: 100%;
+}
+
+.chat-area .modal-dialog-scrollable {
+  height: 100% !important;
+}
+
+.chatbox {
+  overflow: hidden;
+  height: 100%;
+}
+
+.send-box {
+  padding:16px 24px 24px;
+  background-color: var(--chat-background);
+}
+
+.chatbox .modal-dialog,
+.chatlist .modal-dialog {
+  max-width: 100%;
+  margin: 0;
+}
+
+a.add img {
+  height: 36px;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.chat-icon {
+  display: none;
+}
+
+.closess i {
+  display: none;
+}
+
+.chat-list a {
+  padding: 12px 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.chat-list a.active {
+  color: var(--TextDark-color) !important;
+  background-color: var(--Primarylight-color) !important;
+  border-radius: 0;
+  padding: 12px 16px;
+}
+
+.chat-list a.active {
+  span {
+    display: none;
+  }
+}
+
+/* compose gmail */
+
+.add_gmail {
+  cursor: pointer;
+
+  span:hover {
+    border-bottom: 1px solid var(--TextDark-color);
+  }
+}
+
+
+
+/* TABLE PAGINATION CSS */
+
+.page-link:focus {
+  color: var(--Primary-color) !important;
+  background-color: var(--Primarylight-color) !important;
+  outline: 0;
+  box-shadow: none !important;
+}
+
+.table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px;
+
+  .arrow {
+    border: 1px solid var(--Border-color);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    padding: 6px 14px;
+    color: var(--TextDark-color);
+  }
+
+  .page-link {
+    color: var(--TextLight-color);
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 500;
+    padding: 8px 17px;
+  }
+}
+
+.pagination {
+  --bs-pagination-border-color: none !important;
+}
+
+.page-link:hover {
+  z-index: 2;
+  color: var(--bs-pagination-hover-color);
+  background-color: var(--bs-pagination-hover-bg);
+  border-color: var(--bs-pagination-hover-border-color);
+}
+
+/* CUSTOM DROPDOWN CHATBOX */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* chatbox */
+@media (max-width: 992px) {
+  .chat-icon {
+    display: block;
+    margin-right: 5px;
+  }
+
+  .chatlist {
+    width: 100%;
+  }
+
+  .chatbox {
+    width: 100%;
+    position: absolute;
+    left: 1000px;
+    right: 0;
+    background: #fff;
+    transition: all 0.5s ease;
+    border-left: none;
+  }
+
+  .showbox {
+    left: 0 !important;
+    transition: all 0.5s ease;
+  }
+
+  .msg-head .flex-shrink-0 img {
+    height: 30px;
+  }
+
+  .chat-area .col-md-4 {
+    width: 100%;
+  }
+
+  .chat-area .col-md-8 {
+    width: 100%;
+  }
+
+  .task_calendar_header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+
+
+@media (max-width: 1250px) {
+  .table_actions {
+    .col-md-5 {
+      flex: 0 0 auto;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .col-md-7 {
+      flex: 0 0 auto;
+      width: 100%;
+      justify-content: flex-start !important;
+    }
+  }
+}
+
+@media (min-width:575px) and (max-width: 1200px) {
+
+  .email_Functionality {
+    .col-md-4 {
+      flex: 0 0 auto;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .col-md-8 {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+  }
+}
+
+
+@media (max-width:992px) {
+
+  .dashboard_card .col-md-6 {
+    flex: 0 0 auto;
+    width: 100% !important;
+  }
+
+  .search_input {
+    width: 50%;
+  }
+
+  .search_input2 {
+    width: 48%;
+  }
+
+  td {
+    line-height: 16px;
+  }
+
+  .calendar_task {
+    flex-direction: column;
+    align-items: start !important;
+    gap: 12px;
+  }
+}
+
+
+@media (max-width:768px) {
+  .table_actions {
+    .col-md-7 {
+      flex: 0 0 auto;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+  }
+
+  .lead_details {
+    flex-wrap: wrap;
+  }
+
+  .search_input {
+    width: 50%;
+  }
+
+  .calendar_details {
+    flex-wrap: wrap;
+    justify-content: start !important;
+  }
+
+  .chat-popup {
+    width: 450px;
+  }
+
+}
+
+/* google meet clipboard */
+.google_meet_clipboard {
+  position: relative;
+  text-align: center;
+}
+
+.meet-button {
+  background-color: var(--Action-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid var(--Action-color);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.after-loading {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.action-button {
+  background-color: var(--Action-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.meet_btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--TextLight-color);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

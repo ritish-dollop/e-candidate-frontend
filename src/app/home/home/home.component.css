@@ -1,0 +1,13 @@
+:root {
+  --SecondaryLight-color: #F0F7FF;
+}
+
+.main_content {
+  height: calc(100vh - 96px) !important;
+  overflow-y: auto !important;
+  margin-right: 20px !important;
+}
+
+.secondaryLight_background {
+  background-color: var(--SecondaryLight-color) !important;
+}

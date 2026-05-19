@@ -1,0 +1,125 @@
+<div class="h-100" *ngIf="selectedEmail">
+  <!-- email card details tab-1 -->
+  <div class="tab-content Card p-3 h-100 rounded_8" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-emailtab1" role="tabpanel" aria-labelledby="pills-emailtab1-tab">
+      <div class="d-flex flex-column gap-4">
+        <!-- email user details -->
+        <div class="d-flex justify-content-between user_email">
+          <div class="d-flex gap-3">
+            <img [src]="selectedEmail.avatar || 'assets/images/png-img/default-profile.png'" class="email_avtar" />
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="circle"></span>
+                <h4 class="small-text Medium mb-0 text_dark">{{ selectedEmail.fromName || selectedEmail.from }}</h4>
+              </div>
+              <h3 class="Regular Caption mb-0 text_light">{{ selectedEmail.from }}</h3>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="smaller-text Medium mb-0 text_dark">
+              {{ selectedEmail.sentAt | gmailTime }} ({{ selectedEmail.sentAt | relativeTime }})
+            </h5>
+            <!-- <img src="assets/images/svg-img/reply.svg" height="24" width="24"
+                 *ngIf="!isReplyCardVisible && !isForwardCardVisible" /> -->
+          </div>
+        </div>
+
+        <!-- email type here -->
+        <div class="email_details">
+          <h1 class="mb-2 text_dark medium-text Medium">{{ selectedEmail.subject }}</h1>
+          <!-- Body (supports text or HTML) -->
+          <div class="email-body" [innerHTML]="selectedEmail.body"></div>
+        </div>
+
+        <!-- Attachments -->
+        <div class="document_attech" *ngIf="selectedAttachment.length > 0">
+          <h3 class="medium-text Medium mb-3 text_dark">{{ selectedAttachment.length }} Attachments</h3>
+          <div class="document_grid gap-4">
+            <div *ngFor="let file of selectedAttachment" class="cursor_pointer" (click)="downloadAttachment(file)">
+              <div *ngIf="!file.contentType.startsWith('image/')" class="secondary_card_background document_card d-flex gap-2 rounded_4">
+                <img [src]="getFileIcon(file.contentType)" width="27" />
+                <div>
+                  <h3 class="Caption Medium mb-1 text_dark">
+                    {{ file.filename.length > 15 ? (file.filename | slice:0:14) + '...' : file.filename }}
+                  </h3>
+                  <h4 class="x-small-text Medium mb-0 text_light">{{ convertSize(file.size) }}</h4>
+                </div>
+              </div>
+              <div *ngIf="file.contentType.startsWith('image/')" class="attachment_img_card d-flex align-items-center gap-2">
+                <img [src]="file.url" alt="" class="rounded" style="width: 50px; height: 60px; object-fit: cover" />
+                <div>
+                  <h3 class="Caption Medium mb-1 text_dark">
+                    {{ file.filename.length > 15 ? (file.filename | slice:0:14) + '...' : file.filename }}
+                  </h3>
+                  <h4 class="x-small-text Medium mb-0 text_light">{{ convertSize(file.size) }}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reply/Forward buttons (Gmail-style) -->
+        <div class="d-flex gap-4 replyforword_section" *ngIf="!ismailrevertVisible">
+          <div class="py-2 Primarylight_background d-flex gap-2 align-items-center px-3 ps-2 cursor_pointer rounded_4"
+               (click)="toggleReplyCard()">
+            <img src="../../../../assets/images/svg-img/reply.svg" height="24" />
+            <h4 class="mb-0 text_dark small-text Medium">Reply</h4>
+          </div>
+          <div class="py-2 Primarylight_background d-flex gap-2 align-items-center px-3 ps-2 cursor_pointer rounded_4"
+               (click)="toggleForwardCard()">
+            <img src="../../../../assets/images/svg-img/forword.svg" height="24" />
+            <h4 class="mb-0 text_dark small-text Medium">Forward</h4>
+          </div>
+        </div>
+
+        <!-- Reply/Forward Composer (expands inline like Gmail) -->
+        <div class="task p-3 rounded_8" *ngIf="ismailrevertVisible">
+          <!-- Reply header -->
+          <div class="d-flex align-items-center gap-2 send_email py-2 mb-3" *ngIf="isReplyCardVisible">
+            <img src="../../../../assets/images/svg-img/forword.svg" height="24px" (click)="toggleForwardCard()" />
+            <h4 class="text_dark medium-text Medium mb-0">
+              {{ selectedEmail.from }} ({{ selectedEmail.from }})
+            </h4>
+          </div>
+
+          <!-- Forward header with To input -->
+          <div class="d-flex align-items-center gap-2 py-2" *ngIf="isForwardCardVisible" [ngClass]="toClass">
+            <img src="../../../../assets/images/svg-img/reply.svg" height="24px" (click)="toggleReplyCard()" />
+            <div class="pb-1 w-100">
+              <input type="text" placeholder="To:" class="text_light medium-text Medium w-100"
+                     [(ngModel)]="toEmailsText" />
+            </div>
+            <div class="email-cc-bcc d-flex gap-3 mx-0 ms-auto">
+              <span class="text_light medium-text Medium cursor_pointer" (click)="toggleCcField()" *ngIf="!isCcVisible">Cc</span>
+              <span class="text_light medium-text Medium cursor_pointer" (click)="toggleBccField()" *ngIf="!isBccVisible">Bcc</span>
+            </div>
+          </div>
+
+          <!-- Cc input -->
+          <div *ngIf="isCcVisible" class="py-2" [ngClass]="ccClass">
+            <input type="text" placeholder="Cc:" class="text_light medium-text Medium w-100" [(ngModel)]="ccEmailsText" />
+          </div>
+
+          <!-- Bcc input -->
+          <div *ngIf="isBccVisible" class="py-2" [ngClass]="bccClass">
+            <input type="text" placeholder="Bcc:" class="text_light medium-text Medium w-100" [(ngModel)]="bccEmailsText" />
+          </div>
+
+          <!-- Rich text editor (your custom component) -->
+          <div class="email_details border-0 mb-5 pb-0">
+            <app-text-editor [(value)]="emailBody" [(attachmentUrls)]="attachmentUrls"></app-text-editor>
+          </div>
+
+          <!-- Send/Discard buttons (Gmail-style right-aligned) -->
+          <div class="d-flex gap-3 justify-content-between mt-5">
+            <img src="assets/images/svg-img/delete.svg" class="Rejection Rejection_bg p-2 rounded_4 cursor_pointer"
+                 (click)="resetComposer()" />
+            <button type="button" class="primary_btn medium-text Medium py-2 px-4" (click)="send()">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

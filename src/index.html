@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ECandidates</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- CUSTOME CSS  -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- BOOTSTRAP CSS  -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- FONT CSS  -->
+    <link rel="stylesheet" href="assets/css/stylesheet.css">
+    <!-- customer protal -->
+<link rel="stylesheet" href="assets-1/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets-1/css/style.css">
+<link rel="stylesheet" href="assets-1/css/stylesheet.css">
+<!-- JS Scripts -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.js"></script>
+
+<!-- <script src="assets/js/darktheme.js"></script> -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+
+
+</head>
+
+<body class="single_page">
+  <app-root></app-root>
+
+  <script src="assets/js/darktheme.js"></script>
+    <script>
+        function openForm() {
+            document.getElementById("myForm").style.display = "block";
+            document.getElementById("open").style.display = "none";
+            document.getElementById("close").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("close").style.display = "none";
+            document.getElementById("open").style.display = "block";
+
+        }
+    </script>
+
+    <!-- chat box script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $(".user-chat").click(function () {
+                $(".user-chat").removeClass("active");
+                $(this).addClass("active");
+                $(".chatbox").addClass("showbox");
+                return false;
+            });
+
+            $(".chat-icon").click(function () {
+                $(".chatbox").removeClass("showbox");
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,392 @@
+
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 103px;
+  right: 15px;
+  z-index: 9;
+  width: 600px;
+}
+
+.chatscrollbar {
+  overflow-y: scroll;
+  height: 37vh;
+}
+
+.chatscrollbarnewchat {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 25vh;
+}
+
+.chatscrollbargroupchat {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 12vh;
+}
+
+.chat-popup {
+  display: none;
+}
+
+.chat-popup.showbox {
+  display: block;
+}
+
+.user-chat.active {
+  background-color: #f1f1f1;
+}
+
+.nav button {
+  background-color: transparent;
+  border: 0;
+}
+
+.nav-item.active>button {
+  border-bottom: 1px solid var(--Action-color);
+  background-color: transparent;
+  border-width: 2px;
+  color: var(--Action-color) !important;
+  font-weight: 600;
+}
+
+.chatbox {
+  background-color: var(--chat-background);
+}
+
+.borderRadius_card {
+  border-radius: 4px 0px 4px 4px;
+}
+
+.dashboard-chat-area {
+  border-radius: 0.6rem;
+  /* height: calc(100vh - 50vh); */
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0px 4px 38px 0px rgba(0, 0, 0, 0.24);
+
+  .modal-content {
+    border: none;
+    border-radius: 0;
+    outline: 0;
+    height: 100%;
+    box-shadow: none;
+  }
+}
+
+.img_send {
+  border-radius: 6px;
+}
+
+.chatbox_file {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Action-color);
+}
+
+.modal_checkbox input {
+  height: 24px;
+  width: 530px;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+}
+
+.checkmarks {
+  position: absolute;
+  top: 0;
+  left: -24px;
+  height: 24px;
+  width: 24px;
+  border-radius: 2px;
+  background-color: var(--WhiteBackground-color);
+  border: 1px solid var(--Action-color);
+}
+
+.modal_checkbox .checkmarks:after {
+  left: 9px;
+  top: 4px;
+  width: 7px;
+  height: 12px;
+  border: solid var(--Textwhite-color);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(42deg);
+}
+
+.chatscrollbarnewchat {
+  .user-chat:hover {
+    background-color: var(--Primarylight-color);
+    cursor: pointer;
+  }
+}
+
+.chatscrollbargroupchat {
+  .user-chat:hover {
+    background-color: var(--Primarylight-color);
+    cursor: pointer;
+  }
+}
+
+.nav-item span {
+  display: none;
+}
+
+.nav-item.active {
+  span {
+    display: block;
+  }
+}
+
+.dashboard-chat-area {
+  .chatbox {
+    display: none;
+  }
+
+  .chatbox {
+    width: 100%;
+    position: absolute;
+    left: 1000px;
+    right: 0;
+    /* background: #fff; */
+    transition: all 0.5s ease;
+    border-left: none;
+  }
+}
+
+
+
+/* select image input */
+/* image select css */
+.select_img_box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.select_img_option {
+  height: 128px;
+  object-fit: cover;
+}
+
+.select_img {
+  border-radius: 6px;
+  width: 80px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.close_img {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  border-radius: 8px;
+  opacity: 20%;
+}
+
+.swiper-3d .swiper-slide-shadow {
+  background: transparent !important;
+}
+
+.max-image-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.max_img {
+  width: 16px;
+  height: 16px;
+}
+
+#file-input {
+  display: none;
+}
+
+.add-more-container {
+  height: 100%;
+  background-color: var(--Secondary-color);
+  padding: 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-preview-container {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+/* DASHBOARD CHATBOX POPUP  */
+
+.dashboard-chat-area {
+  .modal-dialog-scrollable {
+    height: 100% !important;
+  }
+
+  .chatbox {
+    overflow: hidden;
+    height: 100%;
+    border-left: 1px solid var(--Border-color);
+  }
+
+  .send-box {
+    padding: 0px;
+    background-color: transparent;
+  }
+
+  .chatbox .modal-dialog,
+  .chatlist .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  a.add img {
+    height: 36px;
+  }
+
+  button:focus {
+    outline: 0;
+  }
+
+  .dashboard-chat-list a {
+    padding: 16px 24px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .dashboard-chat-list a.active span {
+    display: none;
+  }
+
+  .dashboard-chat-list a.active {
+    background-color: var(--Primarylight-color);
+  }
+
+  .chatlist {
+    width: 100%;
+  }
+
+  .showbox {
+    left: 0 !important;
+    transition: all 0.5s ease;
+    display: inline !important;
+    border-radius: 0.6rem;
+  }
+
+  .msg-head .flex-shrink-0 img {
+    height: 30px;
+  }
+
+  .dashboard-chat-area .col-md-4 {
+    width: 100%;
+  }
+
+  .chat-icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  .chat_search_icon {
+    position: absolute;
+    left: 22px;
+    top: 12px;
+  }
+
+}
+
+@media (max-width:575px) {
+
+  .chat-popup {
+    width: 350px !important;
+  }
+}
+
+/* chatbox */
+@media (max-width: 992px) {
+  .chat-icon {
+    display: block;
+    margin-right: 5px;
+  }
+
+  .chatlist {
+    width: 100%;
+  }
+
+  .chatbox {
+    width: 100%;
+    position: absolute;
+    left: 1000px;
+    right: 0;
+    transition: all 0.5s ease;
+    border-left: none;
+  }
+
+  .msg-head .flex-shrink-0 img {
+    height: 30px;
+  }
+
+  .chat-area .col-md-4 {
+    width: 100%;
+  }
+
+  .chat-area .col-md-8 {
+    width: 100%;
+  }
+
+  .task_calendar_header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+.chatavtar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+
+
+/* Floating card */
+.dashboard-chat-area .white_card_background {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+
+  width: 420px;
+  height: 620px;
+
+  border-radius: 16px;
+  overflow: hidden;        /* 🔥 MOST IMPORTANT */
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+/* Router content must fill card */
+.dashboard-chat-lists,
+.dashboard-chat-lists > div {
+  height: 100%;
+}
+
+/* Router outlet child (ChatBox / ChatList) */
+.dashboard-chat-lists router-outlet + * {
+  height: 100%;
+}

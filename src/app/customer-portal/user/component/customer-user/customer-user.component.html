@@ -1,0 +1,287 @@
+<div class="header-row">
+  <h2>User</h2>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="openAddUser()"
+    *ngIf="isCustomerAdmin()"
+  >
+    + Add Company User
+  </button>
+</div>
+
+<div class="user-container">
+  <table *ngIf="users.length > 0; else noDataTemplate">
+    <thead>
+      <tr>
+        <th>User Profile</th>
+        <th>User Name</th>
+        <th>Contact No</th>
+        <th>Email</th>
+        <th>Position</th>
+        <th>User Role</th>
+        <th>Password</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>
+          <img [src]="user.profilePicUrl" class="profile-img" />
+        </td>
+
+        <td>{{ user.name }}</td>
+        <td>{{ user.contactNo }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.position }}</td>
+        <td class="role-col">{{ user.role | customerRole }}</td>
+
+        <td class="masked-password">
+          ******
+          <br />
+          <button
+            class="link-btn"
+            (click)="resetPassword(user)"
+            [disabled]="!isCustomerAdmin()"
+          >
+            Reset Password
+          </button>
+        </td>
+
+        <td>
+          <label class="switch">
+            <input
+              type="checkbox"
+              [disabled]="!isCustomerAdmin()"
+              [checked]="user.status === 'ACTIVE'"
+              (click)="onStatusClick($event, user)"
+            />
+            <span class="slider"></span>
+          </label>
+        </td>
+
+        <td>
+          <button
+            class="action-btn edit"
+            (click)="openEditUser(user)"
+            [disabled]="!isCustomerAdmin()"
+          >
+            <img src="assets/images/svg-img/edit.svg" alt="edit" />
+          </button>
+
+          <button
+            class="action-btn delete"
+            (click)="deleteUser(user.id)"
+            [disabled]="!isCustomerAdmin()"
+          >
+            <img src="assets/images/svg-img/delete-outline.svg" alt="delete" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noDataTemplate>
+    <div class="no-data">
+      <p>No users found.</p>
+    </div>
+  </ng-template>
+
+  <nav class="table-pagination" *ngIf="users.length > 0">
+    <!-- Previous -->
+    <a class="arrow" (click)="goToPage(page - 1)" [class.disabled]="page === 0">
+      <img src="assets/images/svg-img/pagination-arrow-left.svg" />
+      Previous
+    </a>
+
+    <!-- Page numbers -->
+    <ul class="pagination">
+      <li *ngFor="let p of [].constructor(totalPages); let i = index">
+        <a class="page-link" (click)="goToPage(i)" [class.active]="i === page">
+          {{ i + 1 }}
+        </a>
+      </li>
+    </ul>
+
+    <!-- Next -->
+    <a
+      class="arrow"
+      (click)="goToPage(page + 1)"
+      [class.disabled]="page === totalPages - 1"
+    >
+      Next
+      <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+    </a>
+  </nav>
+</div>
+
+<!-- ADD / EDIT USER POPUP -->
+<div class="popup-overlay" *ngIf="showUserForm"></div>
+
+<div class="popup-modal" *ngIf="showUserForm">
+  <div class="popup-header">
+    <h2>{{ isEditMode ? "Edit User" : "Add Company User" }}</h2>
+  </div>
+
+  <div class="d-flex flex-column gap-4">
+    <div class="d-flex flex-column gap-3 add_task">
+      <!-- Profile Picture -->
+      <div class="d-flex align-items-start upload-row">
+        <h3 class="mb-0">Profile Picture</h3>
+
+        <div class="upload-content">
+          <div class="upload-box" (click)="fileInput.click()">
+            <img src="assets-1/images/svg-img/file.svg" alt="Upload icon" />
+            <p class="mb-0">Upload Picture</p>
+          </div>
+
+          <div class="image-preview" *ngIf="uploadedImageUrl">
+            <button
+              type="button"
+              class="remove-img-btn"
+              (click)="removeUploadedImage(fileInput)"
+            >
+              ×
+            </button>
+            <img [src]="uploadedImageUrl" />
+          </div>
+        </div>
+
+        <input
+          type="file"
+          #fileInput
+          hidden
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      <!-- User Type -->
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-0">User Type</h3>
+        <select
+          class="search_input_field small-text p-2"
+          [(ngModel)]="userData.role"
+          name="role"
+        >
+          <!-- <option value="CUSTOMER_ADMIN">Customer Admin</option> -->
+          <option value="CUSTOMER_TEAM_MEMBER">Team Member</option>
+        </select>
+      </div>
+
+      <div class="d-flex flex-column gap-4">
+        <div class="d-flex flex-column gap-3 add_task">
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Name</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="userData.name"
+              name="name"
+            />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Contact Number</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="userData.contactNo"
+              name="contactNo"
+            />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Email Address</h3>
+            <input
+              type="email"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="userData.email"
+              name="email"
+              [readonly]="isEditMode"
+              [class.disabled-input]="isEditMode"
+            />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Position</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="userData.position"
+              name="position"
+            />
+          </div>
+
+          <div class="d-flex justify-content-between" *ngIf="!isEditMode">
+            <h3 class="mb-0">Password</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="userData.password"
+              name="password"
+            />
+          </div>
+
+          <div class="d-flex justify-content-between" *ngIf="isEditMode">
+            <h3 class="mb-0">Password</h3>
+            <p class="small-text">****** (Reset from list)</p>
+          </div>
+        </div>
+
+        <div class="d-flex gap-4 justify-content-end">
+          <button
+            class="secondary_outline_btn medium-text Medium w-25"
+            (click)="closeUserForm()"
+          >
+            Cancel
+          </button>
+          <button
+            class="primary_btn medium-text Medium w-25"
+            (click)="saveUser()"
+          >
+            {{ isEditMode ? "Update" : "Add" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- RESET PASSWORD POPUP -->
+<div class="popup-overlay" *ngIf="showResetPopup"></div>
+
+<div class="popup-modal" *ngIf="showResetPopup">
+  <div class="popup-header">
+    <h2>Reset Password</h2>
+  </div>
+
+  <div class="d-flex flex-column gap-4">
+    <div class="d-flex flex-column gap-3">
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-0">New Password</h3>
+        <input
+          type="text"
+          class="search_input_field small-text p-2"
+          [(ngModel)]="resetPasswordData.newPassword"
+        />
+      </div>
+    </div>
+
+    <div class="d-flex gap-4 justify-content-end">
+      <button
+        class="secondary_outline_btn medium-text Medium w-25"
+        (click)="showResetPopup = false"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary_btn medium-text Medium w-25"
+        (click)="submitResetPassword()"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+</div>

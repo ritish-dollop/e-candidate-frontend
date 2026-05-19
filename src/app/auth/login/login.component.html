@@ -1,0 +1,98 @@
+<!-- login start -->
+<img src="assets/images/png-img/background-img.png" class="background_img" />
+
+<!-- THEME CHANGE -->
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="theme"
+  class="dark_theme cursor_pointer position-absolute"
+>
+  theme
+</button>
+
+<div
+  class="container d-flex align-items-center justify-content-center h-100 py-5 p-0"
+>
+  <div class="row justify-content-center login_middle_content">
+    <div class="col-md-6">
+      <img src="assets/images/svg-img/logo.svg" class="img-fluid logo" />
+    </div>
+
+    <div class="col-md-6 login_details">
+      <div class="login_background">
+        <div class="d-flex flex-column scrollbar_hide login_content">
+          <img
+            src="assets/images/svg-img/login-left-arrow.svg"
+            width="30"
+            height="50"
+          />
+
+          <div class="login_text">
+            <h1 class="Semibold mb-3 Heading">Login to your account</h1>
+            <h2 class="light mb-0 Sub-Heading">
+              Enter your credentials to continue.
+            </h2>
+          </div>
+
+          <!-- ✅ Message box -->
+          <div *ngIf="message" class="alert-box" [ngClass]="messageType">
+            {{ message }}
+          </div>
+
+          <!-- Email -->
+          <div>
+            <input
+              type="email"
+              placeholder="E-mail"
+              class="input_field py-3 p-2 mb-3"
+              [(ngModel)]="loginData.email"
+              name="email"
+            />
+
+            <!-- Password -->
+            <div class="position-relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="Password"
+                class="input_field py-3 p-2 mb-2"
+                [(ngModel)]="loginData.password"
+                name="password"
+              />
+              <img
+                src="assets/images/svg-img/eye.svg"
+                class="eye_img"
+                alt="Toggle Password"
+                (click)="togglePassword()"
+                style="cursor: pointer;"
+              />
+            </div>
+
+            <a
+              href="/auth/forgot_password"
+              class="Forgot mb-0 float-end small-text Medium"
+            >
+              Forgot Password?
+            </a>
+          </div>
+
+          <div>
+            <button
+              type="button"
+              class="primary_btn medium-text Medium"
+              (click)="onLogin()"
+              [disabled]="loading"
+            >
+              {{ loading ? 'Signing in...' : 'Sign In' }}
+            </button>
+
+            <!-- <h4 class="login_bottom_caption small-text Regular mt-2">
+              Don't have an account?
+              <span class="action_color">Sign up</span>
+            </h4> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

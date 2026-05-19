@@ -1,0 +1,79 @@
+<!-- Main Content -->
+<div class="main_content secondary_card_background p-4">
+  <div class="d-flex mb-4 ">
+    <h2 class="card_heading Sub-Heading Medium heading_border_bottom mb-0">Agency Room</h2>
+  </div>
+
+  <div class="chat_tabs">
+    <!-- Agency tabs list-->
+    <ul class="nav nav-pills  Agency_tabs" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-Chat-tab" data-bs-toggle="pill" data-bs-target="#pills-Chat"
+          type="button" role="tab" aria-controls="pills-Chat" aria-selected="true">Chat</button>
+      </li>  
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-Task-tab" data-bs-toggle="pill" data-bs-target="#pills-Task" type="button"
+          role="tab" aria-controls="pills-Task" aria-selected="false">Task</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-Jobpost-tab" data-bs-toggle="pill" data-bs-target="#pills-Jobpost"
+          type="button" role="tab" aria-controls="pills-Jobpost" aria-selected="false">New Jobpost</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-Booking-tab" data-bs-toggle="pill" data-bs-target="#pills-Booking"
+          type="button" role="tab" aria-controls="pills-Booking" aria-selected="false"
+          (click)="onCalendarTabActivated()">Calendar</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-Billing-tab" data-bs-toggle="pill" data-bs-target="#pills-Billing"
+          type="button" role="tab" aria-controls="pills-Billing" aria-selected="false">Notes</button>
+      </li>
+
+    </ul>
+
+
+    <!-- Agency Room TABS DETAILS -->
+    <div class="tab-content h-100" id="pills-tabContent">
+
+      <!-- Chat details -->
+     <div class="tab-pane fade show active" id="pills-Chat" role="tabpanel" aria-labelledby="pills-Chat-tab"
+        tabindex="0">
+        <div class="chat-area">
+          <div class="chat-popup" id="myForm">
+            <div class="dashboard-chat-area Card">
+              <app-chat-list id="chatlistbox" class="p-0 chatlistbox" [source]="true"></app-chat-list>
+              <div id="chatbox_section" class="chatbox_section">
+                <router-outlet></router-outlet>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Task details -->
+      <div class="tab-pane fade h-100" id="pills-Task" role="tabpanel" aria-labelledby="pills-Task-tab" tabindex="0">
+        <app-tasklist></app-tasklist>
+      </div>
+
+      <!-- Jobpost -->
+      <div class="tab-pane fade h-100" id="pills-Jobpost" role="tabpanel" aria-labelledby="pills-Jobpost-tab"
+        tabindex="0">
+        <app-jobpost></app-jobpost>
+      </div>
+
+      <!-- Calander-->
+      <div class="tab-pane fade" id="pills-Booking" role="tabpanel" aria-labelledby="pills-Booking-tab" tabindex="0">
+        <div class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+        <app-task-calender [agencyId]="agencyId" [hideAddButton]="true" [isAgencyView]="true"></app-task-calender>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <div class="tab-pane fade h-100" id="pills-Billing" role="tabpanel" aria-labelledby="pills-Billing-tab"
+        tabindex="0">
+        <app-notes></app-notes>
+      </div>
+
+    </div>
+  </div>

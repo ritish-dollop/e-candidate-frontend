@@ -1,0 +1,47 @@
+.task {
+    border: 1px solid var(--Border-color)
+}
+
+.email-to {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.email-to .remove-guest {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.email-cc-bcc span:hover {
+    text-decoration: underline;
+}
+
+.email_avtar {
+    height: 42px;
+    width: 42px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 1px solid var(--Border-color);
+    border-radius: 4px;
+}
+
+input {
+    border: 0
+}
+
+.send_email {
+    margin-bottom: 16px;
+}
+.email_details p{
+    line-height: 24px;
+}
+

@@ -1,0 +1,34 @@
+/* common dot */
+.Campaigns__status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* -------- PENDING -------- */
+.status-pending {
+  color: #f4b400;              /* text */
+}
+
+.status-pending .Campaigns__status {
+  background-color: #f4b400;   /* dot */
+}
+
+/* -------- APPROVED -------- */
+.status-approved {
+  color: #0f9d58;
+}
+
+.status-approved .Campaigns__status {
+  background-color: #0f9d58;
+}
+
+/* -------- REJECTED -------- */
+.status-rejected {
+  color: #db4437;
+}
+
+.status-rejected .Campaigns__status {
+  background-color: #db4437;
+}

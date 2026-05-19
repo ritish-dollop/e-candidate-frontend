@@ -1,0 +1,364 @@
+<!-- SHOW LIST -->
+  <div *ngIf="hidechat">
+    <div class="d-flex justify-content-between gap-3 p-3">
+      <!-- search bar -->
+      <div class="rounded_4 d-flex gap-2 search_bar p-2 w-100">
+        <img src="/assets/images/svg-img/search.svg" class="gray search_icon" />
+
+        <input
+          type="search"
+          placeholder="Search"
+          class="border-0 lh-0 w-100 small-text Medium search"
+          [(ngModel)]="searchText"
+          (input)="searchChats()"
+        />
+      </div>
+
+
+      <div class="dropdown position-relative chat_edit cursor_pointer">
+        <div
+          id="dropdownMenuLink"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="true"
+        >
+          <img src="assets/images/svg-img/plus.svg" class="white-filter" />
+        </div>
+
+        <ul
+          class="dropdown-menu small_dropdown p-3 mt-2 chatbox_dropdown"
+          aria-labelledby="dropdownMenuLink"
+        >
+          <!-- New Group Chat -->
+          <li>
+            <a
+              class="dropdown-item d-flex align-items-center gap-2 mb-3 cursor_pointer"
+            >
+              <img src="assets/images/svg-img/newgroup.svg" />
+
+              <!-- 👇 ONLY CHANGE IS HERE -->
+              <span
+                data-bs-toggle="modal"
+                data-bs-target="#groupchat"
+                (click)="getUsersForNewChat()"
+              >
+                New Group Chat
+              </span>
+            </a>
+          </li>
+
+          <!-- New Chat -->
+          <li>
+            <a
+              class="dropdown-item d-flex align-items-center gap-2 cursor_pointer"
+            >
+              <img src="assets/images/svg-img/newcontact.svg" />
+
+              <!-- 👇 ONLY CHANGE IS HERE -->
+              <span
+                data-bs-toggle="modal"
+                data-bs-target="#newchat"
+                (click)="getUsersForNewChat()"
+              >
+                New Chat
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="nav d-flex gap-4 single_tab px-3 mb-3">
+      <li
+        class="nav-item"
+        (click)="switchTab('individual')"
+        [class.active]="activeTab === 'individual'"
+      >
+        <button class="p-1 medium-text Medium">Chat</button>
+      </li>
+
+      <li
+        class="nav-item"
+        (click)="switchTab('group')"
+        [class.active]="activeTab === 'group'"
+      >
+        <button class="p-1 medium-text Medium">Groups</button>
+      </li>
+    </ul>
+
+    <!-- CHAT LIST -->
+    <div class="dashboard-chat-list d-flex flex-column gap-1">
+      <!-- INDIVIDUAL -->
+      <div class="chatscrollbar" *ngIf="activeTab === 'individual'">
+        <ng-container *ngFor="let chat of filteredIndividualChats">
+          <a
+            class="d-flex align-items-center gap-3 user-chat"
+            [routerLink]="['chat/chat-box', chat.id]"
+            routerLinkActive="active-chat"
+          >
+            <img
+              [src]="
+                chat.profilePicture ||
+                'assets/images/png-img/default-profile.png'
+              "
+              class="chatavtar rounded-circle"
+            />
+
+            <div class="user_chat flex-grow-1 overflow-hidden">
+              <h4 class="medium-text Medium mb-1 text-truncate">
+                {{ chat.roomName }}
+              </h4>
+              <!-- LAST MESSAGE (SAFE) -->
+              <h3 class="Regular small-text text-muted text-truncate">
+                {{
+                  chat.messageResponse.length
+                    ? chat.messageResponse[chat.messageResponse.length - 1]
+                        .content
+                    : "no message yet here"
+                }}
+              </h3>
+            </div>
+
+            <!-- <div class="ms-auto text-end"> -->
+            <div class="ms-auto text-end d-flex flex-column align-items-end">
+              <h3 class="Caption Regular mb-1">
+                {{
+                  chat.messageResponse.length
+                    ? formatDate(
+                        chat.messageResponse[chat.messageResponse.length - 1]
+                          .sentAt
+                      )
+                    : ""
+                }}
+              </h3>
+
+              <span *ngIf="chat.unreadCount > 0" class="unread-badge">
+                {{ chat.unreadCount }}
+              </span>
+            </div>
+          </a>
+        </ng-container>
+      </div>
+
+      <!-- GROUP -->
+      <div class="chatscrollbar" *ngIf="activeTab === 'group'">
+        <ng-container *ngFor="let chat of filteredGroupChats">
+          <a
+            class="d-flex align-items-center gap-3 user-chat"
+            [routerLink]="['chat/chat-box', chat.id]"
+          >
+            <img
+              [src]="
+                chat.profilePicture ||
+                'assets/images/png-img/default-group-profile.png'
+              "
+              class="chatavtar rounded-circle"
+            />
+
+            <div class="user_chat">
+              <h4 class="medium-text Medium">{{ chat.roomName }}</h4>
+
+              <!-- LAST MESSAGE (SAFE) -->
+              <h3 class="Regular small-text text-muted text-truncate">
+                {{
+                  chat.messageResponse.length
+                    ? chat.messageResponse[chat.messageResponse.length - 1]
+                        .content
+                    : "no message yet here"
+                }}
+              </h3>
+            </div>
+
+            <div class="ms-auto text-end">
+              <h3 class="Caption Regular">
+                {{
+                  chat.messageResponse.length
+                    ? formatDate(
+                        chat.messageResponse[chat.messageResponse.length - 1]
+                          .sentAt
+                      )
+                    : ""
+                }}
+              </h3>
+              <span *ngIf="chat.unreadCount > 0" class="Caption Regular">
+                {{ chat.unreadCount }}
+              </span>
+            </div>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+<!-- New Chat -->
+<div class="modal" id="newchat" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal_medium_size modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+        <div class="d-flex align-items-center gap-2">
+          <h2 class="medium-text Medium mb-0 primary hr_line pb-1">New Chat</h2>
+        </div>
+
+        <!-- No Users Found -->
+        <div
+          *ngIf="filteredUsers.length === 0"
+          class="text-center text_light small-text"
+        >
+          No users found
+        </div>
+
+        <!-- Search Bar -->
+        <div class="rounded_4 d-flex gap-2 search_bar p-2 w-100">
+          <img src="/assets/images/svg-img/search.svg" class="gray" />
+          <input
+            type="search"
+            placeholder="Search"
+            [(ngModel)]="searchUser"
+            (input)="filterUsers()"
+            class="border-0 lh-0 w-100 small-text Medium search"
+          />
+        </div>
+
+        <h4 class="text_light mb-0 medium-text Medium">Suggested</h4>
+
+        <!-- USER LIST -->
+        <div class="d-flex flex-column gap-3 newchatscrollbar">
+          <a
+            *ngFor="let user of filteredUsers"
+            class="d-flex align-items-center gap-3 user-chat p-2 rounded_4 cursor_pointer"
+            (click)="startNewChat(user)"
+          >
+            <img
+              class="chatavtar rounded-circle"
+              [src]="
+                user.profilePicture ||
+                'assets/images/png-img/default-profile.png'
+              "
+            />
+
+            <div class="user_chat">
+              <h4 class="medium-text Medium mb-0">{{ user.name }}</h4>
+              <p class="medium-text Medium text_light mb-0">{{ user.role | customerRole}}</p>
+            </div>
+            <p class="medium-text Medium text_light mb-0">
+              {{ user.belongToName }}
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Group Chat -->
+<div class="modal" id="groupchat" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal_medium_size modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+        <!-- Title -->
+        <div class="d-flex align-items-center gap-2">
+          <h2 class="medium-text Medium mb-0 primary hr_line pb-1">
+            New Group Chat
+          </h2>
+        </div>
+
+        <!-- Group Image -->
+        <div class="position-relative d-flex justify-content-center">
+          <div class="chatbox_file">
+            <input
+              type="file"
+              (change)="uploadGroupImage($event)"
+              class="input_feilds bg_light file_select"
+            />
+
+            <img
+              src="/assets/images/svg-img/camera.svg"
+              alt="Edit Icon"
+              class="file_select_icon"
+            />
+
+            <!-- Preview Selected Image -->
+            <img
+              *ngIf="groupImagePreview"
+              [src]="groupImagePreview"
+              class="group_preview_img"
+            />
+          </div>
+        </div>
+
+        <!-- Group Name Input -->
+        <div class="border_bottom">
+          <input
+            type="text"
+            [(ngModel)]="groupName"
+            placeholder="Enter Group Name"
+            class="small-text Regular mb-0 p-2 text-center border-0 w-100 group_search"
+          />
+        </div>
+
+        <!-- Search Bar -->
+        <div class="rounded_4 d-flex gap-2 search_bar p-2 w-100">
+          <img src="/assets/images/svg-img/search.svg" class="gray" />
+          <input
+            type="search"
+            [(ngModel)]="groupUserSearch"
+            (input)="filterGroupUsers()"
+            placeholder="Search"
+            class="border-0 lh-0 w-100 small-text Medium search"
+          />
+        </div>
+
+        <h4 class="text_light mb-0 medium-text Medium">Select Members</h4>
+
+        <!-- User List -->
+        <div class="d-flex flex-column gap-3 chatscrollbargroupchat">
+          <div
+            class="d-flex align-items-center gap-3 user-chat p-2 rounded_4"
+            *ngFor="let u of filteredGroupUsers"
+          >
+            <!-- User Profile -->
+            <img
+              class="chatavtar rounded-circle"
+              [src]="
+                u.profilePicture || 'assets/images/svg-img/Avatar-chat.svg'
+              "
+            />
+
+            <!-- Name + Checkbox -->
+            <div
+              class="d-flex justify-content-between align-items-center w-100"
+            >
+              <h4 class="medium-text Medium mb-0">{{ u.name }}</h4>
+
+              <!-- WORKING CHECKBOX -->
+              <label class="modal_checkbox d-flex align-items-center">
+                <input
+                  type="checkbox"
+                  [checked]="isSelectedGroupMember(u.referenceUserId)"
+                  (change)="toggleGroupMember(u.referenceUserId)"
+                />
+
+                <span class="checkmarks"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-4 justify-content-end">
+          <button class="secondary_outline_btn w-50" data-bs-dismiss="modal">
+            Cancel
+          </button>
+
+          <button
+            class="primary_btn w-50"
+            [disabled]="selectedGroupMembers.length < 1 || !groupName.trim()"
+            (click)="createGroupChat()"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

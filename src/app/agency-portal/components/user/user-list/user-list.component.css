@@ -1,0 +1,56 @@
+.add-user-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  row-gap: 18px;
+  align-items: start;
+}
+
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-text {
+  font-size: 12px;
+  color: #ff4d4f;
+  margin-top: 4px;
+}
+.profile-upload {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e0e0e0;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  background: #00a6a6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.edit-icon i {
+  color: #fff;
+  font-size: 11px;
+}

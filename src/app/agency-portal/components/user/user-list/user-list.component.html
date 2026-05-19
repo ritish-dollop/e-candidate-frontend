@@ -1,0 +1,398 @@
+<div class="Card">
+  <!-- Header -->
+  <div class="p-3 d-flex justify-content-between align-items-center">
+    <h3 class="mb-0 large-text Medium primary">Users</h3>
+
+    <button *ngIf="isAdmin()"
+      class="primary_btn small-text Medium py-2 px-3"
+      data-bs-toggle="modal"
+      data-bs-target="#addUserModal"
+      (click)="resetUserForm()"
+    >
+      + Add User
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive table_data">
+    <table class="table mb-0">
+      <thead>
+        <tr class="Primarylight_background">
+          <th>User</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Role</th>
+          <th>Last Login</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of paginatedUsers; trackBy: trackById">
+          <!-- Profile -->
+          <td>
+            <img
+              [src]="user.profilePicture || 'assets/images/svg-img/Avatar.svg'"
+              class="user_logo"
+            />
+          </td>
+
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.role | customerRole }}</td>
+          <td>{{ user.lastLogin | date : "dd-MM-yyyy" }}</td>
+
+          <!-- Status -->
+          <td>
+            <ng-container *ngIf="isAdmin(); else viewOnlyStatus">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="user.status === 'ACTIVE'"
+                  (change)="toggleStatus(user)"
+                />
+                <span class="slider round"></span>
+              </label>
+            </ng-container>
+
+            <ng-template #viewOnlyStatus>
+              <span>{{ user.status }}</span>
+            </ng-template>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div class="d-flex gap-2">
+              <button class="icon_btn" (click)="viewProfile(user)">
+                <img src="assets/images/svg-img/eye.svg" height="18" />
+              </button>
+
+              <button
+                *ngIf="isAdmin()"
+                class="icon_btn"
+                (click)="deleteUser(user.id)"
+              >
+                <img src="assets/images/svg-img/delete.svg" height="18" />
+              </button>
+
+              <button
+                *ngIf="isAdmin()"
+                class="icon_btn"
+                data-bs-toggle="modal"
+                data-bs-target="#addUserModal"
+                (click)="onEditUser(user)"
+              >
+                <img src="assets/images/svg-img/edit.svg" height="18" />
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="table-pagination">
+    <button
+      class="secondary arrow"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      ‹ Previous
+    </button>
+
+    <ul class="pagination">
+      <li
+        *ngFor="let p of [].constructor(totalPages); let i = index"
+        [class.active]="currentPage === i + 1"
+      >
+        <a (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+      </li>
+    </ul>
+
+    <button
+      class="secondary arrow"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      Next ›
+    </button>
+  </nav>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered large_modal">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <h4 class="mb-4">
+          {{ isEditMode ? "Edit User" : "Add User" }}
+        </h4>
+        <div class="add-user-grid">
+
+  <!-- User Name -->
+  <label>User Name</label>
+  <div class="field-wrapper">
+    <input
+      class="form-control"
+      [(ngModel)]="newUser.name"
+      (input)="clearError('name')"
+    />
+    <small class="error-text" *ngIf="errors.name">
+      {{ errors.name }}
+    </small>
+  </div>
+
+  <!-- Email -->
+  <label>Email</label>
+  <div class="field-wrapper">
+    <input
+      class="form-control"
+      [(ngModel)]="newUser.email"
+      (input)="clearError('email')"
+    />
+    <small class="error-text" *ngIf="errors.email">
+      {{ errors.email }}
+    </small>
+  </div>
+
+  <!-- Contact -->
+  <label>Contact</label>
+  <div class="field-wrapper">
+    <input
+      class="form-control"
+      [(ngModel)]="newUser.phone"
+      (input)="clearError('phone')"
+    />
+    <small class="error-text" *ngIf="errors.phone">
+      {{ errors.phone }}
+    </small>
+  </div>
+
+  <!-- Password (Only Add Mode) -->
+<!-- Password -->
+<ng-container *ngIf="!isEditMode || (isEditMode && resetPassword)">
+  <label>Password</label>
+  <div class="field-wrapper">
+    <input
+      type="password"
+      class="form-control"
+      [(ngModel)]="newUser.password"
+    />
+    <small class="error-text" *ngIf="errors.password">
+      {{ errors.password }}
+    </small>
+  </div>
+</ng-container>
+
+
+<!-- Profile Image -->
+<label>Profile</label>
+
+<div class="field-wrapper">
+  <div class="profile-upload">
+    <div class="avatar-wrapper">
+      <img
+        [src]="profilePreview || 'assets/images/svg-img/Avatar.svg'"
+        class="profile-avatar"
+      />
+
+      <!-- Edit Icon -->
+      <label class="edit-icon">
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          (change)="onFileSelected($event)"
+        />
+        <i class="bi bi-pencil-fill"></i>
+      </label>
+    </div>
+  </div>
+
+  <small class="error-text" *ngIf="errors.profileImage">
+    {{ errors.profileImage }}
+  </small>
+</div>
+
+  <!-- Agency -->
+  <label>Agency</label>
+  <div class="field-wrapper">
+    <select
+      class="form-control"
+      [(ngModel)]="newUser.agencyId"
+      (change)="clearError('agency')"
+    >
+      <option value="">Select Agency</option>
+      <option *ngFor="let a of agencies" [value]="a.id">
+        {{ a.agencyName }}
+      </option>
+    </select>
+    <small class="error-text" *ngIf="errors.agency">
+      {{ errors.agency }}
+    </small>
+  </div>
+
+  <!-- Role -->
+  <label>User Role</label>
+  <div class="field-wrapper">
+    <select
+      class="form-control"
+      [(ngModel)]="newUser.role"
+      (change)="clearError('role')"
+    >
+      <option value="">Select Role</option>
+      <option
+        *ngIf="currentUser?.role === 'AGENCY_SUPER_ADMIN'"
+        value="AGENCY_ADMIN"
+      >
+        Agency Admin
+      </option>
+      <option value="AGENCY_TEAM_MEMBER">Team Member</option>
+      <option value="AGENCY_RELATIONSHIP_MANAGER">
+        Relationship Manager
+      </option>
+    </select>
+    <small class="error-text" *ngIf="errors.role">
+      {{ errors.role }}
+    </small>
+  </div>
+
+</div>
+
+     <!-- Footer -->
+    <div class="text-end mt-2" *ngIf="isEditMode">
+  <button
+    type="button"
+    class="btn btn-link p-0 text-primary"
+    (click)="toggleResetPassword()"
+  >
+    {{ resetPassword ? 'Cancel Reset Password' : 'Reset Password' }}
+  </button>
+</div>
+
+        <div class="d-flex justify-content-end gap-3 mt-4">
+          <button class="secondary_outline_btn" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button class="primary_btn" (click)="createUser()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- FULL USER PROFILE MODAL -->
+<div
+  class="modal fade"
+  id="fullProfileModal"
+  tabindex="-1"
+  aria-labelledby="fullProfileLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered large_modal">
+    <div class="modal-content p-4">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-start">
+        <!-- Profile Info -->
+        <div class="d-flex align-items-center gap-3">
+          <img
+            class="full-profile-img"
+            [src]="
+              selectedUser?.profilePicture || 'assets/images/svg-img/Avatar.svg'
+            "
+            alt="User profile image"
+          />
+
+          <div>
+            <div class="d-flex align-items-center gap-3">
+              <h4 class="primary mb-0">
+                {{ selectedUser?.name }}
+              </h4>
+
+              <!-- Status -->
+              <div
+                class="status-box"
+                [ngClass]="
+                  selectedUser?.status === 'ACTIVE'
+                    ? 'active-status'
+                    : 'inactive-status'
+                "
+              >
+                <span class="status-dot"></span>
+                <span class="fw-semibold">
+                  {{
+                    selectedUser?.status === "ACTIVE" ? "Active" : "Inactive"
+                  }}
+                </span>
+              </div>
+            </div>
+
+            <p class="small-text mt-1">{{ selectedUser?.role }}</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="d-flex gap-3">
+          <button
+            *ngIf="isAdmin()"
+            class="icon_btn"
+            aria-label="Edit user"
+            (click)="openEditFromProfile()"
+          >
+            <img src="assets/images/svg-img/edit.svg" height="20" />
+          </button>
+
+          <button
+            *ngIf="isAdmin()"
+            class="icon_btn"
+            aria-label="Delete user"
+            (click)="deleteUser(selectedUser?.id)"
+          >
+            <img src="assets/images/svg-img/delete.svg" height="20" />
+          </button>
+
+          <button
+            class="icon_btn"
+            aria-label="Close"
+            data-bs-dismiss="modal"
+            (click)="closeFullProfile()"
+          >
+            <img src="assets/images/svg-img/close.svg" height="20" />
+          </button>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- Body -->
+      <div class="row mt-3 px-1">
+        <div class="col-md-6">
+          <p class="Semibold mb-1">Email</p>
+          <p>{{ selectedUser?.email || "-" }}</p>
+        </div>
+
+        <div class="col-md-6">
+          <p class="Semibold mb-1">Contact</p>
+          <p>{{ selectedUser?.phone || "-" }}</p>
+        </div>
+
+        <div class="col-md-6 mt-3">
+          <p class="Semibold mb-1">Last Login</p>
+          <p>
+            {{
+              selectedUser?.lastLogin
+                ? (selectedUser?.lastLogin | date : "dd-MM-yyyy")
+                : "Never logged in"
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

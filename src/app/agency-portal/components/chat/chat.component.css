@@ -1,0 +1,140 @@
+.modal_medium_size {
+  max-width: 600px;
+}
+
+.chat-popup {
+  width: calc(100vw - 313px);
+  height: 100%;
+}
+
+.chatscrollbar {
+  overflow-y: scroll;
+  height: 72vh;
+}
+
+.chat-popup.showbox {
+  display: block;
+}
+.chat-popup.showbox {
+  display: block;
+}
+.dashboard-chat-area {
+  display:block;
+}
+.nav button {
+  background-color: transparent;
+  border: 0;
+}
+
+.nav-item.active>button {
+  border-bottom: 1px solid var(--Action-color);
+  background-color: transparent;
+  border-width: 2px;
+  color: var(--Action-color) !important;
+  font-weight: 600;
+}
+
+.chatbox {
+  background-color: var(--chat-background);
+}
+
+.borderRadius_card {
+  border-radius: 4px 0px 4px 4px;
+}
+
+.dashboard-chat-area {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+
+
+  .modal-content {
+    border: none;
+    border-radius: 0;
+    outline: 0;
+    height: 100%;
+    box-shadow: none;
+  }
+
+  .showbox {
+    border-radius: 0;
+  }
+}
+
+.img_send {
+  border-radius: 6px;
+}
+
+.chatbox_file {
+  border-radius: 50%;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--Action-color);
+}
+
+.modal_checkbox input {
+  height: 24px;
+  width: 24px;
+}
+
+.checkmarks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 24px;
+  width: 24px;
+  border-radius: 2px;
+  background-color: var(--WhiteBackground-color);
+  border: 1px solid var(--Action-color);
+}
+
+.modal_checkbox .checkmarks:after {
+  left: 9px;
+  top: 4px;
+  width: 7px;
+  height: 12px;
+  border: solid var(--Textwhite-color);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(42deg);
+}
+
+.dashboard-chat-area {
+  .chatbox {
+    width: 100%;
+    transition: all 0.5s ease;
+    border-left: none;
+  }
+}
+
+.newchatscrollbar {
+  overflow-y: scroll;
+  height: 35vh;
+}
+
+.chatlistbox {
+  width: 45%;
+  flex-direction: column;
+}
+
+.chatbox_section {
+  width: 100%;
+}
+
+@media (max-width:992px) {
+  .chatlistbox {
+    width: 100%;
+  }
+
+  .chat-popup {
+    width: -webkit-fill-available;
+  }
+
+  .chatbox_section {
+    width: 100%;
+  }
+}

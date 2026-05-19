@@ -1,0 +1,173 @@
+.jobpost-container {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.job-list-panel {
+  box-shadow: inset -2px 0 8px rgba(0,0,0,0.05);
+  
+  .list-group-item {
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    &.bg-primary-subtle {
+      border-color: #0d6efd !important;
+      box-shadow: 0 2px 8px rgba(13,110,253,0.15);
+    }
+  }
+}
+
+.overflow-auto {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.bg-primary-subtle {
+  background-color: rgba(13,110,253,0.08) !important;
+}
+
+.badge {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.rounded-3 {
+  border-radius: 0.75rem !important;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .job-list-panel {
+    order: 2;
+    max-height: 50vh;
+    z-index: 10;
+  }
+  
+  .col-lg-8 {
+    order: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .job-list-panel {
+    max-height: 40vh;
+  }
+  
+  .p-4 {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Scrollbar styling */
+.overflow-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+
+/* Filter Wrapper */
+.filter-wrapper {
+  background: #fff;
+}
+
+/* Dropdown Toggle */
+.status-dropdown-toggle {
+  min-width: 170px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background: #f9fafb;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.status-dropdown-toggle:hover {
+  background: #f1f5ff;
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+/* Dropdown Menu */
+.status-dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 6px 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.05);
+  display: none;
+  z-index: 1000;
+}
+
+.status-dropdown-menu.show {
+  display: block;
+}
+
+/* Dropdown Items */
+.status-dropdown-menu .dropdown-item {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.status-dropdown-menu .dropdown-item:hover {
+  background: rgba(13,110,253,0.08);
+  color: #0d6efd;
+}
+
+/* Active Status Highlight (optional) */
+.status-dropdown-menu .dropdown-item.active {
+  background: rgba(13,110,253,0.12);
+  color: #0d6efd;
+  font-weight: 600;
+}
+.status-dropdown-menu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.status-dropdown-menu li {
+  list-style: none;
+}
+
+
+.status-dropdown-toggle,
+.status-dropdown-toggle * {
+  text-transform: none !important;
+}

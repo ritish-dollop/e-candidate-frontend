@@ -1,0 +1,78 @@
+<!-- SIDEBAR START -->
+<div class="Sidebar">
+
+  <!-- logo -->
+  <div class="dashboard_logo p-3">
+    <img src="assets/images/svg-img/logo.svg" class="img-fluid" />
+  </div>
+
+  <div class="sidebar_navbar sidebar_scroll">
+    <ul>
+
+      <!-- DASHBOARD (Admin + Team Member) -->
+      <li routerLinkActive="active" *ngIf="isCustomerUser()" [routerLinkActiveOptions]="{ exact: true }">
+        <a routerLink="/home">
+          <img src="assets-1/images/svg-img/dashboard.svg" />
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <!-- CAMPAIGNS (Admin + Team Member) -->
+      <li routerLinkActive="active">
+        <a [routerLink]="['/home/campaign/customer', customerId]">
+          <img src="assets-1/images/svg-img/campaigns.svg" />
+          <span>Campaigns</span>
+        </a>
+      </li>
+
+      <!-- TASK & CALENDAR -->
+      <li routerLinkActive="active" *ngIf="isCustomerUser()">
+        <a routerLink="/home/taskcalender">
+          <img src="assets-1/images/svg-img/calender&task.svg" />
+          <span>Tasks / Calendar</span>
+        </a>
+      </li>
+
+      <!-- EMAIL -->
+      <li routerLinkActive="active" *ngIf="isCustomerUser()">
+        <a routerLink="/home/email">
+          <img src="assets-1/images/svg-img/Email.svg" />
+          <span>Email Functionality</span>
+        </a>
+      </li>
+
+      <!-- AGENCY ROOM (Admin + Team Member) -->
+      <li routerLinkActive="active" *ngIf="isCustomerUser()">
+        <a routerLink="/home/agencyroom">
+          <img src="assets-1/images/svg-img/agency-room.svg" />
+          <span>Agency Room</span>
+        </a>
+      </li>
+
+      <!-- CHAT -->
+      <li routerLinkActive="active" >
+        <a routerLink="/home/chat">
+          <img src="assets-1/images/svg-img/chat-icon.svg" />
+          <span>Chat</span>
+        </a>
+      </li>
+
+      <!-- BRANCHES (Admin + Team Member) -->
+      <li routerLinkActive="active" *ngIf="isCustomerUser()">
+        <a routerLink="/home/branches">
+          <img src="assets-1/images/png-img/branch.png" />
+          <span>Branches</span>
+        </a>
+      </li>
+
+      <!-- USERS (ONLY ADMIN) -->
+      <li routerLinkActive="active" *ngIf="isAdmin()">
+        <a routerLink="/home/user">
+          <img src="assets-1/images/png-img/user-img.svg" />
+          <span>User</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>

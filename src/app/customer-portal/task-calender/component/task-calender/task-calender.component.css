@@ -1,0 +1,6 @@
+/* 🔒 Disable 3-dot when completed */
+.dropdown-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}

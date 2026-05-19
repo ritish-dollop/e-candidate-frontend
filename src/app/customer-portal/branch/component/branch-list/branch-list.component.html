@@ -1,0 +1,144 @@
+<div class="branch-container" style="height: 100px">
+  <div class="page-wrapper">
+    <div class="header">
+      <h2>Branches</h2>
+      <button class="add-btn" (click)="startAdd()" *ngIf="isAdmin()">
+        + Add Branch
+      </button>
+    </div>
+
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" *ngIf="showForm"></div>
+
+    <!-- Popup Modal -->
+    <div class="popup-modal" *ngIf="showForm">
+      <div class="popup-header">
+        <h2>{{ editMode ? "Edit Branch" : "Add Branch" }}</h2>
+      </div>
+
+      <div class="d-flex flex-column gap-4">
+        <div class="d-flex flex-column gap-3 add_task">
+          <!-- Branch Name -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Branch Name</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="form.branchName"
+            />
+          </div>
+          <!-- Contact -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Contact No</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="form.contactNo"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Billing Email</h3>
+            <input
+              type="email"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="form.billingEmail"
+            />
+          </div>
+          <!-- Branch Address -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Branch Address</h3>
+            <input
+              type="text"
+              class="search_input_field small-text p-2"
+              [(ngModel)]="form.branchAddress"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-4 justify-content-end">
+          <button
+            class="secondary_outline_btn medium-text Medium w-25"
+            (click)="cancelForm()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="primary_btn medium-text Medium w-25"
+            (click)="saveBranch()"
+          >
+            {{ editMode ? "Update" : "Add" }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⭐ INLINE FORM END ⭐ -->
+
+    <table *ngIf="branches.length > 0; else noBranchTemplate">
+      <thead>
+        <tr>
+          <th>Branch Name</th>
+          <th>Branch Address</th>
+          <th>Contact No</th>
+          <th>Billing Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let branch of branches">
+          <td>
+            <a [routerLink]="[branch.id, 'users']" class="branch-link">
+              {{ branch.branchName }}
+            </a>
+          </td>
+          <td>{{ branch.branchAddress }}</td>
+          <td>{{ branch.contactNo }}</td>
+          <td>{{ branch.billingEmail }}</td>
+
+          <td>
+            <label class="switch">
+              <input
+                type="checkbox"
+                [checked]="branch.status === 'ACTIVE'"
+                [disabled]="!isAdmin()"
+                (click)="onBranchStatusClick($event, branch)"
+              />
+              <span class="slider"></span>
+            </label>
+          </td>
+
+          <td class="action-col">
+            <button
+              class="action-btn edit"
+              (click)="startEdit(branch)"
+              [disabled]="!isAdmin()"
+            >
+              <img src="assets/images/svg-img/edit.svg" />
+            </button>
+
+            <button
+              class="action-btn delete"
+              (click)="deleteBranch(branch.id!)"
+              [disabled]="!isAdmin()"
+            >
+              <img src="assets/images/svg-img/delete-outline.svg" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noBranchTemplate>
+      <div class="no-data">
+        <p>No branches found.</p>
+      </div>
+    </ng-template>
+
+    <!-- Pagination omitted for brevity -->
+  </div>
+</div>

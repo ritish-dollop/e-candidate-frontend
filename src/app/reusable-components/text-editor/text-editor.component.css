@@ -1,0 +1,9 @@
+.editor-content {
+  min-height: 200px;
+  outline: none;
+  overflow-y: auto;
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}

@@ -1,0 +1,41 @@
+<div class="row dashboard_card">
+  <!-- candidates -->
+  <app-candidates class="col-md-6 mb-4"></app-candidates>
+  <!-- emails -->
+  <app-emails class="col-md-6 mb-4"></app-emails>
+</div>
+<!-- calendar -->
+<app-calendar></app-calendar>
+
+<!-- <app-list></app-list> -->
+<!-- CHAT BOX MODAL START -->
+<button class="open-button cursor_pointer" onclick="openForm()" id="open">
+  <img src="assets/images/svg-img/chat-icon.svg" height="43" width="43" />
+</button>
+<button
+  type="button"
+  class="open-button cursor_pointer"
+  onclick="closeForm()"
+  id="close"
+  (click)="closeForm()"
+>
+  <img src="assets/images/svg-img/close.svg" height="43" width="43" />
+</button>
+
+<!-- Chat box modal details -->
+<div class="chat-popup" id="myForm">
+  <div class="dashboard-chat-area">
+
+<!-- <div class="dashboard-chat-area"> -->
+<div class="white_card_background p-0 w-100">
+  <div class="dashboard-chat-lists">
+      <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+
+  </div>
+</div>
+
+<!-- chatbox end -->

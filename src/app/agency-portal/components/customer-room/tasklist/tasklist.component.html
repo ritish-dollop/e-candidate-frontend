@@ -1,0 +1,39 @@
+<div class="p-4 d-flex flex-column gap-4 white_card_background h-100">
+    <!-- task details  -->
+    <div *ngFor="let task of tasks" class="d-flex justify-content-between task_cards p-2">
+        <div class="task_card d-flex flex-column gap-2">
+            <h2 class="mb-0 small-text Medium">
+                {{ task.assignedToName }}
+            </h2>
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="mb-0 small-text Medium">
+                    Title - {{ task.title }}
+                </h3>
+                <h5 *ngIf="task.status" class="smaller-text Semibold mb-0 CVRequest_bg p-1 CVRequest">
+                    {{ task.status }}
+                </h5>
+            </div>
+            <h4 class="mb-0 medium-text Medium">{{ task.description }}</h4>
+            <div class="d-flex">
+                <h5 class="Caption Medium secondary_card_background p-1 mb-0">
+                    {{ task.startDate | date:'dd-MM-yyyy' }}
+                    <span>({{ task.startDate | date:'EEEE' }}) </span>
+                </h5>
+            </div>
+        </div>
+        <div class="dropdown" *ngIf="task.status !== 'COMPLETED'">
+            <img src="assets/images/svg-img/dropdown_icon.svg" height="22" width="22" class="dropdown-toggle" tabindex="0"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false" />
+            <ul class="dropdown-menu dropdown_details">
+                <li><button class="dropdown-item" (click)="markTaskCompleted(task)" >
+                        Task Completed
+                    </button></li>
+                <!-- <li><a class="dropdown-item" >Task Completed</a></li> -->
+            </ul>
+        </div>
+
+        
+    </div> 
+</div>
+
+

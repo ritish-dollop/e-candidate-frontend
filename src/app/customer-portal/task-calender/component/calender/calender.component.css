@@ -1,0 +1,299 @@
+/* FULLCALENDAR EXISTING OVERRIDES */
+:host {
+  display: block;
+}
+
+:host ::ng-deep full-calendar,
+:host ::ng-deep .fc {
+  width: 100%;
+  min-height: 500px; /* force enough height for month/week grid */
+}
+:host ::ng-deep .calendar-event-ui {
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+  color: #fff;
+  background: #0C4377;
+}
+
+:host ::ng-deep .calendar-task-ui {
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+  color: #fff;
+  background: #009AA5;
+}
+
+/* Remove default DAY GRID events */
+:host ::ng-deep .fc-daygrid-event,
+:host ::ng-deep .fc-daygrid-event .fc-event-main {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep .calendar-event-ui + .calendar-task-ui,
+:host ::ng-deep .calendar-task-ui + .calendar-event-ui {
+  margin-top: 1px;
+}
+
+:host ::ng-deep .fc-daygrid-day-events {
+  padding: 0 !important;
+}
+
+:host ::ng-deep .fc-daygrid-event-harness,
+:host ::ng-deep .fc-daygrid-event {
+  width: 100%;
+}
+
+:host ::ng-deep .fc-daygrid-day-top {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+:host ::ng-deep .fc-daygrid-day-number {
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+}
+
+:host ::ng-deep .fc-col-header-cell {
+  color: #8c8c8c !important;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .fc-col-header-cell-cushion {
+  color: #8c8c8c !important;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+   /* FIX: REMOVE DEFAULT TIMEGRID BOX (BLUE BIG BLOCK) */
+
+:host ::ng-deep .fc-timegrid-event {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep .fc-timegrid-event .fc-event-main,
+:host ::ng-deep .fc-timegrid-event .fc-event-main-frame {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .fc-timegrid-event .fc-event-time,
+:host ::ng-deep .fc-timegrid-event .fc-event-title {
+  display: none !important; /* completely removes default content */
+}
+
+/* ==============================
+   CUSTOM WEEK VIEW CONTAINER
+   ============================== */
+
+.week-container {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  font-family: sans-serif;
+}
+
+/* ==============================
+   HORIZONTAL SCROLL (MAIN PART)
+   ============================== */
+
+.scroll-wrapper {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  padding-bottom: 10px;
+}
+
+/* ==============================
+   24-HOUR WIDE GRID
+   ============================== */
+
+.hours-row,
+.timeline {
+  width: 2400px; /* 24 hours × 100px each */
+}
+
+/* HOURS HEADER */
+.hours-row {
+  display: grid;
+  grid-template-columns: 80px repeat(24, 100px);
+  margin-bottom: 8px;
+}
+
+.hour {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  height: 40px;
+  line-height: 40px;
+}
+
+/* WEEK ROWS */
+.week-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  margin-bottom: 0px;
+  align-items: center;
+  height: 80px;
+  position: relative;
+}
+
+.week-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 2480px;
+  border-bottom: 2px solid #eee;
+  z-index: 1;
+}
+
+.day-label {
+  text-align: center;
+}
+
+.day {
+  font-weight: 700;
+}
+
+.date {
+  font-size: 14px;
+}
+
+/* TIMELINE GRID */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(24, 100px);
+  height: 80px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.hour-bg {
+  border-right: 2px solid #eee;
+}
+
+/* CUSTOM EVENT BOXES */
+.event-box {
+  position: absolute;
+  top: 10px;
+  height: 20px;
+  background: #0C4377;
+  min-width: 100px;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 6px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.task-event {
+  background: #009AA5 !important;
+  color: #fff !important;
+}
+
+/* Assigned Task - Red */
+:host ::ng-deep .assigned-task-bg {
+  background: #8f8989 !important;
+  color: #fff !important;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+}
+
+/* Assigned Event - Yellow */
+:host ::ng-deep .assigned-event-bg {
+  background: #b19d66 !important;
+  color: #000 !important;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+}
+
+/* Created Task - Teal (original) */
+:host ::ng-deep .action_card_background {
+  background: #009AA5 !important;
+  color: #fff !important;
+  width: 100%;
+  margin-left: 0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+}
+
+/* Created Event - Blue (original) */
+:host ::ng-deep .primary_card_background {
+  background: #0C4377 !important;
+  color: #fff !important;
+  width: 100%;
+  margin-left: -0;
+  padding: 5px 4px !important;
+  font-size: 0.72rem;
+  line-height: 1.05;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  box-shadow: none !important;
+}
+
+/* Horizontal line spanning the timeline */
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-bottom: 2px solid #eee;
+  z-index: 0;
+}

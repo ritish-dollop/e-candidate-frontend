@@ -1,0 +1,138 @@
+<nav class="header d-flex align-items-center justify-content-end">
+  <!-- <div class="back-btn" *ngIf="showBackButton()" style="z-index:9999; position:absolute; left:20px; top:20px; background:#fff;">
+  <a [routerLink]="getBackUrl()">
+    <img src="assets/images/svg-img/back.svg" height="24" width="24">
+  </a>
+</div> -->
+
+  <div class="right-admin-profile d-flex align-items-center gap-3">
+    <!-- language change -->
+    <div class="d-flex align-items-center">
+      <img src="assets-1/images/svg-img/language.svg" height="30" width="30" />
+    </div>
+
+    <!-- notification -->
+    <div
+      class="position-relative"
+      role="button"
+      aria-label="Open notifications"
+      (click)="openNotification($event)"
+    >
+      <img src="assets-1/images/svg-img/notification.svg" alt="Notifications" />
+      <span
+        class="notification_circle Semibold d-flex justify-content-center align-items-center"
+      >
+        {{ notificationCount }}
+      </span>
+    </div>
+
+    <div class="dropdown position-relative">
+      <a
+        class="d-flex align-items-center medium-text Medium gap-2"
+        role="button"
+        id="dropdownMenuLink"
+        data-bs-auto-close="outside"
+        aria-expanded="true"
+        (click)="toggleProfile($event)"
+      >
+        <img
+          class="profile_img"
+          [src]="user.profileImage || defaultProfileImage"
+          alt="User profile"
+        />
+        {{ user.name }}
+        <img
+          src="assets-1/images/svg-img/arrow.svg"
+          class="blue-filter mx-0 ms-2 arrow_transform"
+        />
+      </a>
+
+      <ul
+        class="dropdown-menu profiles_dropdown "
+        aria-labelledby="dropdownMenuLink"
+        data-popper-placement="bottom-end"
+        [class.show]="isProfileOpen"
+        *ngIf="isProfileOpen"
+      >
+        <div class="mb-3">
+          <li class="profile_dropdown d-flex align-items-center gap-3">
+            <img
+              class="profile_img"
+              [src]="user.profileImage || defaultProfileImage"
+              alt="User profile"
+            />
+            <div>
+              <h2 class="medium-text Medium mb-1">{{ user.name }}</h2>
+              <h3 class="Regular Caption mb-0">{{ user.email }}</h3>
+            </div>
+          </li>
+        </div>
+
+        <!-- setting -->
+        <div class="d-flex flex-column gap-3 profile_list">
+          <li class="gap-2 p-2 d-flex align-items-center small-text Medium">
+            <img
+              class="profile_icon"
+              src="assets-1/images/svg-img/settings.svg"
+            />
+            Setting
+            <div class="mb-0 lh-0 mx-0 ms-auto p-0 dark-gray">
+              <img src="assets-1/images/svg-img/arrow.svg" />
+            </div>
+          </li>
+
+          <!-- theme change -->
+          <li class="gap-2 p-2 d-flex align-items-center small-text Medium">
+            <img class="profile_icon" src="assets-1/images/svg-img/theme.svg" />
+            Theme
+            <div class="mx-0 ms-auto position-relative">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="isDarkMode"
+                  (change)="toggleTheme()"
+                  
+                />
+                <span class="slider round cursor_pointer"></span>
+              </label>
+            </div>
+          </li>
+
+          <!-- notification -->
+          <li class="gap-2 p-2 d-flex align-items-center small-text Medium">
+            <img
+              class="profile_icon"
+              src="assets-1/images/svg-img/notification.svg"
+            />
+            Notification
+            <label class="switch mx-0 ms-auto">
+              <input type="checkbox" />
+              <span class="slider round cursor_pointer"></span>
+            </label>
+          </li>
+
+          <!-- logout -->
+          <li
+            class="gap-2 p-2 d-flex align-items-center small-text Medium danger cursor_pointer"
+            (click)="logout()"
+          >
+            <img
+              class="profile_icon"
+              src="assets-1/images/svg-img/logout.svg"
+            />
+            Logout
+            <div class="mb-0 lh-0 mx-0 ms-auto p-0 dark-gray">
+              <img src="assets-1/images/svg-img/arrow.svg" />
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<app-notification
+  #notificationCmp
+  (notificationsChange)="notificationCount = $event"
+  (clearAll)="notificationCount = 0"
+></app-notification>
+

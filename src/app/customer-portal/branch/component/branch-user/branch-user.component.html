@@ -1,0 +1,243 @@
+<div class="back-btn-container">
+  <button class="back-btn" (click)="goBack()">←</button>
+</div>
+
+<div class="page-bg">
+  <div class="branch-header">
+    <div class="left">
+      <h2 class="branch-title">{{ branchInfo?.branchName }}</h2>
+      <div class="header-divider"></div>
+
+      <div class="info-row">
+        <div class="info-block">
+          <label>Contact</label>
+          <p>{{ branchInfo?.contactNo }}</p>
+        </div>
+
+        <div class="info-block">
+          <label>Billing Email Address</label>
+          <p>{{ branchInfo?.billingEmail }}</p>
+        </div>
+
+        <div class="info-block address">
+          <label>Address</label>
+          <p>{{ branchInfo?.branchAddress }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <span class="user-status" [ngClass]="branchInfo?.status">
+        {{ branchInfo?.status }}
+      </span>
+    </div>
+  </div>
+
+  <div class="branch-user-container">
+    <div class="header">
+      <h2>Branch Users</h2>
+      <button class="add-btn" (click)="openAddUser()" *ngIf="isBranchAdmin()">+ Add Branch User</button>
+    </div>
+
+    <table *ngIf="branchUsers.length > 0; else noBranchUserTemplate">
+
+      <thead>
+        <tr>
+          <th>User Profile</th>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>Contact No</th>
+          <th>User Role</th>
+          <th>Password</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of branchUsers">
+          
+          <!-- Profile -->
+          <td>
+            <img [src]="user.profilePic || 'assets/images/default-user.png'" class="user-img" />
+          </td>
+
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.contactNo }}</td>
+          <td>{{ user.role | customerRole }}</td>
+
+          <!-- Password -->
+          <td class="masked-password">
+            ****** <br>
+            <button class="reset-btn" (click)="resetPassword(user)" *ngIf="isBranchAdmin()">Reset password</button>
+          </td>
+
+          <td>
+            <label class="switch">
+              <input type="checkbox" [checked]="user.status === 'ACTIVE'" (click)="onBranchUserStatusClick($event, user)" *ngIf="isBranchAdmin()"/>
+              <span class="slider"></span>
+            </label>
+          </td>
+
+          <td class="action-col">
+            <button class="action-btn edit" (click)="openEditUser(user)" *ngIf="isBranchAdmin()">
+              <img src="assets/images/svg-img/edit.svg" alt="edit" />
+            </button>
+
+            <button class="action-btn delete" (click)="deleteUser(user.id)" *ngIf="isBranchAdmin()">
+              <img src="assets/images/svg-img/delete-outline.svg" alt="delete" />
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noBranchUserTemplate>
+  <div class="no-data">
+    <p>No branch users found.</p>
+  </div>
+</ng-template>
+
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example" class="table-pagination" *ngIf="branchUsers.length > 0">
+
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="goToPage(page - 1)" [class.disabled]="page === 0">
+        <img src="assets/images/svg-img/pagination-arrow-left.svg" /> Previous
+      </a>
+
+      <ul class="pagination mb-0 gap-2">
+        <li *ngFor="let p of [].constructor(totalPages); let i = index">
+          <a class="page-link" (click)="goToPage(i)" [class.active]="i === page">
+            {{ i + 1 }}
+          </a>
+        </li>
+      </ul>
+
+      <a class="secondary arrow small-text Medium d-flex gap-1" (click)="goToPage(page + 1)" [class.disabled]="page === totalPages - 1">
+        Next <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+      </a>
+
+    </nav>
+  </div>
+</div>
+
+<!-- ADD / EDIT USER POPUP -->
+<div class="popup-overlay" *ngIf="showUserForm"></div>
+
+<div class="popup-modal" *ngIf="showUserForm">
+  <div class="popup-header">
+    <h2>{{ isEditMode ? "Edit User" : "Add Branch User" }}</h2>
+  </div>
+
+  <div class="d-flex flex-column gap-4">
+
+    <div class="d-flex flex-column gap-3 add_task">
+
+      <!-- Profile Picture -->
+      <div class="d-flex align-items-start upload-row">
+        <h3 class="mb-0">Profile Picture</h3>
+
+        <div class="upload-content">
+          <div class="upload-box" (click)="fileInput.click()">
+            <img src="assets-1/images/svg-img/file.svg" alt="Upload icon" />
+            <p class="mb-0">Upload Picture</p>
+          </div>
+
+          <div class="image-preview" *ngIf="uploadedImageUrl">
+            <button type="button" class="remove-img-btn" (click)="removeUploadedImage(fileInput)">×</button>
+            <img [src]="uploadedImageUrl" />
+          </div>
+        </div>
+
+        <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
+      </div>
+
+      <!-- User Type -->
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-0">User Type</h3>
+        <select class="search_input_field small-text p-2" [(ngModel)]="userData.role" name="role">
+          <option value="BRANCH_ADMIN" *ngIf="!hasBranchAdmin()">Branch Admin</option>
+          <option value="BRANCH_TEAM_MEMBER">Team Member</option>
+        </select>
+      </div>
+
+      <div class="d-flex flex-column gap-4">
+        <div class="d-flex flex-column gap-3 add_task">
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Name</h3>
+            <input type="text" class="search_input_field small-text p-2" [(ngModel)]="userData.name" name="name" />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Contact Number</h3>
+            <input type="text" class="search_input_field small-text p-2" [(ngModel)]="userData.contactNo" name="contactNo" />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Email Address</h3>
+            <input type="email" class="search_input_field small-text p-2" [(ngModel)]="userData.email" name="email" [readonly]="isEditMode"
+       [class.disabled-input]="isEditMode"/>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Position</h3>
+            <input type="text" class="search_input_field small-text p-2" [(ngModel)]="userData.position" name="position" />
+          </div>
+
+          <div class="d-flex justify-content-between" *ngIf="!isEditMode">
+            <h3 class="mb-0">Password</h3>
+            <input type="text" class="search_input_field small-text p-2" [(ngModel)]="userData.password" name="password" />
+          </div>
+
+          <div class="d-flex justify-content-between" *ngIf="isEditMode">
+            <h3 class="mb-0">Password</h3>
+            <p class="small-text">****** (Reset from list)</p>
+          </div>
+
+        </div>
+
+        <div class="d-flex gap-4 justify-content-end">
+          <button class="secondary_outline_btn medium-text Medium w-25" (click)="closeUserForm()">Cancel</button>
+          <button class="primary_btn medium-text Medium w-25" (click)="saveUser()">
+            {{ isEditMode ? "Update" : "Add" }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESET PASSWORD POPUP -->
+<div class="popup-overlay" *ngIf="showResetPopup"></div>
+
+<div class="popup-modal" *ngIf="showResetPopup">
+  <div class="popup-header">
+    <h2>Reset Password</h2>
+  </div>
+
+  <div class="d-flex flex-column gap-4">
+
+    <div class="d-flex flex-column gap-3">
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-0">New Password</h3>
+        <input type="text" class="search_input_field small-text p-2"
+               [(ngModel)]="resetPasswordData.newPassword" />
+      </div>
+    </div>
+
+    <div class="d-flex gap-4 justify-content-end">
+      <button class="secondary_outline_btn medium-text Medium w-25" (click)="showResetPopup=false">
+        Cancel
+      </button>
+
+      <button class="primary_btn medium-text Medium w-25" (click)="submitResetPassword()">
+        Reset
+      </button>
+    </div>
+
+  </div>
+</div>

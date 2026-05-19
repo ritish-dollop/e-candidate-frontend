@@ -1,0 +1,708 @@
+<!-- Chatbox -->
+<!-- <div class="chat_background h-100 w-100" (click)="handleClick($event)"> -->
+  <div class="chatbox" [ngClass]="{ showbox: isChatBoxVisible }">
+    <div class="modal-dialog-scrollable">
+      <div class="modal-content rounded-0 gap-4">
+        <!-- CHAT HEADER -->
+        <div
+          class="d-flex align-items-start gap-3 px-3 pt-3 pb-2 bg-white border_top"
+        >
+          <span class="chat-icon backarrow" (click)="closeChatBox()">
+            <a>
+              <img class="img-fluid" src="assets/images/svg-img/arrow-left.svg"
+            /></a>
+          </span>
+
+          <img
+            [src]="selectedChatimage"
+            class="avatar rounded-circle user_img"
+            (click)="openSidebar($event)"
+          />
+
+          <div class="user_chat">
+            <h4 class="medium-text Semibold mb-1">{{ selectedChatName }}</h4>
+
+            <h3 class="small-text Regular mb-0 d-flex align-items-center gap-2">
+              <ng-container *ngIf="otherParticipant; else groupChat">
+                {{ getLastSeen(otherParticipant?.lastLogin || null) }}
+              </ng-container>
+
+              <ng-template #groupChat>
+                Group · {{ chat?.participantsResponse?.length }} members
+              </ng-template>
+            </h3>
+          </div>
+        </div>
+
+        <!-- CHAT BODY -->
+        <div id="messageBody" #messageBody class="modal-body p-4 pb-0">
+          <ul class="d-flex flex-column gap-3 p-0 justify-content-end">
+            <ng-container *ngFor="let group of groupedMessages">
+              <!-- DATE DIVIDER -->
+              <div class="d-flex justify-content-center chat_box mb-3">
+                <h3
+                  class="Primarylight_background py-1 px-2 small-text Regular mb-0"
+                >
+                  {{ group.dateLabel }}
+                </h3>
+              </div>
+
+              <ng-container *ngFor="let msg of group.messages">
+                <div *ngIf="!msg.deleted">
+                  <!-- RECEIVED -->
+                  <div
+                    class="d-flex gap-3"
+                    *ngIf="msg.senderId !== currentUserId"
+                  >
+                    <div
+                      class="message_sender d-flex"
+                      (mouseenter)="showDots = msg.id"
+                      (mouseleave)="showDots = null"
+                    >
+                      <div class="message_sender">
+                        <div class="d-flex align-items-start gap-2">
+                          <img
+                            [src]="getSenderImage(msg.senderId)"
+                            height="26"
+                            width="26"
+                          />
+
+                          <div class="d-flex flex-column gap-1">
+                            <h3 class="Regular x-small-text mb-0 text_dark">
+                              {{ msg.senderName }},
+                              {{ formatTime(msg.sentAt) }}
+                            </h3>
+                            <div
+                              *ngIf="msg.replyTo"
+                              class="reply_box_sender borderRadius_card"
+                            >
+                              <!-- <div class="reply_line"></div> -->
+
+                              <div class="reply_content">
+                                <h6 class="reply_sender">
+                                  {{ msg.replyTo.senderEmail }}
+                                </h6>
+
+                                <!-- Reply Text -->
+                                <p
+                                  *ngIf="msg.replyTo.messageType === 'TEXT'"
+                                  class="reply_text"
+                                >
+                                  {{ msg.replyTo.content }}
+                                </p>
+
+                                <!-- Reply Image -->
+                                <img
+                                  *ngIf="msg.replyTo.messageType === 'IMAGE'"
+                                  [src]="msg.replyTo.urls[0]"
+                                  class="reply_image"
+                                />
+
+                                <!-- Reply Video -->
+                                <video
+                                  *ngIf="msg.replyTo.messageType === 'VIDEO'"
+                                  [src]="msg.replyTo.urls[0]"
+                                  class="reply_video"
+                                ></video>
+                              </div>
+                            </div>
+                            <!-- TEXT -->
+                            <h4
+                              *ngIf="msg.messageType === 'TEXT'"
+                              class="Medium small-text mb-0 bg-white py-2 px-3 borderRadius_card"
+                            >
+                              {{ msg.content }}
+                            </h4>
+
+                            <!-- FILES (IMAGE / VIDEO / AUDIO / DOCUMENT) -->
+                            <div *ngIf="msg.urls?.length">
+                              <!-- LOOP ALL URLs -->
+                              <ng-container *ngFor="let url of msg.urls">
+                                <!-- IMAGE -->
+                                <img
+                                  *ngIf="msg.messageType === 'IMAGE'"
+                                  [src]="url"
+                                  class="chat_img_send borderRadius_card"
+                                />
+
+                                <!-- VIDEO -->
+                                <video
+                                  *ngIf="msg.messageType === 'VIDEO'"
+                                  [src]="url"
+                                  class="chat_video_send borderRadius_card"
+                                  controls
+                                ></video>
+
+                                <!-- AUDIO -->
+                                <audio
+                                  *ngIf="msg.messageType === 'AUDIO'"
+                                  [src]="url"
+                                  class="chat_audio_send borderRadius_card"
+                                  controls
+                                ></audio>
+                                <a
+                                  *ngIf="msg.messageType === 'FILE'"
+                                  [href]="url"
+                                  target="_blank"
+                                  class="document_link"
+                                >
+                                  📄 Download File
+                                </a>
+                                <!-- DOCUMENT -->
+                                <a
+                                  *ngIf="msg.messageType === 'DOCUMENT'"
+                                  [href]="url"
+                                  target="_blank"
+                                  class="document_link"
+                                >
+                                  📄 Download File
+                                </a>
+                                <h3
+                                  *ngIf="msg.edited"
+                                  class="Regular x-small-text mb-0 text_dark"
+                                >
+                                  edited
+                                </h3>
+                              </ng-container>
+                            </div>
+                          </div>
+                          <!-- OPTIONS MENU -->
+                          <div>
+                            <img
+                              src="/assets/images/svg-img/dropdown_icon.svg"
+                              height="20"
+                              class="dropdown-icon cursor_pointer"
+                              *ngIf="showDots === msg.id"
+                              (click)="toggleDropdown($event, msg.id)"
+                            />
+
+                            <div
+                              class="dropdown-menu d-block"
+                              *ngIf="showDropdown === msg.id"
+                              (mouseleave)="closeDropdown()"
+                            >
+                              <a (click)="reply(msg)"
+                                ><img
+                                  src="/assets/images/svg-img/reply.svg"
+                                  height="20"
+                                />
+                                Reply</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- SENT BY YOU -->
+                  <div
+                    class="d-flex justify-content-end gap-3"
+                    *ngIf="msg.senderId === currentUserId"
+                  >
+                    <div
+                      class="message_sender d-flex"
+                      (mouseenter)="showDots = msg.id"
+                      (mouseleave)="showDots = null"
+                    >
+                      <div class="d-flex flex-column align-items-start gap-1">
+                        <!-- TEXT -->
+
+                        <!-- TEXT -->
+                        <!-- REPLY PREVIEW -->
+                        <div
+                          *ngIf="msg.replyTo"
+                          class="reply_box_sender borderRadius_card"
+                        >
+                          <!-- <div class="reply_line"></div> -->
+
+                          <div class="reply_content">
+                            <h6 class="reply_sender">
+                              {{ msg.replyTo.senderEmail }}
+                            </h6>
+
+                            <!-- Reply Text -->
+                            <p
+                              *ngIf="msg.replyTo.messageType === 'TEXT'"
+                              class="reply_text"
+                            >
+                              {{ msg.replyTo.content }}
+                            </p>
+
+                            <!-- Reply Image -->
+                            <img
+                              *ngIf="msg.replyTo.messageType === 'IMAGE'"
+                              [src]="msg.replyTo.urls[0]"
+                              class="reply_image"
+                            />
+
+                            <!-- Reply Video -->
+                            <video
+                              *ngIf="msg.replyTo.messageType === 'VIDEO'"
+                              [src]="msg.replyTo.urls[0]"
+                              class="reply_video"
+                            ></video>
+                          </div>
+                        </div>
+
+                        <h5
+                          *ngIf="msg.messageType === 'TEXT'"
+                          class="Medium small-text mb-0 primary_card_background borderRadius_card py-2 px-3 white"
+                        >
+                          {{ msg.content }}
+                        </h5>
+
+                        <!-- MULTIPLE FILES -->
+                        <div *ngIf="msg.urls && msg.urls.length">
+                          <ng-container *ngFor="let url of msg.urls">
+                            <!-- IMAGE -->
+                            <img
+                              *ngIf="msg.messageType === 'IMAGE'"
+                              [src]="url"
+                              class="chat_img_send borderRadius_card"
+                            />
+
+                            <!-- VIDEO -->
+                            <video
+                              *ngIf="msg.messageType === 'VIDEO'"
+                              [src]="url"
+                              class="chat_video_send borderRadius_card"
+                              controls
+                            ></video>
+
+                            <!-- AUDIO -->
+                            <audio
+                              *ngIf="msg.messageType === 'AUDIO'"
+                              [src]="url"
+                              class="chat_audio_send borderRadius_card"
+                              controls
+                            ></audio>
+
+                            <a
+                              *ngIf="
+                                msg.messageType === 'FILE' ||
+                                msg.messageType === 'DOCUMENT'
+                              "
+                              [href]="url"
+                              target="_blank"
+                              class="document_link"
+                            >
+                              📄 {{ getFileName(url) }}
+                            </a>
+                          </ng-container>
+                        </div>
+
+                        <div
+                          class="d-flex justify-content-end align-items-center w-100 gap-1"
+                        >
+                          <h3 class="Regular x-small-text mb-0 text_dark">
+                            {{ formatTime(msg.sentAt) }}
+                          </h3>
+                          <img
+                            *ngIf="!msg.delivered && !msg.isread"
+                            src="assets/images/svg-img/tick.svg"
+                            height="20"
+                          />
+                          <!-- DOUBLE TICK (delivered but not read) -->
+                          <img
+                            *ngIf="msg.delivered && !msg.isread"
+                            src="assets/images/svg-img/2tick.svg"
+                            height="20"
+                          />
+                          <!-- BLUE DOUBLE TICK (read) -->
+                          <img
+                            *ngIf="msg.isread"
+                            src="assets/images/svg-img/double-blue-tick.svg"
+                            height="12"
+                          />
+                        </div>
+                        <div
+                          class="d-flex justify-content-end align-items-center w-100 gap-1"
+                        >
+                          <h3
+                            *ngIf="msg.edited"
+                            class="Regular x-small-text mb-0 text_dark"
+                          >
+                            edited
+                          </h3>
+                        </div>
+                      </div>
+
+                      <!-- OPTIONS MENU -->
+                      <div>
+                        <img
+                          src="/assets/images/svg-img/dropdown_icon.svg"
+                          height="20"
+                          class="dropdown-icon cursor_pointer"
+                          *ngIf="showDots === msg.id"
+                          (click)="toggleDropdown($event, msg.id)"
+                        />
+
+                        <div
+                          class="dropdown-menu d-block"
+                          *ngIf="showDropdown === msg.id"
+                          (mouseleave)="closeDropdown()"
+                        >
+                          <a (click)="reply(msg)"
+                            ><img
+                              src="/assets/images/svg-img/reply.svg"
+                              height="20"
+                            />
+                            Reply</a
+                          >
+                          <a (click)="editMode(msg.id, msg.content)"
+                            ><img
+                              src="/assets/images/svg-img/edit.svg"
+                              height="20"
+                            />
+                            Edit</a
+                          >
+                          <a (click)="deleteMessage(msg.id)"
+                            ><img
+                              src="/assets/images/svg-img/delete.svg"
+                              height="20"
+                            />
+                            Delete</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ul>
+        </div>
+        <!-- ======================================================================= -->
+        <!-- REPLY BOX (SHOW ABOVE INPUT) -->
+        <!-- REPLY PREVIEW BOX -->
+        <div
+          *ngIf="showReplyBox && replyingTo"
+          class="replying_container px-3 py-2"
+        >
+          <div class="reply_left">
+            <h6 class="reply_name">{{ replyingTo.senderEmail }}</h6>
+
+            <p *ngIf="replyingTo.messageType === 'TEXT'" class="reply_text">
+              {{ replyingTo.content }}
+            </p>
+
+            <img
+              *ngIf="replyingTo.messageType === 'IMAGE'"
+              [src]="replyingTo.urls[0]"
+              class="reply_preview"
+            />
+
+            <video
+              *ngIf="replyingTo.messageType === 'VIDEO'"
+              [src]="replyingTo.urls[0]"
+              class="reply_preview"
+            ></video>
+          </div>
+
+          <img
+            src="assets/images/svg-img/close.svg"
+            class="close_reply"
+            (click)="cancelReply()"
+          />
+        </div>
+
+        <!-- ======================================================================= -->
+        <!-- BOTTOM SEND BOX -->
+        <div class="send-box p-4 pt-0">
+          <div class="d-flex flex-column gap-2 bg-white px-3 py-2 rounded_8">
+            <!-- PREVIEW BOX -->
+            <div
+              class="select_img_box image-preview-container"
+              *ngIf="images?.length"
+            >
+              <div class="preview-scroll">
+                <div class="img-item" *ngFor="let it of images; let i = index">
+                  <div class="img-wrapper position-relative">
+                    <!-- PREVIEW TYPES -->
+
+                    <img
+                      *ngIf="it.type === 'IMAGE'"
+                      [src]="it.url"
+                      class="select_img"
+                    />
+                    <video
+                      *ngIf="it.type === 'VIDEO'"
+                      [src]="it.url"
+                      class="select_img"
+                      controls
+                    ></video>
+                    <audio
+                      *ngIf="it.type === 'AUDIO'"
+                      [src]="it.url"
+                      class="select_img"
+                      controls
+                    ></audio>
+
+                    <div
+                      *ngIf="it.type === 'DOCUMENT'"
+                      class="document-preview d-flex align-items-center gap-2"
+                    >
+                      <img
+                        src="assets/images/svg-img/document.svg"
+                        height="36"
+                      />
+                      <span>{{ it.name }}</span>
+                    </div>
+
+                    <img
+                      src="/assets/images/svg-img/img-close.svg"
+                      class="close_img"
+                      (click)="removeImage(it.url, $event)"
+                    />
+                  </div>
+                </div>
+
+                <!-- ADD MORE -->
+                <div class="img-item add-more-item">
+                  <label for="file-input">
+                    <img
+                      src="/assets/images/svg-img/add-img.svg"
+                      class="add-more-img"
+                    />
+                  </label>
+                  <input
+                    id="file-input"
+                    type="file"
+                    hidden
+                    multiple
+                    (change)="uploadImage($event)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- FILE INPUT AREA -->
+            <div class="d-flex align-items-center w-100 bottom-100">
+              <!-- ATTACHMENT BUTTON -->
+              <div class="dropdown position-relative cursor_pointer">
+                <div role="button" data-bs-toggle="dropdown">
+                  <img src="/assets/images/svg-img/attechment.svg" />
+                </div>
+
+                <ul class="dropdown-menu small_dropdown p-0 mb-3">
+                  <!-- Image / Video -->
+                  <div class="p-3 border_bottom">
+                    <label
+                      for="imgUpload"
+                      class="upload-label d-flex align-items-center gap-2"
+                    >
+                      <img src="assets/images/svg-img/gallery.svg" />
+                      <h2 class="small-text Medium mb-0">Photo or Video</h2>
+                    </label>
+                    <input
+                      id="imgUpload"
+                      type="file"
+                      hidden
+                      accept="image/*,video/*"
+                      multiple
+                      (change)="uploadImage($event)"
+                    />
+                  </div>
+
+                  <!-- Audio -->
+                  <div class="p-3 border_bottom">
+                    <label
+                      for="audioUpload"
+                      class="upload-label d-flex align-items-center gap-2"
+                    >
+                      <img src="assets/images/svg-img/audio.svg" />
+                      <h2 class="small-text Medium mb-0">Audio</h2>
+                    </label>
+                    <input
+                      id="audioUpload"
+                      type="file"
+                      hidden
+                      accept="audio"
+                      (change)="uploadImage($event)"
+                    />
+                  </div>
+
+                  <!-- Document -->
+                  <div class="p-3 border_bottom">
+                    <label
+                      for="docUpload"
+                      class="upload-label d-flex align-items-center gap-2"
+                    >
+                      <img src="assets/images/svg-img/document.svg" />
+                      <h2 class="small-text Medium mb-0">Document</h2>
+                    </label>
+                    <input
+                      id="docUpload"
+                      type="file"
+                      hidden
+                      accept=".pdf,.doc,.docx,.txt,.xls,.xlsx"
+                      (change)="uploadImage($event)"
+                    />
+                  </div>
+                </ul>
+              </div>
+
+              <!-- TEXT INPUT -->
+              <input
+                type="text"
+                [(ngModel)]="messageText"
+                class="input_text border-0 px-2 w-75 small-text Medium"
+                placeholder="Type a message"
+              />
+
+              <!-- SEND BUTTON -->
+              <button
+                type="button"
+                (click)="send()"
+                [disabled]="isSending"
+                class="send_btn medium-text Medium py-2 p-3 mx-0 ms-auto rounded_4"
+              >
+                {{ isSending ? "Sending..." : "Send" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- </div> -->
+
+<!-- SIDEBAR -->
+<!-- SIDEBAR -->
+<div
+  class="sidebar-menu flex-column gap-3"
+  [ngClass]="{
+    'show-sidebar': isSidebarVisible,
+    'hide-sidebar': !isSidebarVisible
+  }"
+>
+  <!-- TOP HEADER IMAGE + EDIT ICON -->
+  <div class="text-center pt-4 pb-3 border_bottom">
+    <div class="position-relative d-inline-block">
+      <!-- Profile / Group Image -->
+      <img [src]="selectedChatimage" class="sidebar_user_img" />
+
+      <!-- Edit Button (Only For Groups) -->
+      <div
+        *ngIf="chat?.isGroup"
+        class="groupchat_img position-absolute bottom-0 end-0"
+      >
+        <input
+          type="file"
+          class="input_feilds bg_light file_select"
+          (change)="updateGroupPhoto($event)"
+        />
+        <img
+          src="assets/images/svg-img/edit.svg"
+          class="file_select_icon white_filter"
+        />
+      </div>
+    </div>
+
+    <!-- Name -->
+    <h2 class="mb-0 mt-3 chatHeading medium-text Medium text-center">
+      {{ selectedChatName || "Unknown Name" }}
+    </h2>
+
+    <!-- Email only for 1-to-1 chats -->
+    <h3 *ngIf="!chat?.isGroup" class="text_light Caption Regular mt-1">
+      {{ otherParticipant?.email }}
+    </h3>
+
+    <!-- Creator -->
+    <h3 *ngIf="chat?.isGroup" class="text_light Caption Regular mt-1">
+      Created by
+      <span class="Medium">{{ chat?.createdBy?.name || "Unknown" }}</span>
+    </h3>
+  </div>
+
+  <!-- ADD MEMBER BUTTON (GROUP ONLY) -->
+  <div *ngIf="chat?.isGroup" class="add_member">
+    <h3
+      class="action small-text Medium mb-0 cursor_pointer"
+      (click)="openAddMember()"
+    >
+      + Add New Member
+    </h3>
+  </div>
+
+  <!-- MEMBERS COUNT -->
+  <div *ngIf="chat?.isGroup" class="px-3 pb-2">
+    <h3 class="mb-0 text_light small-text Regular">
+      {{ chat?.participantsResponse?.length || 0 }} Members
+    </h3>
+  </div>
+
+  <!-- MEMBER LIST -->
+  <div class="pb-3">
+    <div
+      class="d-flex align-items-center gap-3 px-3 py-2 cursor_pointer"
+      *ngFor="let member of chat?.participantsResponse"
+    >
+      <img
+        class="avatar rounded-circle"
+        [src]="member.profilePicture || 'assets/images/svg-img/Avatar-chat.svg'"
+        height="40"
+        width="40"
+      />
+
+      <div class="user_chat">
+        <h4 class="Caption Medium mb-0">{{ member.name }}</h4>
+        <h5 class="Caption text_light small-text mt-1">
+          {{ member.email }}
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ADD MEMBER MODAL -->
+<div
+  class="add-member-overlay"
+  *ngIf="showAddMemberModal"
+  (click)="closeAddMember()"
+></div>
+
+<div class="add-member-modal" *ngIf="showAddMemberModal">
+  <h2 class="modal-title">Add New Member</h2>
+
+  <!-- SEARCH INPUT -->
+  <input
+    type="text"
+    placeholder="Search users..."
+    class="search-input"
+    [(ngModel)]="searchText"
+    (input)="searchUsers()"
+  />
+
+  <!-- USER LIST -->
+  <div class="user-list">
+    <div
+      class="user-item"
+      *ngFor="let user of filteredUsers"
+      (click)="toggleSelectUser(user)"
+      [class.selected]="isSelected(user.commonUserId)"
+    >
+      <img
+        class="avatar rounded-circle"
+        [src]="user.profilePicture || 'assets/images/svg-img/Avatar-chat.svg'"
+      />
+
+      <div class="user-data">
+        <h4>{{ user.name }}</h4>
+        <small>{{ user.email }}</small>
+      </div>
+
+      <span class="tick-icon" *ngIf="isSelected(user.commonUserId)">✔</span>
+    </div>
+  </div>
+  <button
+    class="confirm-btn"
+    [disabled]="selectedUsers.length === 0"
+    (click)="confirmAddMembers()"
+  >
+    Add {{ selectedUsers.length }} Members
+  </button>
+
+  <!-- CLOSE BUTTON -->
+  <button class="close-btn" (click)="closeAddMember()">Close</button>
+</div>

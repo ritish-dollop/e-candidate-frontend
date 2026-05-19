@@ -1,0 +1,22 @@
+<!-- Received Emails -->
+
+<div class="Card p-3 h-100">
+    <div class="d-flex flex-column gap-3">
+        <h2 class="Heading_color Sub-Heading Semibold mb-0 pb-2">Received Emails({{emails.length}})</h2>
+        <div class="d-flex gap-3 flex-column" *ngFor="let mail of filteredEmails">
+            <div class="receivedEmails_card d-flex gap-3">
+                <img src="assets/images/svg-img/user-icon.svg" class="recive_email_icon">
+                <div class="Received_Emails d-flex flex-column gap-2">
+                    <h2 class="mb-0 medium-text Semibold primary">{{ getPreview(mail.subject, 100) }}</h2>
+                    <h2 class="mb-0 small-text Regular text_dark"> {{ getPreview(mail.body, 150) }}
+                    </h2>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-2">
+        <a routerLink="{{ '/home/email' }}" class="px-4 py-2 primary_btn"><app-action-button title="Compose"
+                class="medium-text"></app-action-button></a>
+    </div>
+</div>

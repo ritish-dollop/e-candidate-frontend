@@ -1,0 +1,49 @@
+<div class="row dashboard_card">
+  <div class="col-md-6 mb-4">
+      <div class="white_card_background p-3  h-100">
+        <app-list></app-list>
+      </div>
+    </div>
+  <app-emails class="col-md-6 mb-4"></app-emails>
+</div>
+<div class="col-md-12">
+  <div class="white_card_background p-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="card_heading Sub-Heading Medium mb-0">{{ currentMonth }}</h2>
+      <div class="d-flex gap-3">
+        <select class="calendar_dropdown p-2 medium-text Medium" (change)="onCalendarViewChange($event)">
+          <option value="dayGridMonth">Month</option>
+          <option value="timeGridWeek">Week</option>
+          <option value="timeGridDay">Day</option>
+        </select>
+        <div class="d-flex align-items-center gap-1">
+          <a href="#"><img src="assets/images/svg-img/left-arrow.svg"></a>
+          <h2 class="small-text Medium mb-0 daily_status">Today</h2>
+          <a href="#"><img src="assets/images/svg-img/arrow.svg"></a>
+        </div>
+      </div>
+    </div>
+    <!-- CALENDAR Component-->
+    <app-calender></app-calender>
+  </div>
+</div>
+
+
+<button class="open-button cursor_pointer" onclick="openForm()" id="open">
+  <img src="assets/images/svg-img/chat-icon.svg" height="43" width="43" />
+</button>
+<button type="button" class="open-button cursor_pointer" onclick="closeForm()" id="close" (click)="closeForm()">
+  <img src="assets/images/svg-img/close.svg" height="43" width="43" />
+</button>
+
+<div class="chat-popup" id="myForm">
+  <div class="dashboard-chat-area">
+
+    <div class="white_card_background p-0 w-100">
+      <div class="dashboard-chat-lists">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+  </div>
+</div>

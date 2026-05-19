@@ -1,0 +1,671 @@
+<div class="back-btn" style="
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: #fff;
+  " (click)="goBack()">
+  <img src="assets-1/images/svg-img/back.svg" height="24" width="24" />
+</div>
+<div class="single_page overflow_hidden">
+  <div class="single_page secondary_card_background">
+    <div class="d-flex justify-content-between align-items-center p-4">
+      <h2 class="card_heading Sub-Heading Medium heading_border_bottom mb-0">
+        {{ campaignName }}
+      </h2>
+      <button *ngIf="isAdmin()" type="button" class="primary_btn medium-text Medium px-4" data-bs-toggle="modal"
+        data-bs-target="#addLeadModal">
+        + &nbsp;&nbsp; Add Lead
+      </button>
+    </div>
+
+    <div class="contentSection pb-3">
+      <div class="px-4">
+        <!-- TABLE VIEW -->
+        <div class="content white_card_background" data-number="1">
+          <div class="row py-3 px-4 m-0 table_actions border_bottom">
+            <div class="col-md-5 d-flex gap-3 p-0">
+              <button class="secondary_btn d-flex align-items-center gap-1" (click)="resetFilter()">
+                <img src="assets/images/svg-img/filter.svg" />
+                <h4 class="Caption Medium mb-0">Filter</h4>
+              </button>
+
+              <div class="dropdownss position-relative">
+                <a class="filter_status dropdown_toggle py-1 px-3 Caption Medium h-100" href="#" role="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter By Status
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" (click)="filterByStatus('UNADDRESSED')">Unprocessed</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('HIRED')">Hired</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('NOT_REACHED_PROCESSED')">Not Reached</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('INTERVIEW')">Interview</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('CV_REQUEST')">CV Request</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('IN_CONTACT')">In Contact</a></li>
+                  <li><a class="dropdown-item" (click)="filterByStatus('REJECTION')">Rejected</a></li>
+                </ul>
+
+              </div>
+            </div>
+
+            <div class="col-md-7 d-flex justify-content-end gap-3 p-0">
+              <div class="position-relative search_input2">
+                <input type="text" placeholder="Search" class="search_input_field py-1 px-4 ps-2 w-100"
+                  (input)="onSearch($event)" />
+                <img src="assets/images/svg-img/search.svg" class="search_img" />
+              </div>
+
+              <button class="secondary_btn d-flex align-items-center gap-1" (click)="exportCsv()">
+                <img src="assets/images/svg-img/export.svg" />
+                <h4 class="Caption Medium mb-0">Export (CSV)</h4>
+              </button>
+
+              <div class="selectSection lead_tab">
+                <button type="button" data-number="1">
+                  <img src="assets/images/svg-img/table-view.svg" />
+                </button>
+                <button type="button" data-number="2" class="active">
+                  <img src="assets/images/svg-img/list-view.svg" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ✅ Dynamic Table -->
+          <div class="table-responsive table_data">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%" height="auto">
+              <thead>
+                <tr class="table_heading">
+                  <th scope="col" style="width: 15%">Name</th>
+                  <th scope="col" style="width: 15%">Email Address</th>
+                  <th scope="col" style="width: 10%">Contact No.</th>
+                  <th scope="col" style="width: 10%">Applied Date</th>
+                  <th scope="col" style="width: 10%">Last Edit Date</th>
+                  <th scope="col" style="width: 10%">Comments</th>
+                  <th scope="col" style="width: 10%">Next Task Date</th>
+                  <th scope="col" style="width: 10%">Scorecard Score</th>
+                  <th scope="col" style="width: 10%">Status</th>
+                </tr>
+              </thead>
+              <tbody class="bg_light">
+
+                <tr *ngFor="let lead of filteredLeads">
+                  <td>
+                    <a [routerLink]="['/home/campaign/single-lead-detail', lead.id]"
+                      [state]="{ campaignId: campaignId }">
+                      {{ lead.applicantName }}
+                    </a>
+                  </td>
+
+                  <td>{{ lead.email }}</td>
+                  <td>{{ lead.contactNo }}</td>
+                  <td>{{ lead.appliedDate | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ lead.lastEditDate ? (lead.lastEditDate | date:'dd/MM/yyyy') : '--' }}</td>
+                  <td>{{ lead.commentCount ?? 0 }}</td>
+                  <td>{{ lead.nextTaskDate ? (lead.nextTaskDate | date:'dd/MM/yyyy') : '--' }}</td>
+                  <td>{{ lead.scorecardScore }}</td>
+                  <td>
+                    <div class="dropdowns position-relative">
+
+                      <a class="{{ getStatusClass(lead.status) }} {{ getStatusClass(lead.status) }}_bg dropdown_toggle py-2 px-3"
+                        href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ getStatusClass(lead.status) }}
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'UNADDRESSED')">Unprocessed</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'IN_CONTACT')">In Contact</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'NOT_REACHED_PROCESSED')">Not
+                            Reached</a></li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'CV_REQUEST')">CV Request</a>
+                        </li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'INTERVIEW')">Interview</a></li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'HIRED')">Hired</a></li>
+                        <li><a class="dropdown-item" (click)="updateLeadStatus(lead.id, 'REJECTION')">Rejected</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <nav aria-label="pagination" class="table-pagination">
+            <a (click)="prevPage()" class="secondary arrow small-text Medium d-flex gap-1"
+              [class.disabled]="currentPage === 0">
+              <img src="assets/images/svg-img/pagination-arrow-left.svg" />
+              Previous
+            </a>
+
+            <ul class="pagination mb-0 gap-2">
+              <li *ngFor="let p of [].constructor(totalPages); let i = index">
+                <a class="page-link" [class.active]="i === currentPage" (click)="currentPage = i; loadLeads()">
+                  {{ i + 1 }}
+                </a>
+              </li>
+            </ul>
+
+            <a (click)="nextPage()" class="secondary arrow small-text Medium d-flex gap-1"
+              [class.disabled]="currentPage === totalPages - 1">
+              Next
+              <img src="assets/images/svg-img/pagination-arrow-right.svg" />
+            </a>
+          </nav>
+
+          <p *ngIf="filteredLeads.length === 0" class="text-center py-3">
+            No Active Leads Found
+          </p>
+        </div>
+
+        <!-- KANBAN VIEW -->
+        <div class="content hidetab white_card_background px-4 pb-5 single_page" data-number="2">
+          <!--  top  content -->
+          <div class="d-flex justify-content-between gap-3 py-3 border_bottom lead_details">
+            <div class="position-relative search_input">
+              <input type="text" placeholder="Search" class="search_input_field py-1 px-4 ps-2 w-100"
+                (input)="onSearch($event)" />
+              <img src="assets/images/svg-img/search.svg" class="search_img" />
+            </div>
+            <div class="d-flex gap-3">
+              <button class="secondary_btn d-flex align-items-center gap-1" (click)="exportCsv()">
+                <img src="assets/images/svg-img/export.svg" />
+                <h4 class="Caption Medium mb-0">Export (CSV)</h4>
+              </button>
+              <div class="selectSection lead_tab">
+                <button type="button" data-number="1" class="active">
+                  <img src="assets/images/svg-img/table-view.svg" />
+                </button>
+                <button type="button" data-number="2">
+                  <img src="assets/images/svg-img/list-view.svg" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- list view -->
+
+          <div class="Campaigns_details_cards pt-3 pb-2">
+            <!-- CV Request -->
+            <div class="secondary_card_background user_details">
+              <div
+                class="d-flex align-items-center justify-content-center gap-2 py-3 px-4 user_details_top border_bottom">
+                <span class="circle"></span>
+                <h4 class="Caption Medium mb-0">CV Request</h4>
+              </div>
+              <!-- CV Request cards -->
+              <div class="user_list_details" id="cv-request" (dragover)="allowDrop($event)"
+                (drop)="onDrop($event, 'CV_REQUEST')">
+
+                <div class="p-3 border_bottom" *ngFor="let lead of cvRequestLeads" draggable="true"
+                  (dragstart)="onDragStart($event, lead.id)">
+
+
+                  <a class="white_card_background p-3 gap-2 lead_cards">
+
+                    <div class="d-flex justify-content-between border_bottom pb-1">
+                      <h2 class="small-text Medium mb-0">{{ lead.applicantName }}</h2>
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        {{ lead.createdAt | date:'dd/MM/yyyy' }}
+                      </h3>
+                    </div>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/campaigns_email.svg" class="black" height="12" width="12">
+                      {{ lead.email }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/phone.svg" height="12" width="12">
+                      {{ lead.contactNo }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/thumb.svg" height="12" width="12">
+                      {{ lead.scorecardScore }}
+                    </h3>
+
+                    <div class="d-flex justify-content-between">
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/clock.svg" height="12" width="12">
+                        {{ getDaysAgo(lead.createdAt || lead.appliedDate) }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/comment.svg" height="12" width="12">
+                        {{ lead.commentCount }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/calendar.svg" height="12" width="12">
+                        {{ getFormattedDate(lead.appliedDate) }}
+                      </h3>
+                    </div>
+
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Unprocessed -->
+            <div class="secondary_card_background user_details">
+              <div
+                class="d-flex align-items-center justify-content-center gap-2 py-3 px-4 user_details_top border_bottom">
+                <span class="circle Unprocessed"></span>
+                <h4 class="Caption Medium mb-0">Unprocessed</h4>
+              </div>
+              <!-- Unprocessed cards -->
+              <div class="user_list_details" id="unprocessed" (dragover)="allowDrop($event)"
+                (drop)="onDrop($event, 'UNADDRESSED')">
+
+                <div class="p-3 border_bottom" *ngFor="let lead of unprocessedLeads" draggable="true"
+                  (dragstart)="onDragStart($event, lead.id)">
+
+                  <a class="white_card_background p-3 gap-2 lead_cards">
+
+                    <div class="d-flex justify-content-between border_bottom pb-1">
+                      <h2 class="small-text Medium mb-0">{{ lead.applicantName }}</h2>
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        {{ lead.createdAt | date:'dd.MM.yyyy' }}
+                      </h3>
+                    </div>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/campaigns_email.svg" class="black" height="12" width="12">
+                      {{ lead.email }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/phone.svg" height="12" width="12">
+                      {{ lead.contactNo }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/thumb.svg" height="12" width="12">
+                      {{ lead.scorecardScore }}
+                    </h3>
+
+                    <div class="d-flex justify-content-between">
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/clock.svg" height="12" width="12">
+                        {{ getDaysAgo(lead.createdAt || lead.appliedDate) }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/comment.svg" height="12" width="12">
+                        {{ lead.commentCount }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/calendar.svg" height="12" width="12">
+                        {{ getFormattedDate(lead.appliedDate) }}
+                      </h3>
+                    </div>
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- In contact -->
+            <div class="secondary_card_background user_details">
+              <div
+                class="d-flex align-items-center justify-content-center gap-2 py-3 px-4 user_details_top border_bottom">
+                <span class="circle InContact"></span>
+                <h4 class="Caption Medium mb-0">In Contact</h4>
+              </div>
+              <!-- In contact cards -->
+              <div class="user_list_details" id="in-contact" (dragover)="allowDrop($event)"
+                (drop)="onDrop($event, 'IN_CONTACT')">
+
+                <div class="p-3 border_bottom" *ngFor="let lead of inContactLeads" draggable="true"
+                  (dragstart)="onDragStart($event, lead.id)">
+
+                  <a class="white_card_background p-3 gap-2 lead_cards">
+
+                    <div class="d-flex justify-content-between border_bottom pb-1">
+                      <h2 class="small-text Medium mb-0">
+                        {{ lead.applicantName }}
+                      </h2>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        {{ lead.createdAt | date:'dd.MM.yyyy' }}
+                      </h3>
+                    </div>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/campaigns_email.svg" class="black" height="12" width="12">
+                      {{ lead.email }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/phone.svg" height="12" width="12">
+                      {{ lead.contactNo }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/thumb.svg" height="12" width="12">
+                      {{ lead.scorecardScore }}
+                    </h3>
+
+                    <div class="d-flex justify-content-between">
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/clock.svg" height="12" width="12">
+                        {{ getDaysAgo(lead.createdAt || lead.appliedDate) }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/comment.svg" height="12" width="12">
+                        {{ lead.commentCount }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/calendar.svg" height="12" width="12">
+                        {{ getFormattedDate(lead.appliedDate) }}
+                      </h3>
+                    </div>
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Interview -->
+            <div class="secondary_card_background user_details">
+              <div
+                class="d-flex align-items-center justify-content-center gap-2 py-3 px-4 user_details_top border_bottom">
+                <span class="circle Interview"></span>
+                <h4 class="Caption Medium mb-0">Interview</h4>
+              </div>
+              <!-- Interview cards -->
+              <div class="user_list_details" id="interview" (dragover)="allowDrop($event)"
+                (drop)="onDrop($event, 'INTERVIEW')">
+
+                <div class="p-3 border_bottom" *ngFor="let lead of interviewLeads" draggable="true"
+                  (dragstart)="onDragStart($event, lead.id)">
+
+                  <a class="white_card_background p-3 gap-2 lead_cards">
+
+                    <div class="d-flex justify-content-between border_bottom pb-1">
+                      <h2 class="small-text Medium mb-0">
+                        {{ lead.applicantName }}
+                      </h2>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        {{ lead.createdAt | date:'dd.MM.yyyy' }}
+                      </h3>
+                    </div>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/campaigns_email.svg" class="black" height="12" width="12">
+                      {{ lead.email }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/phone.svg" height="12" width="12">
+                      {{ lead.contactNo }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/thumb.svg" height="12" width="12">
+                      {{ lead.scorecardScore }}
+                    </h3>
+
+                    <div class="d-flex justify-content-between">
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/clock.svg" height="12" width="12">
+                        {{ getDaysAgo(lead.createdAt || lead.appliedDate) }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/comment.svg" height="12" width="12">
+                        {{ lead.commentCount }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/calendar.svg" height="12" width="12">
+                        {{ getFormattedDate(lead.appliedDate) }}
+                      </h3>
+                    </div>
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Hired -->
+            <div class="secondary_card_background user_details">
+              <div
+                class="d-flex align-items-center justify-content-center gap-2 py-3 px-4 user_details_top border_bottom">
+                <span class="circle Hired"></span>
+                <h4 class="Caption Medium mb-0">Hired</h4>
+              </div>
+              <!-- Hired cards -->
+              <div class="user_list_details" id="hired" (dragover)="allowDrop($event)" (drop)="onDrop($event, 'HIRED')">
+
+                <div class="p-3 border_bottom" *ngFor="let lead of hiredLeads" draggable="true"
+                  (dragstart)="onDragStart($event, lead.id)">
+
+
+                  <a class="white_card_background p-3 gap-2 lead_cards">
+
+                    <div class="d-flex justify-content-between border_bottom pb-1">
+                      <h2 class="small-text Medium mb-0">
+                        {{ lead.applicantName }}
+                      </h2>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        {{ lead.createdAt | date:'dd.MM.yyyy' }}
+                      </h3>
+                    </div>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/campaigns_email.svg" class="black" height="12" width="12">
+                      {{ lead.email }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/phone.svg" height="12" width="12">
+                      {{ lead.contactNo }}
+                    </h3>
+
+                    <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                      <img src="assets/images/svg-img/thumb.svg" height="12" width="12">
+                      {{ lead.scorecardScore }}
+                    </h3>
+
+                    <div class="d-flex justify-content-between">
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/clock.svg" height="12" width="12">
+                        {{ getDaysAgo(lead.createdAt || lead.appliedDate) }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/comment.svg" height="12" width="12">
+                        {{ lead.commentCount }}
+                      </h3>
+
+                      <h3 class="Regular Caption mb-0 d-flex align-items-center gap-1">
+                        <img src="assets/images/svg-img/calendar.svg" height="12" width="12">
+                        {{ getFormattedDate(lead.appliedDate) }}
+                      </h3>
+                    </div>
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loader -->
+      <ng-template #loadingSpinner>
+        <p class="text-center mt-5">Loading Leads...</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- ADD LEAD MODAL POPUP -->
+<div class="modal fade" id="addLeadModal" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog large_modal modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4 modal_details d-flex flex-column gap-4">
+
+        <div class="single_tab">
+          <button class="nav-link active p-1 Sub-Heading">Add Lead</button>
+        </div>
+
+        <form #leadForm="ngForm" (ngSubmit)="saveLead()" class="d-flex flex-column gap-3 add_task">
+
+          <!-- Applicant Name -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Applicant Name</h3>
+            <div class="w-75">
+
+              <input type="text" name="applicantName" placeholder="Enter name" class="search_input_field small-text p-2"
+                required minlength="2" [(ngModel)]="lead.applicantName" #applicantName="ngModel" />
+              <br>
+
+              <!-- FRONTEND VALIDATION -->
+              <span class="text-danger small" *ngIf="applicantName.invalid && applicantName.touched">
+                Applicant name is required (min 2 characters)
+              </span>
+
+              <!-- BACKEND VALIDATION -->
+              <span class="text-danger small" *ngIf="formErrors?.applicantName">
+                {{ formErrors.applicantName }}
+              </span>
+
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Email</h3>
+            <div class="w-75">
+
+              <input type="email" name="email" placeholder="Email" class="search_input_field small-text p-2" required
+                email [(ngModel)]="lead.email" #email="ngModel" />
+              <br>
+
+              <span class="text-danger small" *ngIf="email.invalid && email.touched">
+                Valid email required
+              </span>
+
+              <span class="text-danger small" *ngIf="formErrors?.email">
+                {{ formErrors.email }}
+              </span>
+
+            </div>
+          </div>
+
+          <!-- Contact Number -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Contact No</h3>
+            <div class="w-75">
+
+              <input type="text" name="contactNo" placeholder="Phone number" class="search_input_field small-text p-2"
+                required pattern="^[0-9]{10}$" [(ngModel)]="lead.contactNo" #contactNo="ngModel" />
+              <br>
+
+              <span class="text-danger small" *ngIf="contactNo.invalid && contactNo.touched">
+                Contact number must be 10 digits
+              </span>
+
+              <span class="text-danger small" *ngIf="formErrors?.contactNo">
+                {{ formErrors.contactNo }}
+              </span>
+
+            </div>
+          </div>
+
+          <!-- Profile Image -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Profile Image</h3>
+            <div class="w-75">
+
+              <input type="file" #profileInput class="search_input_field small-text p-2"
+                (change)="onProfileSelect($event)" />
+              <br>
+
+              <span class="text-danger small" *ngIf="profileError">
+                {{ profileError }}
+              </span>
+
+            </div>
+          </div>
+
+          <!-- Resume -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Resume</h3>
+            <div class="w-75">
+
+              <input type="file" #resumeInput class="search_input_field small-text p-2"
+                (change)="onResumeSelect($event)" />
+              <br>
+
+              <span class="text-danger small" *ngIf="resumeError">
+                {{ resumeError }}
+              </span>
+
+            </div>
+          </div>
+
+          <!-- Scorecard -->
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-0">Scorecard Score</h3>
+            <div class="w-75">
+
+              <input type="text" name="scorecardScore" placeholder="Enter score"
+                class="search_input_field small-text p-2" [(ngModel)]="lead.scorecardScore" />
+              <br>
+
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-4 justify-content-end mt-3">
+
+            <button type="button" class="secondary_outline_btn medium-text Medium w-25 px-0"
+              (click)="closeAddLeadModal()">
+              Cancel
+            </button>
+
+            <button type="submit" class="primary_btn medium-text Medium w-25 px-0"
+              [disabled]="leadForm.invalid || profileError || resumeError || loading">
+
+              <span *ngIf="!loading">Save</span>
+
+              <span *ngIf="loading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+
+            </button>
+
+
+          </div>
+
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

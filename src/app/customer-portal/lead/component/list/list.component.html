@@ -1,0 +1,35 @@
+
+<!-- <div class="white_card_background p-3 h-100"> -->
+<h2 class="card_heading Sub-Heading Medium mb-3">
+  Leads ({{ leads.length }})
+</h2>
+
+<div class="grid_cards">
+
+  <div *ngFor="let lead of leads" class="secondary_card_background p-3">
+    <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+      <img [src]="lead.profileImageUrl || 'assets/images/default-avatar.png'" alt="Lead Image" class="avtar">
+
+      <div class="candidate_text text-center">
+        <h2 class="mb-2 medium-text Medium">{{ lead.applicantName }}</h2>
+        <h2 class="mb-0 Regular Caption">{{ lead.campaignName }}</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="border_top d-flex justify-content-between align-items-center mt-3 pt-2">
+  <a (click)="previousPage()" [class.disabled]="currentPage === 0">
+    <img src="assets/images/svg-img/pagination-arrow-left.svg" />
+  </a>
+
+  <h2 class="small-text Medium mb-0">
+    Page {{ currentPage + 1 }} of {{ totalPages }}
+  </h2>
+
+  <a (click)="nextPage()" [class.disabled]="currentPage === totalPages - 1">
+    <img src="assets/images/svg-img/pagination-right-arrow.svg" />
+  </a>
+</div>
+
+<!-- </div> -->
